@@ -4,4 +4,20 @@
 @tailwind components;
 @tailwind utilities;
 
+*{
+    box-sizing: border-box;
+    @apply font-sans text-gray-dark;
+}
+html, body{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
 
+body{
+    background: rgb(77,197,145);
+    background: -moz-linear-gradient(90deg, rgba(77,197,145,1) 0%, rgba(155,161,255,0.5718662464985995) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(77,197,145,1) 0%, rgba(155,161,255,0.5718662464985995) 100%);
+    background: linear-gradient(90deg, rgba(77,197,145,1) 0%, rgba(155,161,255,0.5718662464985995) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#4dc591",endColorstr="#9ba1ff",GradientType=1);
+}
