@@ -1,32 +1,162 @@
 import type { NextPage } from 'next';
-import { Body } from '../src/layout/body';
-
 import React from 'react';
-import { ContentCard } from '../src/components/content-card';
-import { ChatSmall } from '../src/components/chat/chat-small';
-//TODO: optional dropdown for filtering
+import { Body } from '../src/layout/body';
+import { Card } from '../src/components/shared/card';
+import { Button } from '../src/components/shared/button/button';
+import { LinkButton } from '../src/components/shared/navigation/link-button';
+
+const Grades = [
+  {
+    name: 'Math',
+    grade: 'A',
+    grader: 'Mr. Smith',
+    date: '2021-01-01',
+
+  },
+  {
+    name: 'English',
+    grade: 'B',
+    grader: 'Mrs. Smith',
+    date: '2021-01-01',
+  },
+  {
+    name: 'Science',
+    grade: 'C',
+    grader: 'Mr. Smith',
+    date: '2021-01-01',
+  },
+  {
+    name: 'History',
+    grade: 'D',
+    grader: 'Mrs. Smith',
+    date: '2021-01-01',
+  },
+  {
+    name: 'Math',
+    grade: 'A',
+    grader: 'Mr. Smith',
+    date: '2021-01-01',
+
+  },
+  {
+    name: 'English',
+    grade: 'B',
+    grader: 'Mrs. Smith',
+    date: '2021-01-01',
+  },
+  {
+    name: 'Science',
+    grade: 'C',
+    grader: 'Mr. Smith',
+    date: '2021-01-01',
+  },
+  {
+    name: 'History',
+    grade: 'D',
+    grader: 'Mrs. Smith',
+    date: '2021-01-01',
+  },
+  {
+    name: 'Math',
+    grade: 'A',
+    grader: 'Mr. Smith',
+    date: '2021-01-01',
+
+  },
+  {
+    name: 'English',
+    grade: 'B',
+    grader: 'Mrs. Smith',
+    date: '2021-01-01',
+  },
+  {
+    name: 'Science',
+    grade: 'C',
+    grader: 'Mr. Smith',
+    date: '2021-01-01',
+  },
+  {
+    name: 'History',
+    grade: 'D',
+    grader: 'Mrs. Smith',
+    date: '2021-01-01',
+  },
+]
 const Home: NextPage = () => {
+  const profileIcon = () =>{
+    return(
+      <img className={'w-10 h-10 rounded-full'} src={'https://i.pravatar.cc/300'} alt={'Pajeet'}/>
+    )
+  }
   return (
     <Body>
-      <div className={'grid w-full gap-y-10 gap-x-10 grid-cols-2 auto-cols-max grid-rows-auto  items-center'}>
-          <ContentCard title={'Wiadomości'}>
-          <div className={'divide-primary divide-y'}>
-            <ChatSmall name={'Ug'} message={'hello sir'} />
-            <ChatSmall name={'Ug'} message={'hello sir'} />
-            <ChatSmall name={'Ug'} message={'hello sir'} />
+      <div className={'grid grid-cols-3 grid-rows-2 grid-flow-row-dense gap-6 h-full w-full'}>
+
+        <Card
+          title={'Recent Grades'}
+          className={'flex flex-col gap-2 row-span-2'}>
+
+        <table className={'w-full h-full'}>
+          <tbody className={''}>
+            <tr className={'text-left'}>
+              <th >Subject</th>
+              <th>Grade</th>
+              <th>Grader</th>
+              <th>Date</th>
+            </tr>
+          {
+            Grades.map((grade) => (
+              <tr key={grade.name} className={'odd:bg-gray-dark '}>
+                <td className={'text-white '}>{grade.name}</td>
+                <td className={'text-white'}>{grade.grade}</td>
+                <td className={'text-white'}>{grade.grader}</td>
+                <td className={'text-white'}>{grade.date}</td>
+              </tr>
+            ))
+          }
+
+          </tbody>
+        </table>
+
+        </Card>
+
+        <Card
+          title={'Upcoming Assignments'}
+          className={'flex flex-col col-start-3 row-span-3'}>
+          <div className={'flex flex-col gap-y-2'}>
+
           </div>
-          </ContentCard>
 
-          <ContentCard title={'Oceny'}>
-            lorem
-          </ContentCard>
+        </Card>
 
-          <ContentCard className={'col-span-full'} title={'Kursy'}>
-            kursy
-          </ContentCard>
+        <Card
+          title={'Recent Messages'}
+          className={'flex flex-col'}>
+
+          <div className={'flex flex-col gap-y-2'}>
+            <LinkButton className={'flex !justify-between'} url={'/'} title={'Pajeet'} icon={profileIcon()} hasCta >
+              <div className={'bg-gray-dark rounded-md p-2'}>
+                Hello sir, I have a question about the assignment.
+              </div>
+            </LinkButton>
+
+            <LinkButton className={'flex !justify-between'} url={'/'} title={'Pajeet'} icon={profileIcon()} hasCta >
+              <div className={'bg-gray-dark rounded-md p-2'}>
+                Hello sir, I have a question about the assignment.
+              </div>
+            </LinkButton>
+
+            <LinkButton className={'flex !justify-between'} url={'/'} title={'Pajeet'} icon={profileIcon()} hasCta >
+              <div className={'bg-gray-dark rounded-md p-2'}>
+                Hello sir, I have a question about the assignment.
+              </div>
+            </LinkButton>
+          </div>
+
+
+        </Card>
 
       </div>
-
 
     </Body>
   );

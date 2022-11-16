@@ -11,16 +11,19 @@ module.exports = {
         'sans': ['Montserrat', 'sans-serif']
       },
       colors:{
-        primary: "#4DC591",
-        secondary: "#9BA1FF",
-        tertiary: "#FF7648",
+        blue:{
+          'light':'#2499EF',
+        },
         gray:{
-          'dark': '#191B32',
-          'light': '#9295A3',
+          'light':'#8CA3BA',
+          'medium': '#222B36',
+          'dark': '#171C24',
         }
       },
 
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar')
+  ],
 }
