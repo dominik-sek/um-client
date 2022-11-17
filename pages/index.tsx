@@ -6,6 +6,7 @@ import { Button } from '../src/components/shared/button/button';
 import { LinkButton } from '../src/components/shared/link-button/link-button';
 import { Sidebar } from '../src/components/shared/navigation/sidebar';
 import { NextPageWithLayout } from './_app';
+import { UserContext} from '../src/UserContext';
 
 const Grades = [
   {
@@ -84,7 +85,23 @@ const Grades = [
     date: '2021-01-01',
   },
 ]
+
 const Home: NextPageWithLayout = () => {
+  const userContext = React.useContext(UserContext);
+  const testFetchProfile = () =>{
+    fetch('http://localhost:3000/profile', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+  }
+
   const profileIcon = () =>{
     return(
       <img className={'w-10 h-10 rounded-full'} src={'https://i.pravatar.cc/300'} alt={'Pajeet'}/>
@@ -127,6 +144,7 @@ const Home: NextPageWithLayout = () => {
           title={'Upcoming Assignments'}
           className={'flex flex-col col-start-3 row-span-3'}>
           <div className={'flex flex-col gap-y-2'}>
+            <Button onClick={testFetchProfile}> test fetch profile </Button>
             <LinkButton className={'bg-gray-dark/30'} url={'/'} hasCta ctaText={'>'}>
               <div>
                 Assignment 1

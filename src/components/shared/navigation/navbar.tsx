@@ -7,7 +7,6 @@ import React from 'react';
 export const Navbar = ():JSX.Element =>{
   const [openMenu, setOpenMenu] = React.useState(false);
   const openUserMenu = () => {
-    console.log(openMenu)
     setOpenMenu(!openMenu);
   }
   return (

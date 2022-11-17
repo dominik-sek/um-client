@@ -4,11 +4,14 @@ import clsx from 'clsx';
 interface ButtonProps {
   children?: React.ReactNode;
   className?: string;
+  onClick?: () => void;
+  onSubmit?: (event: React.FormEvent<HTMLButtonElement>) => void;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 export const Button = (props:ButtonProps) =>{
   return(
-    <button className={clsx('bg-blue-light py-2 px-6 rounded-sm text-sm font-bold hover:bg-blue-light/40', props.className)}>
+    <button type={props.type} onSubmit={props.onSubmit}  onClick={props.onClick} className={clsx('bg-blue-light py-2 px-6 rounded-sm text-sm font-bold hover:bg-blue-light/40', props.className)}>
         {props.children}
     </button>
   )
