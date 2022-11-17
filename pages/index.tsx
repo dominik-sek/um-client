@@ -1,9 +1,11 @@
 import type { NextPage } from 'next';
 import React from 'react';
 import { Body } from '../src/layout/body';
-import { Card } from '../src/components/shared/card';
+import { Card } from '../src/components/shared/card/card';
 import { Button } from '../src/components/shared/button/button';
-import { LinkButton } from '../src/components/shared/navigation/link-button';
+import { LinkButton } from '../src/components/shared/link-button/link-button';
+import { Sidebar } from '../src/components/shared/navigation/sidebar';
+import { NextPageWithLayout } from './_app';
 
 const Grades = [
   {
@@ -82,14 +84,15 @@ const Grades = [
     date: '2021-01-01',
   },
 ]
-const Home: NextPage = () => {
+const Home: NextPageWithLayout = () => {
   const profileIcon = () =>{
     return(
       <img className={'w-10 h-10 rounded-full'} src={'https://i.pravatar.cc/300'} alt={'Pajeet'}/>
     )
   }
   return (
-    <Body>
+    <Body navbar>
+
       <div className={'grid grid-cols-3 grid-rows-2 grid-flow-row-dense gap-6 h-full w-full'}>
 
         <Card
@@ -124,6 +127,21 @@ const Home: NextPage = () => {
           title={'Upcoming Assignments'}
           className={'flex flex-col col-start-3 row-span-3'}>
           <div className={'flex flex-col gap-y-2'}>
+            <LinkButton className={'bg-gray-dark/30'} url={'/'} hasCta ctaText={'>'}>
+              <div>
+                Assignment 1
+              </div>
+            </LinkButton>
+            <LinkButton className={'bg-gray-dark/30'} url={'/'} hasCta ctaText={'>'}>
+              <div>
+                Assignment 2
+              </div>
+            </LinkButton>
+            <LinkButton className={'bg-gray-dark/30'} url={'/'} hasCta ctaText={'>'}>
+              <div>
+                Assignment 3
+              </div>
+            </LinkButton>
 
           </div>
 
@@ -134,20 +152,20 @@ const Home: NextPage = () => {
           className={'flex flex-col'}>
 
           <div className={'flex flex-col gap-y-2'}>
-            <LinkButton className={'flex !justify-between'} url={'/'} title={'Pajeet'} icon={profileIcon()} hasCta >
-              <div className={'bg-gray-dark rounded-md p-2'}>
+            <LinkButton className={'flex !justify-between'} url={'/'} title={'Pajeet'} icon={profileIcon()} hasCta ctaText={'Reply'} >
+              <div className={'bg-gray-dark dark-boxshadow rounded-md p-2 text-gray-light text-ellipsis whitespace-nowrap overflow-hidden'}>
                 Hello sir, I have a question about the assignment.
               </div>
             </LinkButton>
 
-            <LinkButton className={'flex !justify-between'} url={'/'} title={'Pajeet'} icon={profileIcon()} hasCta >
-              <div className={'bg-gray-dark rounded-md p-2'}>
+            <LinkButton className={'flex  !justify-between'} url={'/'} title={'Pajeet'} icon={profileIcon()} hasCta ctaText={'Reply'} >
+              <div className={'bg-gray-dark dark-boxshadow rounded-md p-2 text-gray-light text-ellipsis whitespace-nowrap overflow-hidden'}>
                 Hello sir, I have a question about the assignment.
               </div>
             </LinkButton>
 
-            <LinkButton className={'flex !justify-between'} url={'/'} title={'Pajeet'} icon={profileIcon()} hasCta >
-              <div className={'bg-gray-dark rounded-md p-2'}>
+            <LinkButton className={'flex !justify-between'} url={'/'} title={'Pajeet'} icon={profileIcon()} hasCta ctaText={'Reply'} >
+              <div className={'bg-gray-dark dark-boxshadow rounded-md p-2 text-gray-light text-ellipsis whitespace-nowrap overflow-hidden'}>
                 Hello sir, I have a question about the assignment.
               </div>
             </LinkButton>
@@ -157,8 +175,16 @@ const Home: NextPage = () => {
         </Card>
 
       </div>
-
     </Body>
   );
 };
 export default Home;
+
+Home.getLayout = function getLayout(page){
+  return(
+    <>
+      <Sidebar />
+      {page}
+    </>
+  )
+}

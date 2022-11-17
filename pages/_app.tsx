@@ -1,16 +1,26 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import React from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { Sidebar } from '../src/components/shared/navigation/sidebar';
+import { Navbar } from '../src/components/shared/navigation/navbar';
+import { NextPage } from 'next';
 
-function MyApp({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
 
-  return (
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page)
+
+  return getLayout(
     <div className={'flex'}>
-      <Sidebar />
       <Component {...pageProps} />
     </div>
-  );
+  )
 }
 
 export default MyApp;

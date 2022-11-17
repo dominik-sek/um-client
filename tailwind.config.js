@@ -18,7 +18,11 @@ module.exports = {
           'light':'#8CA3BA',
           'medium': '#222B36',
           'dark': '#171C24',
+        },
+        red:{
+          'light':'#FF316F',
         }
+
       },
 
     },
