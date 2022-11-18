@@ -31,9 +31,12 @@ export const LinkButton = (props: LinkProps):JSX.Element =>{
                 {props.title}
               </div>
 
-              <div className={clsx('w-full flex items-center justify-center text-gray-light', props.textColorClass)}>
-                {props.children}
-              </div>
+          {
+            props.children &&
+            <div className={clsx('w-full flex items-center justify-center text-gray-light', props.textColorClass)}>
+              {props.children}
+            </div>
+          }
             {
               props.hasCta && (
                 <div className={'flex items-center'}>

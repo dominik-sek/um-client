@@ -1,6 +1,6 @@
 import { LinkButton } from '../link-button/link-button';
 import React from 'react';
-import { logoutUser } from '../../../api/logout-user';
+import { logoutUser } from '../../../api/user/logout-user';
 
 import { Button } from '../button/button';
 
@@ -10,7 +10,7 @@ export const DropdownMenu = () =>{
 
       <LinkButton url={'/profile'} title={'Profile'} icon={<i className={'fas fa-user h-full'}/>}/>
       <LinkButton url={'/settings'} title={'Settings'} icon={<i className={'fas fa-cog'}/>}/>
-      <LinkButton url={'/'} onClick={logoutUser} title={'Logout'} icon={<i className={'fas fa-sign-out-alt'}/>}/>
+      <LinkButton url={'/login'} onClick={logoutUser} title={'Logout'} icon={<i className={'fas fa-sign-out-alt'}/>}/>
     </div>
   )
 }

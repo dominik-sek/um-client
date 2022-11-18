@@ -6,7 +6,6 @@ export { RouteGuard };
 function RouteGuard({ children } : any) {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
-  const userContext = useContext(UserContext);
 
 
   useEffect(() => {
@@ -31,7 +30,6 @@ function RouteGuard({ children } : any) {
 
   async function authCheck(url:string) {
     // redirect to login page if accessing a private page and not logged in
-
     //we need to call checkauth because the server sends a httponly cookie
     const isSessionActive = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkauth`, {
       method: 'GET',
@@ -39,8 +37,7 @@ function RouteGuard({ children } : any) {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
-    })
-      .then(
+    }).then(
         (response) => {
           return response.status === 200;
         })
@@ -48,7 +45,7 @@ function RouteGuard({ children } : any) {
     const publicPaths = ['/login'];
     const path = url.split('?')[0];
     if (!isSessionActive && !publicPaths.includes(path)) {
-      userContext.setUser(null);
+      //localStorage.clear();
       setAuthorized(false);
       router.push({
         pathname: '/login',
@@ -60,7 +57,7 @@ function RouteGuard({ children } : any) {
 
     //if user is logged in, then redirect to home page
     if (isSessionActive && publicPaths.includes(path)) {
-      router.push('/');
+      await router.push('/');
     }
   }
 

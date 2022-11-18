@@ -5,15 +5,16 @@ import { HeaderLevel } from '../src/enums/header-level';
 import { LinkButton } from '../src/components/shared/link-button/link-button';
 import { Button } from '../src/components/shared/button/button';
 import { FloatingInput } from '../src/components/shared/floating-input/floating-input';
-import { loginUser} from '../src/api/login-user';
-import { UserContext } from '../src/UserContext';
+import { loginUser} from '../src/api/user/login-user';
 import { useRouter } from 'next/router';
+import { fetchProfile } from '../src/api/user/fetch-profile';
+
 const Login = ():JSX.Element => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const router = useRouter();
   //TODO: ERROR HANDLING ON INPUT FIELDS
-  const userContext = React.useContext(UserContext);
+  // const userContext = React.useContext(UserContext);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -25,8 +26,10 @@ const Login = ():JSX.Element => {
     event.preventDefault();
     const response = await loginUser(username, password);
     if (response) {
-      userContext.setUser(response);
-      await router.push('/');
+      fetchProfile().then((profile) => {
+        localStorage.setItem('user-profile', JSON.stringify(profile));
+        router.push('/');
+      })
     } else {
       console.log('Login failed');
     }

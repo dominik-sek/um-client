@@ -1,20 +1,29 @@
-
-export const routes = [
+export const routes:Array<{path: string, name: string, permission?: string[]}> = [
   {
     path: '/',
-    name: 'Dashboard',
+    name: 'Home',
   },
   {
-    path: '/student',
-    name: 'Student',
-  },
-  {
-    path: '/worker',
-    name: 'Pracownik',
+    path: '/profile',
+    name: 'Profile',
   },
   {
     path: '/settings',
-    name: 'Ustawienia',
+    name: 'Settings',
   },
+  {
+    path: '/grades',
+    name: 'Grades',
+  },
+  {
+    path:'/students',
+    name:'Students',
+    permission: ['ADMINISTRATOR', 'TEACHER']
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    permission: ['ADMINISTRATOR'],
+  }
 
 ];

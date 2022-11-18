@@ -3,7 +3,10 @@ import { LinkButton } from '../link-button/link-button';
 import React, { useState } from 'react';
 import { routes } from '../../../constants/routes';
 
-export const Sidebar = ():JSX.Element =>{
+interface SidebarProps {
+  userRole: string;
+}
+export const Sidebar = (props: SidebarProps):JSX.Element =>{
 
   const [selected, setSelected] = useState<string>('');
 
@@ -14,16 +17,21 @@ export const Sidebar = ():JSX.Element =>{
       </div>
       <div className={'h-full flex flex-col gap-y-1'}>
         {routes.map((route) => (
-          <LinkButton
-            key={route.name}
-            url={route.path}
-            title={route.name}
-            notif
-            onClick={() => setSelected(route.name)}
-            selected={selected === route.name}
-          />
+          (route.permission == null || route.permission.some(val => val == props.userRole)) ?
+            <LinkButton
+              key={route.name}
+              url={route.path}
+              title={route.name}
+              notif
+              onClick={() => setSelected(route.name)}
+              selected={selected === route.name}
+            />
+            : null
         ))}
       </div>
     </nav>
   )
 }
+
+
+export default Sidebar;

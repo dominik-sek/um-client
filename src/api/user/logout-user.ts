@@ -2,7 +2,7 @@
 export const logoutUser = async () =>{
 
   const url = `${process.env.NEXT_PUBLIC_API_URL}/logout`;
-
+  // localStorage.clear();
   return fetch(url, {
     method: 'DELETE',
     headers: {

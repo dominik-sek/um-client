@@ -16,7 +16,6 @@ export const Body = (props:BodyProps) =>{
       {
         props.navbar && <Navbar />
       }
-
       {
         props.isLoginPage
           ?
