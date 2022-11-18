@@ -3,10 +3,8 @@ import { LinkButton } from '../link-button/link-button';
 import React, { useState } from 'react';
 import { routes } from '../../../constants/routes';
 
-interface SidebarProps {
-  userRole: string;
-}
-export const Sidebar = (props: SidebarProps):JSX.Element =>{
+
+export const Sidebar = ():JSX.Element =>{
 
   const [selected, setSelected] = useState<string>('');
 
@@ -17,7 +15,7 @@ export const Sidebar = (props: SidebarProps):JSX.Element =>{
       </div>
       <div className={'h-full flex flex-col gap-y-1'}>
         {routes.map((route) => (
-          (route.permission == null || route.permission.some(val => val == props.userRole)) ?
+          (route.permission == null) ?
             <LinkButton
               key={route.name}
               url={route.path}

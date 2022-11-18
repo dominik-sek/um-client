@@ -1,11 +1,9 @@
 import type { NextPage } from 'next';
 import React from 'react';
 import { Body } from '../../src/layout/body';
-import { NextPageWithLayout } from '../_app';
 import { CardGroup } from '../../src/components/shared/card/card-group';
 import { Card } from '../../src/components/shared/card/card';
 import { LinkButton } from '../../src/components/shared/link-button/link-button';
-import { Sidebar } from '../../src/components/shared/navigation/sidebar';
 
 
 const Home: NextPage = () => {

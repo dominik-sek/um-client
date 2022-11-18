@@ -88,6 +88,12 @@ const Login = ():JSX.Element => {
   )
 }
 
-
-
 export default Login;
+
+export async function getStaticProps(){
+  return{
+    props:{
+      noSidebar: true,
+    }
+  }
+}

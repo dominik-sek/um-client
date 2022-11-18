@@ -1,12 +1,12 @@
 import { Body } from "../src/layout/body";
 import { Sidebar } from '../src/components/shared/navigation/sidebar';
 import React from 'react';
-import { NextPageWithLayout } from './_app';
-import { Card } from '../src/components/shared/card/card';
 import { FloatingInput } from '../src/components/shared/floating-input/floating-input';
 import { CardGroup } from '../src/components/shared/card/card-group';
+import { NextPage } from 'next';
+import { Card } from '../src/components/shared/card/card';
 
-export const Profile:NextPageWithLayout = ():JSX.Element =>{
+export const Profile:NextPage = ():JSX.Element =>{
   const userProfile = localStorage.getItem('user-profile');
   const userParsed = JSON.parse(userProfile!);
 
@@ -64,11 +64,3 @@ export const Profile:NextPageWithLayout = ():JSX.Element =>{
 }
 export default Profile;
 
-Profile.getLayout = function getLayout(page){
-  return(
-    <>
-      <Sidebar />
-      {page}
-    </>
-  )
-}
