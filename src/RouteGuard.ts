@@ -1,12 +1,14 @@
 import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
-import { UserContext } from './UserContext';
+import { useUserContext } from './user';
+import { fetchProfile } from './api/user/fetch-profile';
+import { fetchUserRole } from './api/user/fetch-user-role';
 export { RouteGuard };
 
 function RouteGuard({ children } : any) {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
-
+  const userContext = useUserContext();
 
   useEffect(() => {
     // on initial load - run auth check
@@ -42,6 +44,11 @@ function RouteGuard({ children } : any) {
           return response.status === 200;
         })
 
+    if(isSessionActive){
+      userContext.setUserProfile(await fetchProfile());
+      userContext.setUserRole(await fetchUserRole());
+      userContext.setIsUserLoggedIn(true);
+    }
     const publicPaths = ['/login'];
     const path = url.split('?')[0];
     if (!isSessionActive && !publicPaths.includes(path)) {

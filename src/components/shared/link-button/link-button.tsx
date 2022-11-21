@@ -21,8 +21,8 @@ export const LinkButton = (props: LinkProps):JSX.Element =>{
 
   return (
     <Link href={props.url}>
-      <a onClick={props.onClick}
-         className={clsx('flex justify-between  w-full p-2 hover:bg-gray-light/10 rounded-md',
+      <div onClick={props.onClick}
+         className={clsx('flex justify-between cursor-pointer w-full p-2 hover:bg-gray-light/10 rounded-md',
            props.selected && 'bg-blue-light/20 text-blue-light',
            props.className)}>
         <div className={'flex w-full'}>
@@ -53,7 +53,7 @@ export const LinkButton = (props: LinkProps):JSX.Element =>{
           )
         }
 
-      </a>
+      </div>
     </Link>
   );
 }

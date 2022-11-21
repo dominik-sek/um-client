@@ -8,6 +8,8 @@ import { FloatingInput } from '../src/components/shared/floating-input/floating-
 import { loginUser} from '../src/api/user/login-user';
 import { useRouter } from 'next/router';
 import { fetchProfile } from '../src/api/user/fetch-profile';
+import { fetchUserRole } from '../src/api/user/fetch-user-role';
+import { useUserContext } from '../src/user';
 
 const Login = ():JSX.Element => {
   const [username, setUsername] = React.useState('');
@@ -15,6 +17,7 @@ const Login = ():JSX.Element => {
   const router = useRouter();
   //TODO: ERROR HANDLING ON INPUT FIELDS
   // const userContext = React.useContext(UserContext);
+
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -26,10 +29,7 @@ const Login = ():JSX.Element => {
     event.preventDefault();
     const response = await loginUser(username, password);
     if (response) {
-      fetchProfile().then((profile) => {
-        localStorage.setItem('user-profile', JSON.stringify(profile));
         router.push('/');
-      })
     } else {
       console.log('Login failed');
     }
@@ -93,7 +93,7 @@ export default Login;
 export async function getStaticProps(){
   return{
     props:{
-      noSidebar: true,
+      isLoginPage: true,
     }
   }
 }

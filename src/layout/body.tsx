@@ -13,9 +13,7 @@ export const Body = (props:BodyProps) =>{
 
   return (
     <div className={clsx('relative h-screen w-full flex text-2xl ml-72 text-white ', props.className)}>
-      {
-        props.navbar && <Navbar />
-      }
+
       {
         props.isLoginPage
           ?

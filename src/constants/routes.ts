@@ -18,7 +18,7 @@ export const routes:Array<{path: string, name: string, permission?: string[]}> =
   {
     path:'/students',
     name:'Students',
-    permission: ['ADMINISTRATOR', 'TEACHER']
+    permission: ['ADMINISTRATOR', 'PRACOWNIK']
   },
   {
     path: '/users',
