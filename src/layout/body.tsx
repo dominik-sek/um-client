@@ -19,7 +19,7 @@ export const Body = (props:BodyProps) =>{
           ?
           props.children :
           <main className={'overflow-auto pt-16 p-6 w-full scrollbar scrollbar-thumb-blue-light/10 scrollbar-thin'}>
-            <div className={'p-8'}>
+            <div className={'p-8 h-full w-full'}>
               {props.children}
             </div>
           </main>

@@ -1,8 +1,11 @@
-export const Grade = () =>{
+import { Body } from "../src/layout/body";
+
+export const Grades = () =>{
 
   return(
-    <div>
-
-    </div>
+    <Body>
+    <h1> grades </h1>
+    </Body>
   )
 }
+export default Grades;

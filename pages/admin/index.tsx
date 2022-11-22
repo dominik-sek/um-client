@@ -1,91 +1,13 @@
 import type { NextPage } from 'next';
 import React, { useContext } from 'react';
-import { Body } from '../src/layout/body';
-import { CardGroup } from '../src/components/shared/card/card-group';
-import { Card } from '../src/components/shared/card/card';
-import { LinkButton } from '../src/components/shared/link-button/link-button';
-import { Sidebar } from '../src/components/shared/navigation/sidebar';
-import { useUserContext } from '../src/user';
+import { Body } from '../../src/layout/body';
+import { CardGroup } from '../../src/components/shared/card/card-group';
+import { Card } from '../../src/components/shared/card/card';
+import { LinkButton } from '../../src/components/shared/link-button/link-button';
+import { useUserContext } from '../../src/user';
 
 
 
-// const Grades = [
-//   {
-//     name: 'Math',
-//     grade: 'A',
-//     grader: 'Mr. Smith',
-//     date: '2021-01-01',
-//
-//   },
-//   {
-//     name: 'English',
-//     grade: 'B',
-//     grader: 'Mrs. Smith',
-//     date: '2021-01-01',
-//   },
-//   {
-//     name: 'Science',
-//     grade: 'C',
-//     grader: 'Mr. Smith',
-//     date: '2021-01-01',
-//   },
-//   {
-//     name: 'History',
-//     grade: 'D',
-//     grader: 'Mrs. Smith',
-//     date: '2021-01-01',
-//   },
-//   {
-//     name: 'Math',
-//     grade: 'A',
-//     grader: 'Mr. Smith',
-//     date: '2021-01-01',
-//
-//   },
-//   {
-//     name: 'English',
-//     grade: 'B',
-//     grader: 'Mrs. Smith',
-//     date: '2021-01-01',
-//   },
-//   {
-//     name: 'Science',
-//     grade: 'C',
-//     grader: 'Mr. Smith',
-//     date: '2021-01-01',
-//   },
-//   {
-//     name: 'History',
-//     grade: 'D',
-//     grader: 'Mrs. Smith',
-//     date: '2021-01-01',
-//   },
-//   {
-//     name: 'Math',
-//     grade: 'A',
-//     grader: 'Mr. Smith',
-//     date: '2021-01-01',
-//
-//   },
-//   {
-//     name: 'English',
-//     grade: 'B',
-//     grader: 'Mrs. Smith',
-//     date: '2021-01-01',
-//   },
-//   {
-//     name: 'Science',
-//     grade: 'C',
-//     grader: 'Mr. Smith',
-//     date: '2021-01-01',
-//   },
-//   {
-//     name: 'History',
-//     grade: 'D',
-//     grader: 'Mrs. Smith',
-//     date: '2021-01-01',
-//   },
-// ]
 
 const Home: NextPage = () => {
 
@@ -97,6 +19,7 @@ const Home: NextPage = () => {
   }
   return (
     <Body>
+      ADMIN PAGE
       <CardGroup>
         {/*<Card*/}
         {/*  title={'Recent Grades'}*/}
