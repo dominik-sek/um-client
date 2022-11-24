@@ -3,14 +3,14 @@ import { createContext, useContext, useState } from 'react'
 const Context = createContext({
   userProfile: {},
   setUserProfile: (user: any) => {},
-  userRole: '',
-  setUserRole: (role: string) => {},
+  userRole: {role:''},
+  setUserRole: (role: any) => {},
   isUserLoggedIn: false,
   setIsUserLoggedIn: (isLoggedIn: boolean) => {},
 });
 export const UserProvider = ({ children }:any) => {
 const [userProfile, setUserProfile] = useState({});
-  const [userRole, setUserRole] = useState('');
+  const [userRole, setUserRole] = useState({role:''});
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   return (

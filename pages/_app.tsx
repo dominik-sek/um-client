@@ -6,14 +6,13 @@ import Sidebar from '../src/components/shared/navigation/sidebar';
 import { Navbar } from '../src/components/shared/navigation/navbar';
 import { UserProvider, useUserContext } from '../src/user';
 interface PageProps {
-  isLoginPage?: boolean;
+  noNavigation?: boolean;
 }
 function MyApp({ Component, pageProps }: AppProps<PageProps>) {
   return(
     <UserProvider>
-      <RouteGuard>
       {
-        pageProps.isLoginPage ?
+        (pageProps.noNavigation) ?
           null
           :
           (<div>
@@ -21,6 +20,7 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
             <Sidebar />
           </div>)
       }
+      <RouteGuard>
       <div className={'flex relative'}>
         <Component {...pageProps} />
       </div>

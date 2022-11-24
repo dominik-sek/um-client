@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import { SearchBar } from './search-bar';
 import {UserMenu} from './user-menu';
 import { AppSettings } from './app-settings';
@@ -8,12 +7,6 @@ import { useUserContext } from '../../../user';
 export const Navbar = ():JSX.Element =>{
   const [openMenu, setOpenMenu] = React.useState(false);
   const user = useUserContext()
-
-  // const userProfile = localStorage.getItem('user-profile');
-  // let userParsed = '';
-  // if(userProfile){
-  //   userParsed = JSON.parse(userProfile);
-  // }
 
   const openUserMenu = () => {
     setOpenMenu(!openMenu);

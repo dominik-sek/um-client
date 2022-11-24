@@ -33,7 +33,7 @@ export const loginUser = async (username:string, password:string) =>{
     )
 
     .catch((error) => {
-      console.error('Error:', error);
+      // console.error('Error:', error);
     });
 
 }

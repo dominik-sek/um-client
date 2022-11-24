@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 
 export const Sidebar = ():JSX.Element =>{
   const user = useUserContext()
-  const router = useRouter()
 
   const [selected, setSelected] = useState<string>('');
   return(
@@ -19,11 +18,11 @@ export const Sidebar = ():JSX.Element =>{
       </div>
       <div className={'h-full flex flex-col gap-y-1'}>
         {routes.map((route)=>{
-          //prepends the route with the user type
+          // prepends the route with the user type
           const roleBasedPath = `/${user?.userRole.role}${route.path}`
 
-          if(route.permission.includes('*') || route.permission.includes(user.userRole.role)){
-            return(
+          if(route.permission.includes('*') || route.permission.includes(user.userRole.role)) {
+            return (
               <LinkButton
                 key={route.name}
                 url={route.permission.includes('*') ? route.path : roleBasedPath}
@@ -34,7 +33,6 @@ export const Sidebar = ():JSX.Element =>{
               />
             )
           }
-
         })}
       </div>
     </nav>

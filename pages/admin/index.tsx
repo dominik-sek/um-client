@@ -7,8 +7,6 @@ import { LinkButton } from '../../src/components/shared/link-button/link-button'
 import { useUserContext } from '../../src/user';
 
 
-
-
 const Home: NextPage = () => {
 
   const user = useUserContext();

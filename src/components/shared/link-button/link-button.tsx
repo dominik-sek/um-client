@@ -37,13 +37,14 @@ export const LinkButton = (props: LinkProps):JSX.Element =>{
               {props.children}
             </div>
           }
-            {
+
+          {
               props.hasCta && (
                 <div className={'flex items-center'}>
                   <Button>{props.ctaText}</Button>
                 </div>
               )
-            }
+          }
         </div>
         {
             props.notif &&(

@@ -7,31 +7,43 @@ import { Button } from '../src/components/shared/button/button';
 import { FloatingInput } from '../src/components/shared/floating-input/floating-input';
 import { loginUser} from '../src/api/user/login-user';
 import { useRouter } from 'next/router';
-import { fetchProfile } from '../src/api/user/fetch-profile';
-import { fetchUserRole } from '../src/api/user/fetch-user-role';
 import { useUserContext } from '../src/user';
+import { useRef } from 'react';
+import clsx from 'clsx';
 
 const Login = ():JSX.Element => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isValidationError, setIsValidationError] = React.useState(false);
+
   const router = useRouter();
   //TODO: ERROR HANDLING ON INPUT FIELDS
   // const userContext = React.useContext(UserContext);
-
+  const user = useUserContext();
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsValidationError(false);
     setUsername(event.target.value);
   }
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsValidationError(false);
     setPassword(event.target.value);
   }
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const response = await loginUser(username, password);
+
     if (response) {
-        router.push('/');
+      setIsValidationError(false);
+      const role = user.userRole.role;
+      await router.push(`/${role}`);
     } else {
-      console.log('Login failed');
+      setIsValidationError(true);
+      inputRef.current!.focus();
+      setTimeout(() => {
+        setIsValidationError(false);
+      }, 3000);
     }
   }
   return(
@@ -55,28 +67,37 @@ const Login = ():JSX.Element => {
             </div>
 
             <div className={'flex flex-col items-center gap-y-5'}>
-              <form className={'flex flex-col w-full items-center gap-y-5'} onSubmit={handleSubmit}>
-                <div className="relative w-3/4">
+              <form className={'flex flex-col w-full items-center gap-y-8 w-3/4'} onSubmit={handleSubmit}>
+                <div className="relative w-full">
                   {/*TODO: add type enum*/}
                   <FloatingInput
                     onChange={handleUsernameChange}
                     name={'Username'}
                     type={'text'}
-                    placeholder={'Username'} />
+                    placeholder={'Username'}
+                    isValidationError={isValidationError}
+                    ref={inputRef}
+                  />
+                  <p className={clsx('absolute text-xs pt-1 pb-1 text-red-light opacity-0 duration-200', isValidationError && '!opacity-100')}>Invalid username or password</p>
                 </div>
-                <div className="relative w-3/4">
+
+                <div className="relative w-full">
                   <FloatingInput
                     onChange={handlePasswordChange}
                     name={'Password'}
                     type={'password'}
-                    placeholder={'Password'} />
+                    placeholder={'Password'}
+                    isValidationError={isValidationError}
+                  />
                 </div>
 
-              <div className={'flex w-3/4 justify-between'}>
-                  <LinkButton textColorClass={'text-blue-light'} url={'/'} className={'text-sm w-fit'}> Contact with an administrator </LinkButton>
-                  <LinkButton textColorClass={'text-red-light'} url={'/'} className={'text-sm w-fit'}> Forgot Password? </LinkButton>
+
+
+              <div className={'flex w-full justify-between'}>
+                  <LinkButton textColorClass={'!text-blue-light'} url={'/'} className={'text-sm w-fit'}> Contact with an administrator </LinkButton>
+                  <LinkButton textColorClass={'!text-red-light'} url={'/'} className={'text-sm w-fit'}> Forgot Password? </LinkButton>
               </div>
-              <Button type={'submit'} className={'w-3/4'}> Login </Button>
+              <Button type={'submit'} className={'w-full'}> Login </Button>
             </form>
             </div>
 
@@ -93,7 +114,7 @@ export default Login;
 export async function getStaticProps(){
   return{
     props:{
-      isLoginPage: true,
+      noNavigation: true,
     }
   }
 }

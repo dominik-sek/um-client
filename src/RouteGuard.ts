@@ -14,8 +14,7 @@ function RouteGuard({ children } : any) {
   useEffect(() => {
     // on initial load - run auth check
     authCheck(router.asPath)
-    roleCheck(router.asPath);
-
+    roleCheck(router.asPath)
 
     // on route change start - hide page content by setting authorized to false
     const hideContent = () => setAuthorized(false);
@@ -53,18 +52,18 @@ function RouteGuard({ children } : any) {
       userContext.setUserRole(await fetchUserRole());
       userContext.setIsUserLoggedIn(true);
     }
-    console.log(userContext.userRole);
 
     const publicPaths = ['/login'];
-
     const path = url.split('?')[0];
 
     if (!isSessionActive && !publicPaths.includes(path)) {
-      //localStorage.clear();
+      // userContext.setIsUserLoggedIn(false);
+      // userContext.setUserProfile({});
+      // userContext.setUserRole({role:''});
       setAuthorized(false);
       router.push({
         pathname: '/login',
-        query: { returnUrl: router.asPath }
+        // query: { returnUrl: router.asPath }
       });
     }else {
       setAuthorized(true);
@@ -72,25 +71,27 @@ function RouteGuard({ children } : any) {
 
     //if user is logged in, then redirect to home page
     if (isSessionActive && publicPaths.includes(path)) {
-      await router.push('/');
+      await router.push(`/${userContext.userRole.role}`);
     }
 
   }
   async function roleCheck(url:string) {
-    //session already checked before with authCheck
-
-    const role = userContext.userRole;
+    const role = userContext.userRole.role;
     const path = url.split('?')[0];
 
-    if(path.includes('/admin') && role.role !== UserRole.ADMIN) {
+  if(role){
+    if(path.includes('/admin') && role !== UserRole.ADMIN) {
       router.push('/unauthorized');
     }
-    if(path.includes('/teacher') && role.role !== UserRole.TEACHER) {
+    if(path.includes('/teacher') && role !== UserRole.TEACHER) {
       router.push('/unauthorized');
     }
-    if(path.includes('/student') && role.role !== UserRole.STUDENT) {
+    if(path.includes('/student') && role !== UserRole.STUDENT) {
       router.push('/unauthorized');
     }
+  }else{
+    router.push('/');
+  }
   }
   return (authorized && children);
 }
