@@ -15,8 +15,8 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
         (pageProps.noNavigation) ?
           null
           :
-          (<div>
-            <Navbar />
+          (<div className={''}>
+            <Navbar  />
             <Sidebar />
           </div>)
       }

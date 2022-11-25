@@ -47,17 +47,18 @@ const Login = ():JSX.Element => {
     }
   }
   return(
-    <Body isLoginPage className={'w-full !m-0 !p-0'}>
-      <div className={'grid grid-cols-2 w-full'}>
+    <Body isLoginPage className={'w-full !m-0 !p-0 !text-base '}>
+      <div className={'lg:grid flex flex-col lg:grid-cols-2 lg:grid-rows-none w-full'}>
 
-        <div className={'flex justify-center items-center'}>
+        <div className={'flex justify-center items-center min-h-screen'}>
           <div className={'p-8 border w-3/4 h-5/6'}>
-            content
+            swiper
           </div>
         </div>
 
-        <div className={'bg-gray-medium'}>
-          <div className={'p-8 w-full h-full flex flex-col justify-center gap-y-10'}>
+        <div className={'bg-gray-medium min-h-screen flex items-center'}>
+
+          <div className={'p-8 w-full h-fit flex flex-col justify-center gap-y-10'}>
 
             <div className={'flex flex-col items-center gap-y-14'}>
               <img className={'w-1/4'} src={'https://picsum.photos/200'} alt={'logo'}/>

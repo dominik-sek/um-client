@@ -12,14 +12,14 @@ interface BodyProps {
 export const Body = (props:BodyProps) =>{
 
   return (
-    <div className={clsx('relative h-screen w-full flex text-2xl ml-72 text-white ', props.className)}>
 
+    <div className={clsx('relative h-screen w-full flex text-2xl ml-20 text-white ', props.className)}>
       {
         props.isLoginPage
           ?
           props.children :
           <main className={'overflow-auto pt-16 p-6 w-full scrollbar scrollbar-thumb-blue-light/10 scrollbar-thin'}>
-            <div className={'p-8 h-full w-full'}>
+            <div className={'pt-6 w-full'}>
               {props.children}
             </div>
           </main>

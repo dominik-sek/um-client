@@ -1,14 +1,11 @@
-import { LinkButton } from '../link-button/link-button';
-import React from 'react';
-import { logoutUser } from '../../../api/user/logout-user';
-
-export const DropdownMenu = () =>{
+import React, { ForwardedRef } from 'react';
+interface DropdownProps {
+  children?: React.ReactNode;
+}
+export const DropdownMenu = React.forwardRef((props: DropdownProps, ref:ForwardedRef<HTMLDivElement>) =>{
   return (
-    <div className={'absolute top-10 w-full h-fit flex flex-col  border border-t-0 border-gray-light/50 rounded-b-md bg-gray-dark shadow-2xl backdrop-blur-lg'}>
-
-      <LinkButton url={'/profile'} title={'Profile'} icon={<i className={'fas fa-user h-full'}/>}/>
-      <LinkButton url={'/settings'} title={'Settings'} icon={<i className={'fas fa-cog'}/>}/>
-      <LinkButton url={'/logout'} title={'Logout'} icon={<i className={'fas fa-sign-out-alt'}/>}/>
+    <div ref={ref} className={'!absolute top-14 right-0 min-w-[12rem] h-fit flex flex-col rounded-b-md bg-gray-800 shadow-2xl backdrop-blur-lg'}>
+      {props.children}
     </div>
   )
-}
+})

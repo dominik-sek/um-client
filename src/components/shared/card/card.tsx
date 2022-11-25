@@ -9,7 +9,7 @@ interface CardProps {
 }
 export const Card = (props: CardProps):JSX.Element =>{
   return(
-    <div className={clsx('bg-gray-medium col-span-2 p-6 divide-y divide-white/30 rounded-md h-full dark-boxshadow', props.className)}>
+    <div className={clsx('bg-gray-medium p-6 divide-y divide-white/30 rounded-md h-full dark-boxshadow', props.className)}>
         <div>
           <Header level={HeaderLevel.H3} >
             {props.title}

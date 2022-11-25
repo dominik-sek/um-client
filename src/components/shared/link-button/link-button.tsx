@@ -12,10 +12,10 @@ interface LinkProps{
   selected?: boolean;
   className?: string;
   notif?: boolean;
-  childrenClassName?: string;
   hasCta?: boolean;
   ctaText?: string;
   textColorClass?: string;
+  iconOnly?: boolean;
 }
 export const LinkButton = (props: LinkProps):JSX.Element =>{
 
@@ -25,10 +25,13 @@ export const LinkButton = (props: LinkProps):JSX.Element =>{
          className={clsx('flex justify-between cursor-pointer w-full p-2 hover:bg-gray-light/10 rounded-md',
            props.selected && 'bg-blue-light/20 text-blue-light',
            props.className)}>
-        <div className={'flex w-full'}>
-              <div className={'w-fit flex flex-col items-center justify-center text-gray-light'}>
-                {props.icon}
-                {props.title}
+        <div className={clsx('flex w-full')}>
+              <div className={'flex items-center justify-center gap-x-2 text-gray-light'}>
+                {props.icon && <div className={' w-8 h-8 flex items-center justify-center '}>{props.icon} </div>}
+                {
+                  !props.iconOnly && <div>{props.title}</div>
+                }
+
               </div>
 
           {

@@ -7,6 +7,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens:{
+        sm: '576px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1400px',
+      },
       fontFamily:{
         'sans': ['Montserrat', 'sans-serif']
       },
@@ -22,9 +28,7 @@ module.exports = {
         red:{
           'light':'#FF316F',
         }
-
       },
-
     },
   },
   plugins: [

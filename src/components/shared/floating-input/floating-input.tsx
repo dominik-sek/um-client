@@ -10,6 +10,7 @@ interface InputProps {
   disabled?: boolean;
   isValidationError?: boolean;
 }
+
 export const FloatingInput = React.forwardRef((props: InputProps, ref:ForwardedRef<HTMLInputElement>) =>{
   return(
     <div className={clsx('', props.className)}>

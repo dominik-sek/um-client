@@ -7,7 +7,6 @@ const Home: NextPage = () => {
 
   const user = useUserContext();
   const router = useRouter();
-  console.log(user.userRole.role)
   if(user.userRole.role){
     router.push(`/${user.userRole.role}`);
   }
