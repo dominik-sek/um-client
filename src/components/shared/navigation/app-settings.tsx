@@ -1,5 +1,4 @@
-import { DropdownMenu } from './dropdown-menu';
-import { LinkButton } from '../link-button/link-button';
+
 import React from 'react';
 
 interface AppSettingsProps{

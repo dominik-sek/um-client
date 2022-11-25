@@ -29,20 +29,22 @@ export const Navbar = ():JSX.Element =>{
           {
             openSettings &&
             <DropdownMenu>
-              <LinkButton url={'/'} title={'Language'} icon={'🏁'}/>
+              <LinkButton url={'/'} title={'Language'} icon={'🏁'} onClick={openSettingsMenu}/>
             </DropdownMenu>
           }
         </div>
+        <div className={'relative flex'}>
 
         <UserMenu user={user.userProfile} onClick={()=>{openUserMenu()}}/>
 
         {openMenu &&
           <DropdownMenu>
-            <LinkButton url={'/profile'} title={'Profile'} icon={'🧑'}/>
-            <LinkButton url={'/settings'} title={'Settings'} icon={'⚙'}/>
-            <LinkButton url={'/logout'} title={'Logout'} icon={'📴'}/>
+            <LinkButton url={'/profile'} title={'Profile'} icon={'🧑'} onClick={openUserMenu}/>
+            <LinkButton url={'/settings'} title={'Settings'} icon={'⚙'} onClick={openUserMenu}/>
+            <LinkButton url={'/logout'} title={'Logout'} icon={'📴'} onClick={openUserMenu}/>
           </DropdownMenu>
         }
+        </div>
 
       </div>
 
