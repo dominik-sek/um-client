@@ -1,5 +1,4 @@
 import React from 'react';
-import { Navbar } from '../components/shared/navigation/navbar';
 import clsx from 'clsx';
 
 interface BodyProps {

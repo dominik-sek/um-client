@@ -1,7 +1,7 @@
 
 export const loginUser = async (username:string, password:string) =>{
 
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/login`;
+  const url = `${process.env.REACT_APP_API_URL}/login`;
   const body = {
     login: username,
     haslo: password

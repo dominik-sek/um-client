@@ -1,5 +1,5 @@
 export const fetchUserRole = async () =>{
-  return await fetch(process.env.NEXT_PUBLIC_API_URL + '/checkauth',
+  return await fetch(process.env.REACT_APP_API_URL + '/checkauth',
     {
       method: 'GET',
       headers: {
@@ -10,7 +10,7 @@ export const fetchUserRole = async () =>{
     })
     .then((response) => response.json())
     .then((data) => {
-      return Promise.resolve(data)
+        return data;
     })
 
 }

@@ -1,8 +1,7 @@
 import { SearchBar } from './search-bar';
 import {UserMenu} from './user-menu';
 import { AppSettings } from './app-settings';
-import React, { useContext } from 'react';
-import { useUserContext } from '../../../user';
+import React from 'react';
 import { DropdownMenu } from './dropdown-menu';
 import { LinkButton } from '../link-button/link-button';
 
@@ -10,7 +9,7 @@ export const Navbar = ():JSX.Element =>{
   const [openMenu, setOpenMenu] = React.useState(false);
   const [openSettings, setOpenSettings] = React.useState(false);
 
-  const user = useUserContext()
+  const user = JSON.parse(localStorage.getItem('user')!);
 
   const openUserMenu = () => {
     setOpenMenu(!openMenu);
@@ -35,7 +34,7 @@ export const Navbar = ():JSX.Element =>{
         </div>
         <div className={'relative flex'}>
 
-        <UserMenu user={user.userProfile} onClick={()=>{openUserMenu()}}/>
+        <UserMenu user={user} onClick={()=>{openUserMenu()}}/>
 
         {openMenu &&
           <DropdownMenu>

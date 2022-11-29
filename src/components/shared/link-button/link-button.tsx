@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
-import Link from 'next/link';
 import { Button } from '../button/button';
+import { Link } from "react-router-dom";
 
 interface LinkProps{
   url: string;
@@ -20,7 +20,7 @@ interface LinkProps{
 export const LinkButton = (props: LinkProps):JSX.Element =>{
 
   return (
-    <Link href={props.url}>
+    <Link to={props.url}>
       <div onClick={props.onClick}
          className={clsx('flex justify-between cursor-pointer w-full p-2 hover:bg-gray-light/10 rounded-md',
            props.selected && 'bg-blue-light/20 text-blue-light',

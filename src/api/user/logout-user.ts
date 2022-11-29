@@ -1,6 +1,6 @@
 
 export const logoutUser = async () =>{
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/logout`;
+  const url = `${process.env.REACT_APP_API_URL}/logout`;
   return fetch(url, {
     method: 'DELETE',
     headers: {
