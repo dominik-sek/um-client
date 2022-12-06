@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ac38f904-04dd-46d0-84ca-a11fa05bd8ed" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/shared/card/card-group.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared/card/card-group.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/shared/card/card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared/card/card.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layout/body.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layout/body.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/settings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/settings.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +78,7 @@
       <workItem from="1670328981939" duration="105000" />
       <workItem from="1670329127324" duration="238000" />
       <workItem from="1670329372496" duration="99000" />
-      <workItem from="1670329478244" duration="7063000" />
+      <workItem from="1670329478244" duration="7215000" />
     </task>
     <servers />
   </component>
