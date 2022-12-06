@@ -5,20 +5,25 @@ import { HeaderLevel } from '../../../enums/header-level';
 interface CardProps {
   children?: React.ReactNode;
   className?: string;
-  title: string;
+  title?: string;
+  noDivide?: boolean;
 }
-export const Card = (props: CardProps):JSX.Element =>{
-  return(
-    <div className={clsx('bg-gray-medium p-6 divide-y divide-white/30 rounded-md h-full dark-boxshadow', props.className)}>
+
+export const Card = (props: CardProps): JSX.Element => {
+  return (
+    <div
+      className={clsx('bg-gray-medium p-6 rounded-md h-full dark-boxshadow', props.className, props.noDivide ? '' : 'divide-y divide-white/30')}>
+      {props.title &&
         <div>
-          <Header level={HeaderLevel.H3} >
+          <Header level={HeaderLevel.H4}>
             {props.title}
           </Header>
         </div>
-      <div className={'pt-2 text-base'}>
+      }
+      <div className={'text-base h-full'}>
         {props.children}
       </div>
 
     </div>
-  )
-}
+  );
+};

@@ -8,7 +8,7 @@ interface BodyProps {
   isLoginPage?: boolean;
 }
 
-export const Body = (props:BodyProps) =>{
+export const Body = (props: BodyProps) => {
 
   return (
 
@@ -17,13 +17,14 @@ export const Body = (props:BodyProps) =>{
         props.isLoginPage
           ?
           props.children :
-          <main className={'overflow-auto pt-16 p-6 w-full scrollbar scrollbar-thumb-blue-light/10 scrollbar-thin'}>
-            <div className={'pt-6 w-full'}>
-              {props.children}
-            </div>
+          <main
+            className={'overflow-auto pt-16 pb-6 p-6 w-full scrollbar scrollbar-thumb-blue-light/10 scrollbar-thin'}>
+            {/*<div className={'pt-6 w-full min-h-full'}>*/}
+            {props.children}
+            {/*</div>*/}
           </main>
       }
 
     </div>
   );
-}
+};
