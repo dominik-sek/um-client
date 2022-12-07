@@ -12,7 +12,7 @@ export const Body = (props: BodyProps) => {
 
   return (
 
-    <div className={clsx('relative h-screen w-full flex text-2xl ml-20 text-white ', props.className)}>
+    <div className={clsx('relative h-screen w-full flex text-2xl ml-20 text-white p-2', props.className)}>
       {
         props.isLoginPage
           ?

@@ -1,66 +1,72 @@
-
 import React from 'react';
-import {CardGroup} from "../components/shared/card/card-group";
+import { CardGroup } from '../components/shared/card/card-group';
 import { Body } from '../layout/body';
-import {Card} from "../components/shared/card/card";
-import {FloatingInput} from "../components/shared/floating-input/floating-input";
+import { Card } from '../components/shared/card/card';
+import { FloatingInput } from '../components/shared/floating-input/floating-input';
+import { useQuery } from 'react-query';
+import { fetchProfile } from '../api/user/fetch-profile';
 
 
-export const Profile = ():JSX.Element =>{
-  const userProfile = localStorage.getItem('user-profile');
-  const userParsed = JSON.parse(userProfile!);
+export const Profile = (): JSX.Element => {
 
-  return(
-    <Body navbar>
+  const userQuery = useQuery('userProfile', fetchProfile);
+  const userProfile = userQuery.data;
+
+  return (
+    <Body>
       <CardGroup>
-      <Card className={'!col-span-1'} title={'Contact Info'}>
-        {
-          Object.keys(userParsed.kontakt).map((key, index) => {
-            if(key !== 'adres'){
+        <Card className={'!col-span-1'} title={'Contact Info'}>
+          {
+            Object.keys(userProfile.kontakt).map((key, index) => {
+              if (key !== 'adres') {
                 return (
                   <div key={index} className={'relative'}>
                     <p>{key}</p>
-                    <FloatingInput disabled name={userParsed.kontakt[key]} type={'text'}
-                                   placeholder={userParsed.kontakt[key]} />
+                    <FloatingInput disabled name={userProfile.kontakt[key]} type={'text'}
+                                   placeholder={userProfile.kontakt[key]} />
                   </div>
-                )
-            }
-          })
-        }
+                );
+              }
+            })
+          }
 
-      </Card>
+
+        </Card>
 
         <Card className={'!col-span-1'} title={'Your Address'}>
-          {Object.keys(userParsed.kontakt.adres).map((key, index) => {
-            if(key !== 'id'){
-            return (
-              <div className={'relative'} key={index}>
-                <p>{key}</p>
-                <FloatingInput disabled name={userParsed.kontakt.adres[key]} type={'text'}
-                               placeholder={userParsed.kontakt.adres[key]} />
-              </div>
-            )}
+          {Object.keys(userProfile.kontakt.adres).map((key, index) => {
+            if (key !== 'id') {
+              return (
+                <div className={'relative'} key={index}>
+                  <p>{key}</p>
+                  <FloatingInput disabled name={userProfile.kontakt.adres[key]} type={'text'}
+                                 placeholder={userProfile.kontakt.adres[key]} />
+                </div>
+              );
+            }
           })
           }
 
         </Card>
 
+
         <Card className={'!col-span-1'} title={'Your Profile Info'}>
-          {Object.keys(userParsed).map((key, index) => {
-            if(key !== 'kontakt'){
-            return (
-              <div className={'relative'} key={index}>
-                <p>{key}</p>
-                <FloatingInput disabled name={userParsed[key]} type={'text'}
-                               placeholder={userParsed[key]} />
-              </div>
-            )}
+          {Object.keys(userProfile).map((key, index) => {
+            if (key !== 'kontakt') {
+              return (
+                <div className={'relative'} key={index}>
+                  <p>{key}</p>
+                  <FloatingInput disabled name={userProfile[key]} type={'text'}
+                                 placeholder={userProfile[key]} />
+                </div>
+              );
+            }
           })}
         </Card>
 
       </CardGroup>
     </Body>
-  )
-}
+  );
+};
 export default Profile;
 
