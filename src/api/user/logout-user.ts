@@ -1,5 +1,4 @@
-
-export const logoutUser = async () =>{
+export const logoutUser = async () => {
   const url = `${process.env.REACT_APP_API_URL}/logout`;
   return fetch(url, {
     method: 'DELETE',
@@ -11,13 +10,11 @@ export const logoutUser = async () =>{
   })
     .then(
       (response) => {
-        if (response.status === 200)
-        {
-
-          return Promise.resolve()
+        if (response.status === 200) {
+          return Promise.resolve();
         } else {
-          return Promise.reject('Something went wrong')
+          return Promise.reject('Something went wrong');
         }
-      })
+      });
 
-}
+};

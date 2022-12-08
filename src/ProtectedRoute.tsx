@@ -1,13 +1,23 @@
-import {Navigate, Outlet} from "react-router-dom";
+import { Navigate, Outlet } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { fetchUserRole } from './api/user/fetch-user-role';
 
 // @ts-ignore
-export const ProtectedRoute = ({isAuthed, redirectPath = '/login',isRoleAuthed, role}) => {
+export const ProtectedRoute = ({ redirectPath = '/login', allowed }) => {
 
-    if (!isAuthed) {
-        return <Navigate to={redirectPath} replace />
-    }
-    if(!isRoleAuthed){
-        return <Navigate to={`/${role}`} replace />
-    }
-    return <Outlet />
+  const query = useQuery('userRole', fetchUserRole, {
+    refetchOnMount: true,
+  });
+
+  const isAuthed = !!query.data.auth;
+  const userRole = query.data.role;
+  const isRoleAuthed = isAuthed && (allowed.includes('any') || allowed.includes(userRole));
+  
+  if (!isAuthed) {
+    return <Navigate to={redirectPath} replace />;
+  }
+  if (!isRoleAuthed) {
+    return <Navigate to={`/${userRole}`} replace />;
+  }
+  return <Outlet />;
 };

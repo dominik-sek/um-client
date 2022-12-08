@@ -9,8 +9,10 @@ import { fetchProfile } from '../api/user/fetch-profile';
 
 export const Profile = (): JSX.Element => {
 
+
   const userQuery = useQuery('userProfile', fetchProfile);
   const userProfile = userQuery.data;
+
 
   return (
     <Body>

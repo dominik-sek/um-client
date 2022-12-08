@@ -5,7 +5,7 @@ interface InputProps {
   className?: string;
   name?: string;
   placeholder?: string;
-  type?: 'text' | 'password' | 'email' | 'number';
+  type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'date';
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   isValidationError?: boolean;
@@ -14,7 +14,7 @@ interface InputProps {
 
 export const FloatingInput = React.forwardRef((props: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
   return (
-    <div className={clsx('', props.className)}>
+    <div className={clsx('relative', props.className)}>
       <input onChange={props.onChange}
              type={props.type}
              id={props.name}

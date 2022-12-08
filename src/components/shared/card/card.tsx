@@ -7,6 +7,7 @@ interface CardProps {
   className?: string;
   title?: string;
   noDivide?: boolean;
+  button?: React.ReactNode;
 }
 
 export const Card = (props: CardProps): JSX.Element => {
@@ -15,8 +16,9 @@ export const Card = (props: CardProps): JSX.Element => {
       className={clsx('bg-gray-medium p-6 rounded-md h-full dark-boxshadow', props.className, props.noDivide ? '' : 'divide-y divide-white/30')}>
       {props.title &&
         <div>
-          <Header level={HeaderLevel.H4}>
+          <Header className={'flex justify-between items-center'} level={HeaderLevel.H4}>
             {props.title}
+            {props.button}
           </Header>
         </div>
       }

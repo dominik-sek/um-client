@@ -17,7 +17,7 @@ export const Button = (props: ButtonProps) => {
       onSubmit={props.onSubmit}
       onClick={props.onClick}
       disabled={props.disabled}
-      className={clsx('bg-blue-light py-2 px-6 rounded-sm text-sm font-bold hover:bg-blue-light/40',
+      className={clsx('bg-blue-light py-2 px-6 min-w-[8rem] rounded-sm text-sm font-bold hover:bg-blue-light/40',
         props.className,
         props.disabled && 'bg-blue-light/20 cursor-not-allowed')}>
 
