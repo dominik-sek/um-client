@@ -1,5 +1,5 @@
 export const fetchProfile = async () => {
-  return fetch(process.env.REACT_APP_API_URL + '/user/profile', {
+  return fetch(process.env.REACT_APP_API_URL + '/users/profile', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

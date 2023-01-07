@@ -14,7 +14,6 @@ export const Navbar = (): JSX.Element => {
   const [user, setUser] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(true);
   const userQuery = useQuery('userProfile', fetchProfile);
-  //while the query is loading, the userQuery.data is undefined
 
   React.useEffect(() => {
     if (userQuery.data) {
@@ -23,17 +22,12 @@ export const Navbar = (): JSX.Element => {
     }
   }, [userQuery.data]);
 
-
   const openUserMenu = () => {
     setOpenMenu(!openMenu);
   };
   const openSettingsMenu = () => {
     setOpenSettings(!openSettings);
   };
-
-  //if the query is loading, the userQuery.data is undefined
-  //so the user object is empty
-
 
   return (
     isLoading ? <Spinner /> :

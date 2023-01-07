@@ -75,8 +75,8 @@ export const Users = () => {
                     <img className={'w-10 h-10 rounded-full'} src={'https://i.pravatar.cc/300'} alt={'Pajeet'} />
                   </div>
                   <div className={'flex flex-col items-center justify-center'}>
-                    <div className={'text-xl font-bold'}>{user.imie + ' ' + user.nazwisko}</div>
-                    <div className={'text-sm'}>{user.kontakt.email}</div>
+                    <div className={'text-xl font-bold'}>{user.first_name + ' ' + user.last_name}</div>
+                    <div className={'text-sm'}>{user.contact.email}</div>
                   </div>
                   <div className={'pb-2 flex w-full'}>
                     <Button className={'bg-green-500 hover:bg-green-700 w-full'} disabled={canEdit} onClick={() => {
