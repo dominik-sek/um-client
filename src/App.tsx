@@ -21,6 +21,7 @@ function App() {
                 <Routes>
 
                     <Route path={'/login'} element={<Login />} />
+                    <Route element={<ProtectedRoute allowed={['any']} />}>
 
                     <Route element={<NavigationLayout />}>
                         <Route path={'*'} element={<NotFound />} />
@@ -48,7 +49,7 @@ function App() {
                         {/*    </Route>*/}
                         {/*</Route>*/}
                     </Route>
-
+                    </Route>
                 </Routes>
             }
 

@@ -30,11 +30,9 @@ export default function Login() {
     const handlePasswordChange = (event:React.ChangeEvent<HTMLInputElement>) =>  setPassword(event.target.value);
 
     const { data, isLoading, isError } = useQuery('checkAuth', checkAuth);
-    if(isLoading){
-        return <LoadingScreen />
+    if(data){
+        if(data.auth) return <Navigate to={'/'} replace />;
     }
-    if(isError) return <div>Something went wrong</div>;
-    if(data.auth) return <Navigate to={'/'} replace />;
 
     const handleLogin = () => {
         loginUser(username, password)

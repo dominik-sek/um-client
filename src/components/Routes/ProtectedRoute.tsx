@@ -10,6 +10,7 @@ export const ProtectedRoute = ({allowed}:ProtectedRouteProps): JSX.Element =>{
 
     const { data, isLoading, isError } = useQuery('checkAuth', checkAuth);
     const redirectPath = '/login';
+    console.log("auth: ",data, isLoading, isError);
 
     if(isLoading){
         return <Spinner />
@@ -19,8 +20,7 @@ export const ProtectedRoute = ({allowed}:ProtectedRouteProps): JSX.Element =>{
     const isAuthed = data.auth;
     const userRole = data.role;
     const isRoleAuthed = isAuthed && (allowed.includes('any') || allowed.includes(userRole));
-
-    //if user is authenticated, redirect to the correct page
+    console.log("auth: ",isAuthed, userRole, isRoleAuthed);
 
     if (!isAuthed) {
         return <Navigate to={redirectPath} replace />;
