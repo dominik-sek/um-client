@@ -1,7 +1,7 @@
 import {checkAuth} from "./api/check-auth";
 import { useQuery } from 'react-query';
 import {Flex, Spinner} from "@chakra-ui/react";
-import {Outlet, Route, Routes} from "react-router-dom";
+import {Navigate, Outlet, Route, Routes, useNavigate} from "react-router-dom";
 import {ProtectedRoute} from "./components/Routes/ProtectedRoute";
 import Login from "./components/Pages/Login";
 import NavigationLayout from "./layout/NavigationLayout";
@@ -10,17 +10,42 @@ import Home from "./components/Pages/Home";
 import Profile from "./components/Pages/Profile";
 import Logout from "./components/Pages/Logout";
 import Settings from "./components/Pages/Settings";
+import {useEffect} from "react";
+import LoadingScreen from "./components/common/loading-screen";
+import { useAuthStore } from '../store';
+
 
 function App() {
 
-    const { data, isLoading, isError } = useQuery('checkAuth', checkAuth);
+    const navigate = useNavigate();
+    const { data, isLoading, isError } = useQuery('checkAuth', checkAuth,{
+        refetchOnWindowFocus: false
+    })
+    const setAuth = useAuthStore(state => state.setAuth);
+    const setRole = useAuthStore(state => state.setRole);
+
+    useEffect(() => {
+
+        if(data){
+            setAuth(data.auth);
+            setRole(data.role);
+        }else{
+            setAuth(false);
+            setRole('');
+            navigate('/login');
+        }
+
+    }, [data, setAuth, setRole])
+
 
     return(
         <Flex>
+            {isLoading && <LoadingScreen />}
             {
                 <Routes>
 
                     <Route path={'/login'} element={<Login />} />
+
                     <Route element={<ProtectedRoute allowed={['any']} />}>
 
                     <Route element={<NavigationLayout />}>

@@ -1,12 +1,17 @@
-import {Flex} from "@chakra-ui/react";
+import {Flex, Spinner} from "@chakra-ui/react";
 
 const LoadingScreen = () =>{
     return(
         <Flex
-            w={'100vw'}
-            h={'100vh'}
+            w={'100%'}
+            h={'100%'}
+            pos={'absolute'}
+            bg={'blackAlpha.800'}
+            zIndex={'100'}
+            justifyContent={'center'}
+            alignItems={'center'}
         >
-            Loading...
+            <Spinner size={'xl'} />
         </Flex>
     )
 }

@@ -2,26 +2,22 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import {checkAuth} from "../../api/check-auth";
 import {Flex, Spinner} from "@chakra-ui/react";
+import LoadingScreen from "../common/loading-screen";
+import {useAuthStore} from "../../../store";
 
 interface ProtectedRouteProps {
     allowed: string | string[];
 }
 export const ProtectedRoute = ({allowed}:ProtectedRouteProps): JSX.Element =>{
 
-    const { data, isLoading, isError } = useQuery('checkAuth', checkAuth);
-    const redirectPath = '/login';
-    console.log("auth: ",data, isLoading, isError);
+    const redirectPath = '/login'
+    const authStore = useAuthStore();
 
-    if(isLoading){
-        return <Spinner />
-    }
-    if(isError) return <div>Something went wrong</div>;
+    const isAuthed = authStore.auth;
+    const userRole = authStore.role;
 
-    const isAuthed = data.auth;
-    const userRole = data.role;
     const isRoleAuthed = isAuthed && (allowed.includes('any') || allowed.includes(userRole));
-    console.log("auth: ",isAuthed, userRole, isRoleAuthed);
-
+    console.log(isAuthed)
     if (!isAuthed) {
         return <Navigate to={redirectPath} replace />;
     }
