@@ -23,14 +23,15 @@ import {
     PopoverCloseButton,
     PopoverBody, PopoverArrow,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {loginUser} from "../../api/login-user";
 import {useQuery} from "react-query";
 import {checkAuth} from "../../api/check-auth";
 import {Navigate, useNavigate} from "react-router-dom";
 import LoadingScreen from "../common/loading-screen";
-import {useAuthStore} from "../../../store";
+import {useAuthStore, useUserStore} from "../../../store";
+import {fetchUserProfile} from "../../api/fetch-user-profile";
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
@@ -54,10 +55,19 @@ export default function Login() {
         enabled: false,
         refetchOnWindowFocus: false,
     });
+    const { refetch: refetchProfile} = useQuery('fetchUserProfile', () => fetchUserProfile(), {
+        enabled: false,
+        refetchOnWindowFocus: false,
+    });
+
     const userAuth = useAuthStore();
-    if(userAuth.auth){
-        return <Navigate to={`/`} replace />
-    }
+    const userStore = useUserStore();
+    useEffect(()=>{
+        //redirect if authed:
+        if(userAuth.auth){
+            navigate('/')
+        }
+    },[userAuth])
     const handleLogin = () => {
         if(username === '' || password === ''){
             setFormError(true);
@@ -75,6 +85,11 @@ export default function Login() {
                 })
                 userAuth.setAuth(true);
                 userAuth.setRole(response.data.role);
+
+                refetchProfile().then((response)=>{
+                    userStore.setUser(response.data);
+                })
+
                 setTimeout(()=>{
                     navigate('/');
                 },500)

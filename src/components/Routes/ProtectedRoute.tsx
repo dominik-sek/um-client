@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import {checkAuth} from "../../api/check-auth";
 import {Flex, Spinner} from "@chakra-ui/react";
 import LoadingScreen from "../common/loading-screen";
-import {useAuthStore} from "../../../store";
+import {useAuthStore, useUserStore} from "../../../store";
 
 interface ProtectedRouteProps {
     allowed: string | string[];
@@ -15,9 +15,8 @@ export const ProtectedRoute = ({allowed}:ProtectedRouteProps): JSX.Element =>{
 
     const isAuthed = authStore.auth;
     const userRole = authStore.role;
-
     const isRoleAuthed = isAuthed && (allowed.includes('any') || allowed.includes(userRole));
-    console.log(isAuthed)
+
     if (!isAuthed) {
         return <Navigate to={redirectPath} replace />;
     }

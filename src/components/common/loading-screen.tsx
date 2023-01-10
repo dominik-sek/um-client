@@ -6,6 +6,8 @@ const LoadingScreen = () =>{
             w={'100%'}
             h={'100%'}
             pos={'absolute'}
+            top={0}
+            left={0}
             bg={'blackAlpha.800'}
             zIndex={'100'}
             justifyContent={'center'}
