@@ -35,6 +35,7 @@ import {
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 import {useUserStore} from "../../../store";
+import {Link as RouterLink} from "react-router-dom";
 
 interface LinkItemProps {
     name: string;
@@ -48,7 +49,7 @@ const LinkItems: Array<LinkItemProps> = [
     { name: 'Settings', icon: FiSettings },
 ];
 
-export default function SidebarWithHeader({children,}: {children: ReactNode; }) {
+export default function SidebarWithNavbar({children,}: {children: ReactNode; }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
@@ -154,6 +155,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     const user = useUserStore(state=>state.user);
     let hasAvatar = false;
 
+    if(user.account.account_images){
+        hasAvatar = user.account.account_images.avatar_url !== null;
+    }
     return (
         <Flex
             pl={{ base: 0, md: 60 }}
@@ -202,7 +206,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                                 <Avatar
                                     size={'sm'}
                                     src={hasAvatar ? user.account.account_images.avatar_url : ''}
-
                                 />
                                 <VStack
                                     display={{ base: 'none', md: 'flex' }}
@@ -223,10 +226,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                         <MenuList
                             bg={useColorModeValue('white', 'gray.700')}
                             borderColor={useColorModeValue('white', 'gray.700')}>
-                            <MenuItem>Profile</MenuItem>
-                            <MenuItem>Settings</MenuItem>
-                            <MenuDivider />
-                            <MenuItem>Sign out</MenuItem>
+                            <Link as={RouterLink} to={'/profile'}><MenuItem>Profile & Settings</MenuItem></Link>
+                            {/*<Link as={RouterLink} to={'/settings'}><MenuItem>Settings</MenuItem></Link>*/}
+                            <MenuDivider
+                                borderColor={useColorModeValue('gray.200', 'gray.600')}
+                            />
+                            <Link as={RouterLink} to={'/logout'}><MenuItem>Sign Out</MenuItem></Link>
                         </MenuList>
                     </Menu>
                 </Flex>

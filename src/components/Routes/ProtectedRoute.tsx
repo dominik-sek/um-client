@@ -10,15 +10,19 @@ interface ProtectedRouteProps {
 }
 export const ProtectedRoute = ({allowed}:ProtectedRouteProps): JSX.Element =>{
 
-    const redirectPath = '/login'
-    const authStore = useAuthStore();
 
-    const isAuthed = authStore.auth;
-    const userRole = authStore.role;
+    const { data, isLoading, isError } = useQuery('checkAuth', checkAuth,{
+        refetchOnWindowFocus: false
+    })
+    if(isLoading){
+        return <LoadingScreen />
+    }
+    const isAuthed = data.auth;
+    const userRole = data.role;
     const isRoleAuthed = isAuthed && (allowed.includes('any') || allowed.includes(userRole));
 
     if (!isAuthed) {
-        return <Navigate to={redirectPath} replace />;
+        return <Navigate to={'/login'} replace />;
     }
     if (!isRoleAuthed) {
         return <Navigate to={`/${userRole}`} replace />;
