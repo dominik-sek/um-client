@@ -1,5 +1,4 @@
 import {Flex, useToast} from "@chakra-ui/react";
-import LoadingScreen from "../common/loading-screen";
 import {useNavigate} from "react-router-dom";
 import {useAuthStore, useUserStore} from "../../../store";
 import {useQuery} from "react-query";
@@ -12,19 +11,19 @@ const Logout = () => {
     const userAuth = useAuthStore();
     const userStore = useUserStore();
     const toast = useToast();
-    const { refetch, isLoading} = useQuery('logoutUser', () => logoutUser(), {
+    const {refetch, isLoading} = useQuery('logoutUser', () => logoutUser(), {
         enabled: false,
         refetchOnWindowFocus: false,
     });
 
-    useEffect(()=>{
-        refetch().then(()=>{
-            userAuth.logout();
-            userStore.clearUser();
-            navigate('/login')
+    useEffect(() => {
+        refetch().then(() => {
+                userAuth.logout();
+                userStore.clearUser();
+                navigate('/login')
             }
         )
-    },[])
+    }, [])
 
 
     return (

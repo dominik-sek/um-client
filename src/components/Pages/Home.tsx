@@ -1,4 +1,4 @@
-import LoadingScreen from "../common/loading-screen";
+import LoadingScreen from "../shared/loading-screen";
 import {useAuthStore} from "../../../store";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";

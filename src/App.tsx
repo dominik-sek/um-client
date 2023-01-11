@@ -10,8 +10,6 @@ import Logout from "./components/Pages/Logout";
 import Settings from "./components/Pages/Settings";
 import AdminPanel from "./components/Pages/admin/AdminPanel";
 import Users from "./components/Pages/admin/users/Users";
-import AddUser from "./components/Pages/admin/users/AddUser";
-
 
 function App() {
 
@@ -37,7 +35,6 @@ function App() {
                             <Route element={<ProtectedRoute allowed={'admin'}/>}>
                                 <Route path={'/admin/'} element={<AdminPanel/>}/>
                                 <Route path={'/admin/users/manage/'} element={<Users/>}/>
-                                <Route path={'/admin/users/new/'} element={<AddUser/>}/>
                             </Route>
                         </Route>
                     </Route>

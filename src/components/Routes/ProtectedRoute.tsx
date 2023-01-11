@@ -1,7 +1,7 @@
 import {Navigate, Outlet} from 'react-router-dom';
 import {useQuery} from 'react-query';
 import {checkAuth} from "../../api/check-auth";
-import LoadingScreen from "../common/loading-screen";
+import LoadingScreen from "../shared/loading-screen";
 
 interface ProtectedRouteProps {
     allowed: string | string[];

@@ -88,24 +88,25 @@ const SidebarContent = ({onClose, ...rest}: SidebarProps) => {
                 </Text>
                 <CloseButton display={{base: 'flex', md: 'none'}} onClick={onClose}/>
             </Flex>
-            {routes.map((route) => {
+            <Accordion
+                allowToggle
+                p="2"
+                role="group"
+                cursor="pointer"
+            >
+                {routes.map((route) => {
 
-                const roleBasedPath = `/${user.role}${route.path}`;
-                //@ts-ignore
-                if (route.permission.includes('*') || route.permission.includes(user.role!)) {
-                    if (route.subRoutes) {
+                    const roleBasedPath = `/${user.role}${route.path}`;
+                    //@ts-ignore
+                    if (route.permission.includes('*') || route.permission.includes(user.role!)) {
+                        if (route.subRoutes) {
 
-                        return (
-                            <Accordion
-                                allowToggle
-                                p="2"
-                                mx="2.5"
-                                role="group"
-                                cursor="pointer"
-                                key={route.name}
-                            >
-                                <AccordionItem border={'none'}
+                            return (
+                                <AccordionItem
+                                    border={'none'}
+                                    px={4}
                                 >
+
                                     <AccordionButton
                                         _hover={{
                                             bg: 'cyan.800',
@@ -113,21 +114,24 @@ const SidebarContent = ({onClose, ...rest}: SidebarProps) => {
                                         }}
                                         borderRadius={'lg'}
                                         p={2}
-                                        m={0}
                                         display={'flex'}
                                         gap={4}
+                                        w={'100%'}
                                     >
                                         {route.icon && (
                                             <Icon
                                                 as={route.icon}
                                             />
                                         )}
-                                        <Box>
+                                        <Box as={'span'} flex={1} textAlign={'left'}>
                                             {route.name}
                                         </Box>
-                                        <AccordionIcon/>
+                                        <AccordionIcon
+                                            justifySelf={'end'}
+                                        />
                                     </AccordionButton>
-                                    <AccordionPanel w="full">
+                                    <AccordionPanel w="full" pb={'0'}>
+
                                         {route.subRoutes.map((subRoute) => {
                                             const subRoleBasedPath = `/${user.role}${subRoute.path}`;
                                             return (
@@ -140,23 +144,23 @@ const SidebarContent = ({onClose, ...rest}: SidebarProps) => {
 
                                     </AccordionPanel>
                                 </AccordionItem>
-                            </Accordion>
-                        )
+                            )
 
 
-                    } else {
-                        return (
-                            <NavItem icon={route.icon} key={route.name}
-                                //@ts-ignore
-                                     to={route.permission.includes('*') ? route.path : roleBasedPath}>
-                                {route.name}
-                            </NavItem>
-                        );
+                        } else {
+                            return (
+                                <NavItem icon={route.icon} key={route.name}
+                                    //@ts-ignore
+                                         to={route.permission.includes('*') ? route.path : roleBasedPath}>
+                                    {route.name}
+                                </NavItem>
+                            );
+                        }
+
                     }
 
-                }
-
-            })}
+                })}
+            </Accordion>
 
         </Box>
     );

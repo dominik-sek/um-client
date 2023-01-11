@@ -23,7 +23,7 @@ import {changeUserAvatar} from "../../api/change-user-avatar";
 import {useQuery} from "react-query";
 import {fetchUserProfile} from "../../api/fetch-user-profile";
 import {FiDelete, FiSave} from "react-icons/all";
-import EditableInfoTable from "../common/editable-info-table";
+import EditableInfoTable from "../shared/editable-info-table";
 
 const Profile = () => {
     function iterateObject(obj: any) {
@@ -167,12 +167,12 @@ const Profile = () => {
                 <Wrap
                     maxW={'80%'}
                     w={'full'}
-                    rounded={'md'}
                     overflow={'hidden'}
                     justify={'space-between'}
                     spacing={8}
                 >
-                    <Card>
+                    <Card
+                        w={'66%'}>
                         <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
                             <Heading size={'md'}>Basic Information</Heading>
                             <EditIcon cursor={'pointer'} boxSize={6} onClick={() => setEditBasicInfo(!editBasicInfo)}/>
@@ -183,8 +183,11 @@ const Profile = () => {
                             gap={4}
 
                         >
-                            <Stack>
-                                <EditableInfoTable editable={editBasicInfo} obj={address}/>
+                            <Stack
+                                w={'full'}
+                                minH={'20rem'}
+                            >
+                                <EditableInfoTable editable={editBasicInfo} obj={[address, contact]}/>
                             </Stack>
 
                         </CardBody>
@@ -200,7 +203,10 @@ const Profile = () => {
                             <Button leftIcon={<FiDelete/>} minW={'25%'} colorScheme={'red'}>Discard</Button>
                         </ButtonGroup>
                     </Card>
-                    <Card>
+                    <Card
+                        w={'29%'}
+
+                    >
                         <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
                             <Heading size={'md'}>Faculties</Heading>
                             {/*<EditIcon cursor={'pointer'} boxSize={6} onClick={() => setEditBasicInfo(!editBasicInfo)}/>*/}
@@ -211,7 +217,10 @@ const Profile = () => {
                             gap={4}
 
                         >
-                            <Stack>
+                            <Stack
+                                w={'full'}
+                                minH={'200px'}
+                            >
                                 <EditableInfoTable editable={false} obj={faculty}/>
                             </Stack>
 
@@ -228,7 +237,9 @@ const Profile = () => {
                             {/*<Button leftIcon={<FiDelete/>} minW={'25%'} colorScheme={'red'}>Discard</Button>*/}
                         </ButtonGroup>
                     </Card>
-                    <Card>
+                    <Card
+                        w={'fit-content'}
+                    >
                         <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
                             <Heading size={'md'}>Faculties</Heading>
                             {/*<EditIcon cursor={'pointer'} boxSize={6} onClick={() => setEditBasicInfo(!editBasicInfo)}/>*/}

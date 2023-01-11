@@ -1,7 +1,15 @@
 import {UserRole} from '../enums/user-role';
-import {FiHome, FiPlus, FiSettings} from "react-icons/fi";
+import {FiHome, FiSettings} from "react-icons/fi";
 import {IconType} from "react-icons";
-import {AiFillProfile, AiOutlineBook, BsPeopleFill, MdPeople} from "react-icons/all";
+import {
+    AiFillProfile,
+    AiOutlineBook,
+    BsClock,
+    BsPeopleFill,
+    FaBuilding,
+    HiBuildingLibrary,
+    MdBuild
+} from "react-icons/all";
 
 export interface Route {
     path: string;
@@ -50,18 +58,66 @@ export const routes: Route[] = [
                 path: '/users/manage',
                 name: 'Manage users',
                 permission: [UserRole.ADMIN],
-                icon: MdPeople,
+                icon: MdBuild,
+            },
+
+        ]
+
+    },
+    {
+        path: '/faculties',
+        name: 'Faculties',
+        permission: [UserRole.ADMIN],
+        icon: HiBuildingLibrary,
+        subRoutes: [
+            {
+                path: '/faculties/manage',
+                name: 'Manage faculties',
+                permission: [UserRole.ADMIN],
+                icon: MdBuild,
+            },
+
+        ]
+
+    },
+    {
+        path: '/departments',
+        name: 'Departments',
+        permission: [UserRole.ADMIN],
+        icon: FaBuilding,
+        subRoutes: [
+            {
+                path: '/departments/manage',
+                name: 'Manage departments',
+                permission: [UserRole.ADMIN],
+                icon: MdBuild,
             },
             {
-                path: '/users/new',
-                name: 'Add new user',
+                path: '/departments/timetables/manage',
+                name: 'Manage timetables',
                 permission: [UserRole.ADMIN],
-                icon: FiPlus,
+                icon: BsClock,
             },
 
 
         ]
 
-    }
+    },
+    {
+        path: '/courses',
+        name: 'Courses',
+        permission: [UserRole.ADMIN],
+        icon: AiOutlineBook,
+        subRoutes: [
+            {
+                path: '/courses/manage',
+                name: 'Manage courses',
+                permission: [UserRole.ADMIN],
+                icon: MdBuild,
+            },
+
+        ]
+
+    },
 
 ];

@@ -1,35 +1,29 @@
 import {
-    Flex,
     Box,
+    Button,
+    Code,
+    Flex,
     FormControl,
+    FormErrorMessage,
     FormLabel,
+    Heading,
     Input,
     InputGroup,
-    HStack,
     InputRightElement,
+    Link,
     Stack,
-    Button,
-    Heading,
     Text,
     useColorModeValue,
-    Link,
-    FormErrorMessage,
-    useToast,
-    Alert,
-    PopoverTrigger,
-    Popover,
     useDisclosure,
-    PopoverContent,
-    PopoverCloseButton,
-    PopoverBody, PopoverArrow, Code, VStack,
+    useToast,
+    VStack,
 } from '@chakra-ui/react';
 import React, {useEffect, useState} from 'react';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
 import {loginUser} from "../../api/login-user";
 import {useQuery} from "react-query";
 import {checkAuth} from "../../api/check-auth";
-import {Navigate, useNavigate} from "react-router-dom";
-import LoadingScreen from "../common/loading-screen";
+import {useNavigate} from "react-router-dom";
 import {useAuthStore, useUserStore} from "../../../store";
 import {fetchUserProfile} from "../../api/fetch-user-profile";
 
@@ -38,33 +32,33 @@ export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [formError, setFormError] = useState(false);
-    const handleUsernameChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+    const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormError(false);
         setUsername(event.target.value);
     }
-    const handlePasswordChange = (event:React.ChangeEvent<HTMLInputElement>) =>  {
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormError(false);
         setPassword(event.target.value);
     }
     const toast = useToast();
     const navigate = useNavigate();
-    const { isOpen, onToggle, onClose } = useDisclosure()
+    const {isOpen, onToggle, onClose} = useDisclosure()
 
-    const { refetch, isLoading} = useQuery('loginUser', () => loginUser(username, password), {
+    const {refetch, isLoading} = useQuery('loginUser', () => loginUser(username, password), {
         enabled: false,
         refetchOnWindowFocus: false,
     });
-    const { refetch: refetchProfile} = useQuery('fetchUserProfile', () => fetchUserProfile(), {
+    const {refetch: refetchProfile} = useQuery('fetchUserProfile', () => fetchUserProfile(), {
         enabled: false,
         refetchOnWindowFocus: false,
     });
-    const { data:authData, refetch: refetchAuth} = useQuery('checkAuth', () => checkAuth(), {
+    const {data: authData, refetch: refetchAuth} = useQuery('checkAuth', () => checkAuth(), {
         enabled: false,
         refetchOnWindowFocus: false,
     });
 
-    const selectSampleAccount = (selection: string) =>{
-        switch(selection){
+    const selectSampleAccount = (selection: string) => {
+        switch (selection) {
             case 'admin':
                 setUsername('baltazaradministrator3');
                 setPassword('123321321');
@@ -83,21 +77,21 @@ export default function Login() {
 
     const userStore = useUserStore();
     const userAuth = useAuthStore();
-    useEffect(()=>{
-        refetchAuth().then((res)=>{
-            if(res.data.auth){
+    useEffect(() => {
+        refetchAuth().then((res) => {
+            if (res.data.auth) {
                 navigate('/')
             }
         })
-    },[userAuth.auth])
+    }, [userAuth.auth])
 
     const handleLogin = () => {
-        if(username === '' || password === ''){
+        if (username === '' || password === '') {
             setFormError(true);
             return;
         }
-        refetch().then((response)=>{
-            if(response.isSuccess){
+        refetch().then((response) => {
+            if (response.isSuccess) {
                 toast({
                     title: "Logged in.",
                     description: "You have successfully logged in.",
@@ -109,12 +103,12 @@ export default function Login() {
                 userAuth.setAuth(true);
                 userAuth.setRole(response.data.role);
 
-                refetchProfile().then((response)=>{
+                refetchProfile().then((response) => {
                     userStore.setUser(response.data);
                 })
 
-                    navigate('/');
-            }else{
+                navigate('/');
+            } else {
                 setFormError(true);
             }
         })
@@ -142,18 +136,21 @@ export default function Login() {
                     boxShadow={'lg'}
                     p={8}>
 
-                    <Stack spacing={4} >
+                    <Stack spacing={4}>
 
 
                         <VStack>
                             <Stack
-                            flexDir={'column'}
-                            spacing={4}
+                                flexDir={'column'}
+                                spacing={4}
                             >
                                 <Text>sample accounts:</Text>
-                                <Code cursor={'pointer'} onClick={()=>selectSampleAccount('student')}>student account</Code>
-                                <Code cursor={'pointer'} onClick={()=>selectSampleAccount('teacher')}>teacher account</Code>
-                                <Code cursor={'pointer'} onClick={()=>selectSampleAccount('admin')}>admin account</Code>
+                                <Code cursor={'pointer'} onClick={() => selectSampleAccount('student')}>student
+                                    account</Code>
+                                <Code cursor={'pointer'} onClick={() => selectSampleAccount('teacher')}>teacher
+                                    account</Code>
+                                <Code cursor={'pointer'} onClick={() => selectSampleAccount('admin')}>admin
+                                    account</Code>
 
                             </Stack>
                         </VStack>
@@ -161,33 +158,33 @@ export default function Login() {
                             <FormErrorMessage>
                                 Invalid username or password
                             </FormErrorMessage>
-                                <FormControl id="username" isRequired isInvalid={formError} >
+                            <FormControl id="username" isRequired isInvalid={formError}>
 
-                                    <FormLabel>Username</FormLabel>
+                                <FormLabel>Username</FormLabel>
+                                <Input
+                                    type="text"
+                                    value={username}
+                                    onChange={handleUsernameChange}
+                                />
+                            </FormControl>
+                            <FormControl id="password" isRequired isInvalid={formError}>
+                                <FormLabel>Password</FormLabel>
+                                <InputGroup>
                                     <Input
-                                        type="text"
-                                        value={username}
-                                        onChange={handleUsernameChange}
+                                        type={showPassword ? 'text' : 'password'}
+                                        onChange={handlePasswordChange}
                                     />
-                                </FormControl>
-                                <FormControl id="password" isRequired isInvalid={formError}>
-                                    <FormLabel>Password</FormLabel>
-                                    <InputGroup>
-                                        <Input
-                                            type={showPassword ? 'text' : 'password'}
-                                            onChange={handlePasswordChange}
-                                        />
-                                        <InputRightElement h={'full'}>
-                                            <Button
-                                                variant={'ghost'}
-                                                onClick={() =>
-                                                    setShowPassword((showPassword) => !showPassword)
-                                                }>
-                                                {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                                            </Button>
-                                        </InputRightElement>
-                                    </InputGroup>
-                                </FormControl>
+                                    <InputRightElement h={'full'}>
+                                        <Button
+                                            variant={'ghost'}
+                                            onClick={() =>
+                                                setShowPassword((showPassword) => !showPassword)
+                                            }>
+                                            {showPassword ? <ViewIcon/> : <ViewOffIcon/>}
+                                        </Button>
+                                    </InputRightElement>
+                                </InputGroup>
+                            </FormControl>
                         </FormControl>
 
                         <Text align={'right'}>

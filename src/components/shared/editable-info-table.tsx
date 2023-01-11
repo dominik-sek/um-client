@@ -8,7 +8,7 @@ interface EditableInfoProps {
 
 const EditableInfoTable = ({obj, editable}: EditableInfoProps): JSX.Element => {
     return (
-        <Wrap spacing={4} key={obj.id}>
+        <Wrap spacing={4} key={obj.id} w={'100%'} h={'100%'}>
             {
                 Object.keys(obj).map((key) => {
                     if (typeof obj[key] === 'object') {
