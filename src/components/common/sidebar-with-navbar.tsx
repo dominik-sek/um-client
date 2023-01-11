@@ -1,56 +1,40 @@
-import React, { ReactNode } from 'react';
+import React, {ReactNode, ReactText} from 'react';
 import {
-    IconButton,
+    Accordion,
+    AccordionButton,
+    AccordionIcon,
+    AccordionItem,
+    AccordionPanel,
     Avatar,
     Box,
+    BoxProps,
     CloseButton,
-    Flex,
-    HStack,
-    VStack,
-    Icon,
-    useColorModeValue,
-    Link,
     Drawer,
     DrawerContent,
-    Text,
-    useDisclosure,
-    BoxProps,
+    Flex,
     FlexProps,
+    HStack,
+    Icon,
+    IconButton,
+    Link,
     Menu,
     MenuButton,
     MenuDivider,
     MenuItem,
     MenuList,
+    Text,
+    useColorModeValue,
+    useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
-import {
-    FiHome,
-    FiTrendingUp,
-    FiCompass,
-    FiStar,
-    FiSettings,
-    FiMenu,
-    FiBell,
-    FiChevronDown,
-} from 'react-icons/fi';
-import { IconType } from 'react-icons';
-import { ReactText } from 'react';
+import {FiBell, FiChevronDown, FiMenu,} from 'react-icons/fi';
+import {IconType} from 'react-icons';
 import {useUserStore} from "../../../store";
 import {Link as RouterLink} from "react-router-dom";
+import {routes} from "../../constants/routes";
 
-interface LinkItemProps {
-    name: string;
-    icon: IconType;
-}
-const LinkItems: Array<LinkItemProps> = [
-    { name: 'Home', icon: FiHome },
-    { name: 'Trending', icon: FiTrendingUp },
-    { name: 'Explore', icon: FiCompass },
-    { name: 'Favourites', icon: FiStar },
-    { name: 'Settings', icon: FiSettings },
-];
-
-export default function SidebarWithNavbar({children,}: {children: ReactNode; }) {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+export default function SidebarWithNavbar({children,}: { children: ReactNode; }) {
+    const {isOpen, onOpen, onClose} = useDisclosure();
 
     return (
         <Box
@@ -60,7 +44,7 @@ export default function SidebarWithNavbar({children,}: {children: ReactNode; }) 
         >
             <SidebarContent
                 onClose={() => onClose}
-                display={{ base: 'none', md: 'block' }}
+                display={{base: 'none', md: 'block'}}
             />
             <Drawer
                 autoFocus={false}
@@ -71,11 +55,11 @@ export default function SidebarWithNavbar({children,}: {children: ReactNode; }) 
                 onOverlayClick={onClose}
                 size="full">
                 <DrawerContent>
-                    <SidebarContent onClose={onClose} />
+                    <SidebarContent onClose={onClose}/>
                 </DrawerContent>
             </Drawer>
-            <MobileNav onOpen={onOpen} />
-            <Box ml={{ base: 0, md: 60 }} p="4" pt="24">
+            <MobileNav onOpen={onOpen}/>
+            <Box ml={{base: 0, md: 60}} p="4" pt="24">
                 {children}
             </Box>
         </Box>
@@ -86,14 +70,15 @@ interface SidebarProps extends BoxProps {
     onClose: () => void;
 }
 
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+const SidebarContent = ({onClose, ...rest}: SidebarProps) => {
+    const user = useUserStore(state => state.user);
     return (
         <Box
             zIndex={20}
             bg={useColorModeValue('white', 'gray.900')}
             borderRight="1px"
             borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-            w={{ base: 'full', md: 60 }}
+            w={{base: 'full', md: 60}}
             pos="fixed"
             h="full"
             {...rest}>
@@ -101,13 +86,78 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
                     Logo
                 </Text>
-                <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+                <CloseButton display={{base: 'flex', md: 'none'}} onClick={onClose}/>
             </Flex>
-            {LinkItems.map((link) => (
-                <NavItem key={link.name} icon={link.icon}>
-                    {link.name}
-                </NavItem>
-            ))}
+            {routes.map((route) => {
+
+                const roleBasedPath = `/${user.role}${route.path}`;
+                //@ts-ignore
+                if (route.permission.includes('*') || route.permission.includes(user.role!)) {
+                    if (route.subRoutes) {
+
+                        return (
+                            <Accordion
+                                allowToggle
+                                p="2"
+                                mx="2.5"
+                                role="group"
+                                cursor="pointer"
+                                key={route.name}
+                            >
+                                <AccordionItem border={'none'}
+                                >
+                                    <AccordionButton
+                                        _hover={{
+                                            bg: 'cyan.800',
+                                            color: 'white',
+                                        }}
+                                        borderRadius={'lg'}
+                                        p={2}
+                                        m={0}
+                                        display={'flex'}
+                                        gap={4}
+                                    >
+                                        {route.icon && (
+                                            <Icon
+                                                as={route.icon}
+                                            />
+                                        )}
+                                        <Box>
+                                            {route.name}
+                                        </Box>
+                                        <AccordionIcon/>
+                                    </AccordionButton>
+                                    <AccordionPanel w="full">
+                                        {route.subRoutes.map((subRoute) => {
+                                            const subRoleBasedPath = `/${user.role}${subRoute.path}`;
+                                            return (
+                                                <NavItem mx={0} icon={subRoute.icon} to={subRoleBasedPath}
+                                                         key={subRoute.name}>
+                                                    {subRoute.name}
+                                                </NavItem>
+                                            )
+                                        })}
+
+                                    </AccordionPanel>
+                                </AccordionItem>
+                            </Accordion>
+                        )
+
+
+                    } else {
+                        return (
+                            <NavItem icon={route.icon} key={route.name}
+                                //@ts-ignore
+                                     to={route.permission.includes('*') ? route.path : roleBasedPath}>
+                                {route.name}
+                            </NavItem>
+                        );
+                    }
+
+                }
+
+            })}
+
         </Box>
     );
 };
@@ -115,19 +165,21 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
     icon: IconType;
     children: ReactText;
+    to: string;
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+
+const NavItem = ({icon, children, to, ...rest}: NavItemProps) => {
     return (
-        <Link href="#" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+        <Link as={RouterLink} to={to} style={{textDecoration: 'none'}} _focus={{boxShadow: 'none'}}>
             <Flex
                 align="center"
-                p="4"
+                p="2"
                 mx="4"
                 borderRadius="lg"
                 role="group"
                 cursor="pointer"
                 _hover={{
-                    bg: 'cyan.400',
+                    bg: 'cyan.800',
                     color: 'white',
                 }}
                 {...rest}>
@@ -150,18 +202,19 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
 interface MobileProps extends FlexProps {
     onOpen: () => void;
 }
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
-    const user = useUserStore(state=>state.user);
+const MobileNav = ({onOpen, ...rest}: MobileProps) => {
+
+    const user = useUserStore(state => state.user);
     let hasAvatar = false;
 
-    if(user.account.account_images){
+    if (user.account.account_images) {
         hasAvatar = user.account.account_images.avatar_url !== null;
     }
     return (
         <Flex
-            pl={{ base: 0, md: 60 }}
-            px={{ base: 4, md: 4 }}
+            pl={{base: 0, md: 60}}
+            px={{base: 4, md: 4}}
 
             alignItems="center"
             pos="fixed"
@@ -171,44 +224,44 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             bg={useColorModeValue('white', 'gray.900')}
             borderBottomWidth="1px"
             borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
-            justifyContent={{ base: 'space-between', md: 'flex-end' }}
+            justifyContent={{base: 'space-between', md: 'flex-end'}}
             {...rest}>
             <IconButton
-                display={{ base: 'flex', md: 'none' }}
+                display={{base: 'flex', md: 'none'}}
                 onClick={onOpen}
                 variant="outline"
                 aria-label="open menu"
-                icon={<FiMenu />}
+                icon={<FiMenu/>}
             />
 
             <Text
-                display={{ base: 'flex', md: 'none' }}
+                display={{base: 'flex', md: 'none'}}
                 fontSize="2xl"
                 fontFamily="monospace"
                 fontWeight="bold">
                 Logo
             </Text>
 
-            <HStack spacing={{ base: '0', md: '6' }}>
+            <HStack spacing={{base: '0', md: '6'}}>
                 <IconButton
                     size="lg"
                     variant="ghost"
                     aria-label="open menu"
-                    icon={<FiBell />}
+                    icon={<FiBell/>}
                 />
                 <Flex alignItems={'center'}>
                     <Menu>
                         <MenuButton
                             py={2}
                             transition="all 0.3s"
-                            _focus={{ boxShadow: 'none' }}>
+                            _focus={{boxShadow: 'none'}}>
                             <HStack>
                                 <Avatar
                                     size={'sm'}
                                     src={hasAvatar ? user.account.account_images.avatar_url : ''}
                                 />
                                 <VStack
-                                    display={{ base: 'none', md: 'flex' }}
+                                    display={{base: 'none', md: 'flex'}}
                                     alignItems="flex-start"
                                     spacing="1px"
                                     ml="2">
@@ -218,8 +271,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                                         {user.role}
                                     </Text>
                                 </VStack>
-                                <Box display={{ base: 'none', md: 'flex' }}>
-                                    <FiChevronDown />
+                                <Box display={{base: 'none', md: 'flex'}}>
+                                    <FiChevronDown/>
                                 </Box>
                             </HStack>
                         </MenuButton>

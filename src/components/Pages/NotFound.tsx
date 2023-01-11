@@ -1,11 +1,11 @@
 import {useNavigate} from "react-router-dom";
 
-const NotFound = ():JSX.Element => {
+const NotFound = (): JSX.Element => {
 
     const navigate = useNavigate();
-    navigate('/login', {replace: true});
+    navigate('/', {replace: true});
 
-    return(
+    return (
         <h1> 404 </h1>
     )
 }

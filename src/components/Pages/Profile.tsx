@@ -11,7 +11,6 @@ import {
     FormControl,
     Heading,
     Image,
-    Input,
     Stack,
     Text,
     useColorModeValue,
@@ -24,6 +23,7 @@ import {changeUserAvatar} from "../../api/change-user-avatar";
 import {useQuery} from "react-query";
 import {fetchUserProfile} from "../../api/fetch-user-profile";
 import {FiDelete, FiSave} from "react-icons/all";
+import EditableInfoTable from "../common/editable-info-table";
 
 const Profile = () => {
     function iterateObject(obj: any) {
@@ -45,33 +45,22 @@ const Profile = () => {
 
     const user = useUserStore(state => state.user);
     const setUser = useUserStore(state => state.setUser);
-    const userAddress = user.address;
-    const userContact = user.contact;
-    const userFaculty = user.faculty;
-    const userPersonal = user.personal;
-    const userGradebook = user.gradebook;
+
     const [editBasicInfo, setEditBasicInfo] = React.useState(false);
     const [hasChanged, setHasChanged] = React.useState(false);
+
     let hasAvatar = false;
     let hasBackgroundPicture = false;
-    
+
     if (user.account.account_images) {
         hasAvatar = user.account.account_images.avatar_url !== null;
         hasBackgroundPicture = user.account.account_images.background_url !== "";
     }
     const [avatarLink, setAvatarLink] = React.useState<string>(user.account.account_images?.avatar_url);
     const handleAvatarChange = async (file: File) => {
-        // const getSignature = await fetchSignature().then((res)=>{
-        //     return res
-        // })
         const data = new FormData();
         data.append('file', file);
-        // data.append('api_key', import.meta.env.VITE_CLOUDINARY_API_KEY);
-        // data.append('signature', getSignature.signature);
-        // data.append('timestamp', getSignature.timestamp);
         data.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
-
-        //upload to cloudinary
         fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, {
             method: 'POST',
             body: data
@@ -92,6 +81,8 @@ const Profile = () => {
             })
     }
 
+    const {address, contact, faculty, library_access, personal, gradebook, account} = user
+    console.log(faculty)
     return (
 
         <Flex
@@ -173,73 +164,27 @@ const Profile = () => {
                 </Box>
 
 
-                <Box
+                <Wrap
                     maxW={'80%'}
                     w={'full'}
-                    bg={useColorModeValue('white', 'gray.800')}
                     rounded={'md'}
-                    overflow={'hidden'}>
-                    <Card
-
-                    >
+                    overflow={'hidden'}
+                    justify={'space-between'}
+                    spacing={8}
+                >
+                    <Card>
                         <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
                             <Heading size={'md'}>Basic Information</Heading>
                             <EditIcon cursor={'pointer'} boxSize={6} onClick={() => setEditBasicInfo(!editBasicInfo)}/>
                         </CardHeader>
                         <CardBody
                             display={'flex'}
+                            justifyContent={'center'}
                             gap={4}
 
                         >
-                            <Stack
-                                spacing={4}
-                                maxW={'50%'}>
-                                {
-                                    Object.entries(userAddress).map(([key, value]) => {
-                                        if (key !== 'person_id') {
-                                            return (
-                                                <Wrap
-                                                    spacing={2}
-                                                    key={key}
-                                                >
-                                                    <Text fontSize={'sm'}>{key}</Text>
-                                                    <Input type={'text'} defaultValue={value} onChange={(e) => {
-                                                        userAddress[key] = e.target.value;
-                                                        setHasChanged(true)
-                                                    }
-                                                    }
-                                                           isDisabled={!editBasicInfo}/>
-                                                </Wrap>
-                                            )
-                                        }
-                                    })
-                                }
-                            </Stack>
-                            <Stack
-                                spacing={4}
-                                maxW={'50%'}>
-
-                                {
-                                    Object.entries(userContact).map(([key, value]) => {
-                                        if (key !== 'person_id') {
-                                            return (
-                                                <Wrap
-                                                    spacing={2}
-                                                    key={key}
-                                                >
-                                                    <Text fontSize={'sm'}>{key}</Text>
-                                                    <Input type={'text'} defaultValue={value} onChange={(e) => {
-                                                        userContact[key] = e.target.value;
-                                                        setHasChanged(true)
-                                                    }
-                                                    }
-                                                           isDisabled={!editBasicInfo}/>
-                                                </Wrap>
-                                            )
-                                        }
-                                    })
-                                }
-
+                            <Stack>
+                                <EditableInfoTable editable={editBasicInfo} obj={address}/>
                             </Stack>
 
                         </CardBody>
@@ -255,7 +200,63 @@ const Profile = () => {
                             <Button leftIcon={<FiDelete/>} minW={'25%'} colorScheme={'red'}>Discard</Button>
                         </ButtonGroup>
                     </Card>
-                </Box>
+                    <Card>
+                        <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
+                            <Heading size={'md'}>Faculties</Heading>
+                            {/*<EditIcon cursor={'pointer'} boxSize={6} onClick={() => setEditBasicInfo(!editBasicInfo)}/>*/}
+                        </CardHeader>
+                        <CardBody
+                            display={'flex'}
+                            justifyContent={'center'}
+                            gap={4}
+
+                        >
+                            <Stack>
+                                <EditableInfoTable editable={false} obj={faculty}/>
+                            </Stack>
+
+                        </CardBody>
+                        <ButtonGroup
+                            display={'flex'}
+                            justifyContent={'flex-end'}
+                            w={'100%'}
+                            p={4}
+
+                        >
+                            {/*<Button leftIcon={<FiSave/>} minW={'25%'} colorScheme={'blue'}*/}
+                            {/*        disabled={!hasChanged}>Save</Button>*/}
+                            {/*<Button leftIcon={<FiDelete/>} minW={'25%'} colorScheme={'red'}>Discard</Button>*/}
+                        </ButtonGroup>
+                    </Card>
+                    <Card>
+                        <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
+                            <Heading size={'md'}>Faculties</Heading>
+                            {/*<EditIcon cursor={'pointer'} boxSize={6} onClick={() => setEditBasicInfo(!editBasicInfo)}/>*/}
+                        </CardHeader>
+                        <CardBody
+                            display={'flex'}
+                            justifyContent={'center'}
+                            gap={4}
+
+                        >
+                            <Stack>
+                                <EditableInfoTable editable={false} obj={personal}/>
+                            </Stack>
+
+                        </CardBody>
+                        <ButtonGroup
+                            display={'flex'}
+                            justifyContent={'flex-end'}
+                            w={'100%'}
+                            p={4}
+
+                        >
+                            {/*<Button leftIcon={<FiSave/>} minW={'25%'} colorScheme={'blue'}*/}
+                            {/*        disabled={!hasChanged}>Save</Button>*/}
+                            {/*<Button leftIcon={<FiDelete/>} minW={'25%'} colorScheme={'red'}>Discard</Button>*/}
+                        </ButtonGroup>
+                    </Card>
+                </Wrap>
             </Stack>
 
         </Flex>

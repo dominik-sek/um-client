@@ -1,16 +1,16 @@
-export const fetchUserProfile = async () =>{
+export const fetchUserProfile = async () => {
 
-    const response = await fetch('api/v1/users/profile',{
+    const response = await fetch('/api/v1/users/profile', {
 
-        method:'GET',
-        headers:{
-            'Content-Type':'application/json',
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
         },
-        credentials:'include'
+        credentials: 'include'
 
     });
 
-    if(response.status === 500){
+    if (response.status === 500) {
         throw new Error('Internal Server Error', {cause: 'SERVER_ERROR'});
     }
 

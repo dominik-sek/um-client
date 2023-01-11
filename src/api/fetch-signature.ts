@@ -1,16 +1,16 @@
-export const fetchSignature = async () =>{
+export const fetchSignature = async () => {
 
-    const response = await fetch('api/v1/cloud-signature',{
+    const response = await fetch('/api/v1/cloud-signature', {
 
-        method:'GET',
-        headers:{
-            'Content-Type':'application/json',
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
         },
-        credentials:'include'
+        credentials: 'include'
 
     });
 
-    if(response.status === 500){
+    if (response.status === 500) {
         throw new Error('Internal Server Error', {cause: 'SERVER_ERROR'});
     }
 
