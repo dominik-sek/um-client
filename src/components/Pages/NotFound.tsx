@@ -1,4 +1,5 @@
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
+import {Box, Center, Flex, Wrap} from "@chakra-ui/react";
 
 const NotFound = (): JSX.Element => {
 
@@ -6,7 +7,18 @@ const NotFound = (): JSX.Element => {
     navigate('/', {replace: true});
 
     return (
-        <h1> 404 </h1>
+        <Box
+            w={'100%'}
+            h={'100%'}
+
+        >
+            <Center
+                w={'100%'}
+                h={'100%'}
+            >
+                404
+            </Center>
+        </Box>
     )
 }
 export default NotFound;

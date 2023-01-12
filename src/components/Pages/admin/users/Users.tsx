@@ -2,13 +2,18 @@ import {useQuery} from "react-query";
 import LoadingScreen from "../../../shared/loading-screen";
 import {fetchAllUsers} from "../../../../api/fetch-all-users";
 import UserCard from "../../../shared/user-card";
-import {Box, Button, Flex, Input, InputGroup, InputLeftElement, Text, Wrap} from "@chakra-ui/react";
+import {Box, Button, Flex, Input, InputGroup, InputLeftElement, Text, useDisclosure, Wrap} from "@chakra-ui/react";
 import {AddIcon, SearchIcon} from "@chakra-ui/icons";
-import {motion, useAnimation, useInView} from "framer-motion";
-import React, {useRef} from "react";
+import {motion} from "framer-motion";
+import React from "react";
+import {useUserStore} from "../../../../../store";
+import AddUserModal from "./add-user-modal";
 
 const Users = (): JSX.Element => {
-    const [newUserModal, setNewUserModal] = React.useState(false);
+    const userStore = useUserStore();
+
+    const {isOpen, onOpen, onClose} = useDisclosure();
+
     const {data, isLoading, isError, error} = useQuery('users', fetchAllUsers, {
         refetchOnWindowFocus: false
     });
@@ -18,10 +23,6 @@ const Users = (): JSX.Element => {
     if (isError) {
         console.log('error', error)
     }
-    const ref = useRef(null)
-    const isInView = useInView(ref)
-    const controls = useAnimation();
-
 
     return (
         <Flex flexDir={'column'} gap={10}>
@@ -37,22 +38,21 @@ const Users = (): JSX.Element => {
             >
                 <Wrap minW={'40%'}>
                     <InputGroup>
-                        <InputLeftElement children={<SearchIcon/>
-                        }/>
+                        <InputLeftElement children={<SearchIcon/>}/>
                         <Input placeholder={'Search'}/>
                     </InputGroup>
                 </Wrap>
 
                 <motion.div
-                    ref={ref}
-                    animate={controls}
+
                 >
                     <Button id={'add-user-btn'} leftIcon={<AddIcon/>} colorScheme={'whatsapp'}
-                            onClick={() => setNewUserModal(true)}>
+                            onClick={onOpen}>
                         <Text>
                             Add new user
                         </Text>
                     </Button>
+                    <AddUserModal isOpen={isOpen} onClose={onClose}/>
                 </motion.div>
 
             </Box>
@@ -60,10 +60,14 @@ const Users = (): JSX.Element => {
 
                 {
                     data.map((user: any) => {
+                        if (userStore.user.id === user.id) {
+                            return null;
+                        }
                         return (
                             <motion.div
                                 whileInView={{opacity: 1}}
                                 initial={{opacity: 0}}
+                                key={user.id}
                             >
                                 <UserCard user={user} key={user.id}/>
                             </motion.div>

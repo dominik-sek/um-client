@@ -163,7 +163,6 @@ const Profile = () => {
                     </Box>
                 </Box>
 
-
                 <Wrap
                     maxW={'80%'}
                     w={'full'}

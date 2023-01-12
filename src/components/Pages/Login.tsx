@@ -92,14 +92,14 @@ export default function Login() {
         }
         refetch().then((response) => {
             if (response.isSuccess) {
-                toast({
-                    title: "Logged in.",
-                    description: "You have successfully logged in.",
-                    status: "success",
-                    position: "top",
-                    duration: 1500,
-                    isClosable: true,
-                })
+                // toast({
+                //     title: "Logged in.",
+                //     description: "You have successfully logged in.",
+                //     status: "success",
+                //     position: "top",
+                //     duration: 1500,
+                //     isClosable: true,
+                // })
                 userAuth.setAuth(true);
                 userAuth.setRole(response.data.role);
 

@@ -96,7 +96,7 @@ const SidebarContent = ({onClose, ...rest}: SidebarProps) => {
             >
                 {routes.map((route) => {
 
-                    const roleBasedPath = `/${user.role}${route.path}`;
+                    const roleBasedPath = `/${user.role}${route.path}`
                     //@ts-ignore
                     if (route.permission.includes('*') || route.permission.includes(user.role!)) {
                         if (route.subRoutes) {
@@ -105,6 +105,7 @@ const SidebarContent = ({onClose, ...rest}: SidebarProps) => {
                                 <AccordionItem
                                     border={'none'}
                                     px={4}
+                                    key={route.name}
                                 >
 
                                     <AccordionButton
