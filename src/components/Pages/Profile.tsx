@@ -141,8 +141,7 @@ const Profile = () => {
   };
   const handleDiscard = () => {
     onClose();
-    // reset form
-    formRef.current.reset();
+    formRef.current!.reset();
     setEditBasicInfo(false);
     setHasChanged(false);
     setChangedUser(user);
@@ -195,10 +194,13 @@ const Profile = () => {
         changeUserAvatar(data.secure_url)
           .then((res) => {
             setAvatarLink(data.secure_url);
-            refetchProfile()
-              .then((res) => {
-                setUser(res.data);
-              });
+            fetchUserProfile()
+              .then((updatedUser) => {
+                  console.log(updatedUser);
+                  setUser({ ...updatedUser });
+                },
+              );
+
 
           });
       });
