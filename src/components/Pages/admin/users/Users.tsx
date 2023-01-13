@@ -30,10 +30,26 @@ const Users = (): JSX.Element => {
     refetchOnWindowFocus: false,
   });
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [filteredUsers, setFilteredUsers] = React.useState<any[]>(data);
+  const [filteredUsers, setFilteredUsers] = React.useState<any[]>([]);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
+  React.useEffect(() => {
+    if (data) {
+      setFilteredUsers(data);
+    }
+
+  }, [data]);
+
+  React.useEffect(() => {
+    if (data) {
+      const results = data.filter((user: any) =>
+        user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.last_name.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+      setFilteredUsers(results);
+    }
+  }, [searchTerm]);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -42,13 +58,6 @@ const Users = (): JSX.Element => {
     console.log('error', error);
   }
 
-  React.useEffect(() => {
-    const results = data?.filter((user: any) =>
-      user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.last_name.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-    setFilteredUsers(results);
-  }, [searchTerm]);
 
   return (
     <Flex flexDir={'column'} gap={10}>

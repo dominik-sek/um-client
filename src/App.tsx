@@ -1,6 +1,6 @@
-import {Flex} from "@chakra-ui/react";
-import {Route, Routes} from "react-router-dom";
-import {ProtectedRoute} from "./components/Routes/ProtectedRoute";
+import { Flex } from "@chakra-ui/react";
+import { Route, Routes } from "react-router-dom";
+import { ProtectedRoute } from "./components/Routes/ProtectedRoute";
 import Login from "./components/Pages/Login";
 import NavigationLayout from "./layout/NavigationLayout";
 import NotFound from "./components/Pages/NotFound";
@@ -10,38 +10,43 @@ import Logout from "./components/Pages/Logout";
 import Settings from "./components/Pages/Settings";
 import AdminPanel from "./components/Pages/admin/AdminPanel";
 import Users from "./components/Pages/admin/users/Users";
+import StudentPanel from './components/Pages/student/StudentPanel';
 
 function App() {
 
     return (
-        <Flex>
-            {
-                <Routes>
+      <Flex>
+          {
+              <Routes>
 
-                    <Route path={'/login'} element={<Login/>}/>
+                  <Route path={'/login'} element={<Login />} />
 
-                    <Route element={<ProtectedRoute allowed={['*']}/>}>
-                        <Route path={'/logout'} element={<Logout/>}/>
+                  <Route element={<ProtectedRoute allowed={['*']} />}>
+                      <Route path={'/logout'} element={<Logout />} />
 
-                        <Route element={<NavigationLayout/>}>
-                            <Route path={'*'} element={<NotFound/>}/>
+                      <Route element={<NavigationLayout />}>
+                          <Route path={'*'} element={<NotFound />} />
 
-                            <Route element={<ProtectedRoute allowed={['*']}/>}>
-                                <Route path={'/'} element={<Home/>}/>
-                                <Route path={'/settings'} element={<Settings/>}/>
-                                <Route path={'/profile'} element={<Profile/>}/>
-                            </Route>
+                          <Route element={<ProtectedRoute allowed={['*']} />}>
+                              <Route path={'/'} element={<Home />} />
+                              <Route path={'/settings'} element={<Settings />} />
+                              <Route path={'/profile'} element={<Profile />} />
+                          </Route>
 
-                            <Route element={<ProtectedRoute allowed={'admin'}/>}>
-                                <Route path={'/admin/'} element={<AdminPanel/>}/>
-                                <Route path={'/admin/users/manage/'} element={<Users/>}/>
-                            </Route>
-                        </Route>
-                    </Route>
-                </Routes>
-            }
+                          <Route element={<ProtectedRoute allowed={'admin'} />}>
+                              <Route path={'/admin/'} element={<AdminPanel />} />
+                              <Route path={'/admin/users/manage/'} element={<Users />} />
+                          </Route>
+                          <Route element={<ProtectedRoute allowed={'student'} />}>
+                              <Route path={'/student/'} element={<StudentPanel />} />
 
-        </Flex>
+                          </Route>
+                      </Route>
+                  </Route>
+              </Routes>
+          }
+
+      </Flex>
     )
 
 }

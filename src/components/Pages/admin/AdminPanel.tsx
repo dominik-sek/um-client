@@ -4,7 +4,7 @@ const AdminPanel = (): JSX.Element => {
   return (
     <Flex>
       <Heading>
-        ....
+        Admin Panel
       </Heading>
     </Flex>
   );

@@ -4,6 +4,7 @@
     "username": "Username",
     "password": "Password",
     "sign-in-btn": "Sign in",
+    "sign-in-btn-loading": "Loading...",
     "forgot-password": "Forgot password?",
     "contact-admin": "Contact your administrator",
     "validate-error": "Please enter a valid username and password",

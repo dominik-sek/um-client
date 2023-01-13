@@ -1,5 +1,6 @@
 import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+
 import {
   person,
   contact,
@@ -10,6 +11,9 @@ import {
   gradebook,
   account,
   account_images,
+  course,
+  department,
+  department_students,
 } from '@prisma/client';
 
 //type user extends person
@@ -30,7 +34,21 @@ type userData =
 } & {
   faculty: faculty;
 } & {
-  gradebook: gradebook;
+  gradebook: {
+    gradebook_id: number;
+    course: course,
+    department_students: {
+      department: {
+        department_id: number;
+        study_type: string;
+        name: string;
+        degree: string;
+        faculty: faculty;
+      };
+    };
+  }[];
+} & {
+  course: course[];
 }
 
 
@@ -61,8 +79,8 @@ let authStore = (set: any): IAuthStore => ({
 
 let userStore = (set: any): IUserStore => ({
   user: {} as userData,
-  setUser: (user) => set({ user }),
-  clearUser: () => set({ user: {} }),
+  setUser: (user) => set({ user }, true),
+  clearUser: () => set({ user: {} }, true),
 });
 export const useUserStore = create<IUserStore>()(persist(userStore, { name: 'user' }));
 export const useAuthStore = create<IAuthStore>()(devtools(persist(authStore, { name: 'auth' })));

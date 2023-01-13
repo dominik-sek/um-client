@@ -23,6 +23,7 @@ const AutocompleteSearchbar: React.FC<AutocompleteSearchbarProps> = ({
       (suggestion) => suggestionToString(suggestion).toLowerCase().includes(e.target.value.toLowerCase()),
     );
 
+    //@ts-ignore
     setFilteredSuggestions(newFilteredSuggestions);
   };
 

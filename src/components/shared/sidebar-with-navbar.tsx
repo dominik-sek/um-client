@@ -257,7 +257,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         Logo
       </Text>
 
-      <HStack spacing={{ base: '0', md: '6' }}>
+      <HStack spacing={{ base: '2', md: '6' }}>
         <IconButton
           aria-label={'Open Messages'}
           icon={<BiMessageAlt />}
