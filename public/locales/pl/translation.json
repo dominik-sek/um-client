@@ -1,0 +1,13 @@
+{
+  "login-screen": {
+    "message": "Zaloguj się na swoje konto",
+    "username": "Nazwa użytkownika",
+    "password": "Hasło",
+    "sign-in-btn": "Zaloguj się",
+    "sign-in-btn-loading": "Logowanie...",
+    "forgot-password": "Zapomniałeś hasła?",
+    "contact-admin": "Skontaktuj się z administratorem",
+    "validate-error": "Niepoprawne dane logowania",
+    "server-error": "Wystąpił nieoczekiwany błąd, spróbuj ponownie później"
+  }
+}

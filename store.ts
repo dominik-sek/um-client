@@ -1,34 +1,68 @@
 import create from 'zustand';
-import {devtools, persist} from "zustand/middleware";
+import { devtools, persist } from 'zustand/middleware';
+import {
+  person,
+  contact,
+  address,
+  personal,
+  library_access,
+  faculty,
+  gradebook,
+  account,
+  account_images,
+} from '@prisma/client';
+
+//type user extends person
+type userData =
+  person
+  & {
+  account: {
+    account_images: account_images;
+  }
+} & {
+  contact: contact;
+} & {
+  address: address;
+} & {
+  personal: personal;
+} & {
+  library_access: library_access;
+} & {
+  faculty: faculty;
+} & {
+  gradebook: gradebook;
+}
+
 
 export interface IAuthStore {
-    auth: boolean;
-    setAuth: (auth: boolean) => void;
-    role: string;
-    setRole: (role: string) => void;
-    logout: () => void;
+  auth: boolean;
+  setAuth: (auth: boolean) => void;
+  role: string;
+  setRole: (role: string) => void;
+  logout: () => void;
 }
+
 export interface IUserStore {
-    user: any;
-    setUser: (user: {}) => void;
-    clearUser: () => void;
+  user: userData;
+  setUser: (user: userData) => void;
+  clearUser: () => void;
 }
 
-let authStore = (set: any):IAuthStore =>({
-    auth: false,
-    setAuth: (auth) => set({auth}),
-    role: '',
-    setRole: role => (set({role})),
-    logout: () => {
-        set({auth: false});
-        set({role: ''});
-    }
-})
-
-let userStore = (set: any):IUserStore =>({
-    user: {},
-    setUser: (user) => set({user}),
-    clearUser: () => set({user: {}})
+let authStore = (set: any): IAuthStore => ({
+  auth: false,
+  setAuth: (auth) => set({ auth }),
+  role: '',
+  setRole: role => (set({ role })),
+  logout: () => {
+    set({ auth: false });
+    set({ role: '' });
+  },
 });
-export const useUserStore = create<IUserStore>()(persist(userStore, {name:'user'}))
-export const useAuthStore = create<IAuthStore>()(devtools(persist(authStore, {name: 'auth'})));
+
+let userStore = (set: any): IUserStore => ({
+  user: {} as userData,
+  setUser: (user) => set({ user }),
+  clearUser: () => set({ user: {} }),
+});
+export const useUserStore = create<IUserStore>()(persist(userStore, { name: 'user' }));
+export const useAuthStore = create<IAuthStore>()(devtools(persist(authStore, { name: 'auth' })));

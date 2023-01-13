@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model account {
+  username       String          @db.VarChar(64)
+  password       String          @db.VarChar(64)
+  person_id      Int             @id(map: "account_pk")
+  last_login     DateTime        @db.Timestamp(6)
+  person         person          @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "account_person_id_fk")
+  account_images account_images?
+}
+
+model account_images {
+  person_id      Int     @id(map: "account_images_pk")
+  avatar_url     String? @db.VarChar
+  background_url String  @db.VarChar
+  account        account @relation(fields: [person_id], references: [person_id], onDelete: Cascade, onUpdate: NoAction, map: "account_images_account_person_id_fk")
+}
+
+model address {
+  city        String @db.VarChar(64)
+  state       String @db.VarChar(32)
+  country     String @db.Char(2)
+  postal_code Int
+  street      String @db.VarChar(64)
+  person_id   Int    @id(map: "address_pk")
+  person      person @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "address_person_id_fk")
+}
+
+model contact {
+  email        String @db.VarChar(128)
+  phone_number Int?
+  person_id    Int    @id(map: "contact_pk")
+  person       person @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "contact_person_id_fk")
+}
+
+model course {
+  id                                       Int        @id(map: "course_pk") @default(autoincrement())
+  name                                     String     @db.VarChar(64)
+  type                                     String     @db.VarChar(64)
+  ects                                     Int
+  person_id                                Int
+  semester                                 String     @db.Char(2)
+  department                               Int
+  department_course_departmentTodepartment department @relation("course_departmentTodepartment", fields: [department], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "course_department_id_fk")
+  person                                   person     @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "course_person_id_fk")
+  grade                                    grade[]
+}
+
+model department {
+  id                                   Int                   @id(map: "department_pk") @default(autoincrement())
+  name                                 String                @db.VarChar(64)
+  length                               String                @db.Char(2)
+  study_type                           String                @db.VarChar(32)
+  faculty_id                           Int
+  degree                               String                @db.VarChar(32)
+  course_course_departmentTodepartment course[]              @relation("course_departmentTodepartment")
+  faculty                              faculty               @relation(fields: [faculty_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "department_faculty_id_fk")
+  department_students                  department_students[]
+}
+
+model department_students {
+  gradebook_id  Int        @id(map: "department_students_pk")
+  department_id Int
+  department    department @relation(fields: [department_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "department_students_department_id_fk")
+  gradebook     gradebook  @relation(fields: [gradebook_id], references: [gradebook_id], onDelete: NoAction, onUpdate: NoAction, map: "department_students_gradebook_gradebook_id_fk")
+}
+
+model faculty {
+  id         Int          @id(map: "faculty_pk") @default(autoincrement())
+  name       String       @db.VarChar(64)
+  person_id  Int
+  department department[]
+  person     person       @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "faculty_person_id_fk")
+}
+
+model grade {
+  gradebook_id Int
+  course_id    Int
+  entry_time   DateTime  @id(map: "grade_pk") @db.Timestamp(6)
+  grade        Int
+  course       course    @relation(fields: [course_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "grade_course_id_fk")
+  gradebook    gradebook @relation(fields: [gradebook_id], references: [gradebook_id], onDelete: NoAction, onUpdate: NoAction, map: "grade_gradebook_gradebook_id_fk")
+}
+
+model gradebook {
+  person_id           Int?
+  gradebook_id        Int                  @id(map: "gradebook_pk") @default(0)
+  semester            String               @db.Char(1)
+  department_students department_students?
+  grade               grade[]
+  person              person?              @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "gradebook_person_id_fk")
+}
+
+model library_access {
+  person_id  Int    @id(map: "library_access_pk")
+  has_access String @db.Char(1)
+  person     person @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "library_access_person_id_fk")
+}
+
+model payments {
+  id           Int      @id(map: "payments_pk") @default(autoincrement())
+  payment_date DateTime @db.Date
+  type         String   @db.VarChar(128)
+  amount       Int      @default(0)
+  person_id    Int
+  person       person   @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "payments_person_id_fk")
+}
+
+model person {
+  id                     Int             @id(map: "person_pk") @default(autoincrement())
+  first_name             String          @db.VarChar(64)
+  last_name              String          @db.VarChar(64)
+  title                  String?         @db.VarChar(64)
+  birth_date             DateTime        @db.Date
+  pesel                  Int?
+  gender                 String?         @db.Char(1)
+  role                   String          @db.VarChar(12)
+  account                account?
+  address                address?
+  contact                contact?
+  course                 course[]
+  faculty                faculty[]
+  gradebook              gradebook[]
+  library_access         library_access?
+  payments               payments[]
+  role_person_roleTorole role            @relation("person_roleTorole", fields: [role], references: [name], onDelete: Cascade, onUpdate: NoAction, map: "person_role_name_fk")
+  personal               personal?
+}
+
+model personal {
+  person_id Int    @id(map: "personal_pk")
+  disabled  String @db.Char(1)
+  married   String @db.Char(1)
+  person    person @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "personal_person_id_fk")
+}
+
+model role {
+  name                     String   @id(map: "role_pk") @db.VarChar(12)
+  person_person_roleTorole person[] @relation("person_roleTorole")
+}
