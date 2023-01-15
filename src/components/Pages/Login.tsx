@@ -12,14 +12,14 @@ import {
   InputRightElement,
   Link,
   Stack,
-  Text,
+  Text, useColorMode,
   useColorModeValue,
   useDisclosure,
   useToast,
-  VStack,
+  VStack, Wrap,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { MoonIcon, SunIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { loginUser } from '../../api/login-user';
 import { useQuery } from 'react-query';
 import { checkAuth } from '../../api/check-auth';
@@ -66,6 +66,7 @@ export default function Login() {
     enabled: false,
     refetchOnWindowFocus: false,
   });
+  const { colorMode, toggleColorMode } = useColorMode();
 
   const selectSampleAccount = (selection: string) => {
     switch (selection) {
@@ -85,7 +86,7 @@ export default function Login() {
   };
 
 
-  const userStore = useUserStore();
+  const userStore = useUserStore((state) => state);
   const userAuth = useAuthStore();
   useEffect(() => {
     refetchAuth().then((res) => {
@@ -102,10 +103,8 @@ export default function Login() {
     }
     refetch().then((response) => {
       if (response.isSuccess) {
-
         userAuth.setAuth(true);
         userAuth.setRole(response.data.role);
-
         refetchProfile().then((response) => {
           userStore.setUser(response.data);
         });
@@ -127,12 +126,7 @@ export default function Login() {
       flexDir={'column'}
       bg={useColorModeValue('gray.500', 'black.800')}>
 
-      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
-        <Stack align={'center'}>
-          <Heading fontSize={'4xl'} textAlign={'center'}>
-            {t('login-screen.message')}
-          </Heading>
-        </Stack>
+      <Stack spacing={8} mx={'auto'} py={12} px={6}>
         <Box
           rounded={'lg'}
           bg={useColorModeValue('white', 'gray.700')}
@@ -140,13 +134,25 @@ export default function Login() {
           p={8}>
 
           <Stack spacing={4}>
-
+            <HStack display={'flex'} justifyContent={'space-between'}>
+              <Wrap>
+                <IconButton p={1} aria-label={'English'} icon={<GB />} onClick={() => changeLanguage('en')} />
+                <IconButton p={1} aria-label={'Polish'} icon={<PL />} onClick={() => changeLanguage('pl')} />
+              </Wrap>
+              <Wrap>
+                <IconButton
+                  aria-label={'Toggle Color Mode'}
+                  onClick={toggleColorMode}
+                  icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />} />
+              </Wrap>
+            </HStack>
+            <Stack align={'center'}>
+              <Heading fontSize={'4xl'} textAlign={'center'}>
+                {t('login-screen.message')}
+              </Heading>
+            </Stack>
 
             <VStack>
-              <HStack>
-                <IconButton aria-label={'English'} icon={<GB />} onClick={() => changeLanguage('en')} />
-                <IconButton aria-label={'Polish'} icon={<PL />} onClick={() => changeLanguage('pl')} />
-              </HStack>
               <Stack
                 flexDir={'column'}
                 spacing={4}

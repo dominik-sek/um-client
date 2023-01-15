@@ -360,48 +360,7 @@ const Profile = () => {
               </FormControl>
             </CardBody>
           </Card>
-
-
-          {
-            user.role === UserRole.TEACHER && (
-              <Card w={'100%'}
-                    bg={useColorModeValue('white', 'gray.800')}
-              >
-                <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
-                  <Heading size={'md'}>Your courses</Heading>
-                  <IconButton aria-label={'Go to course overview'} icon={<ArrowForwardIcon />} />
-                </CardHeader>
-                <CardBody
-                  display={'flex'}
-                  justifyContent={'center'}
-                  gap={4}>
-                  <FormControl>
-                    <Table>
-                      <Thead>
-                        <Tr>
-                          <Th>Course name</Th>
-                          <Th>Course type</Th>
-                          <Th>Semester</Th>
-                        </Tr>
-                      </Thead>
-                      {
-                        user.course.map((course) => {
-                          return (
-                            <Tr key={course.id}>
-                              <Td>{course.name}</Td>
-                              <Td>{course.type}</Td>
-                              <Td>{course.semester}</Td>
-                            </Tr>
-                          );
-                        })
-                      }
-
-                    </Table>
-                  </FormControl>
-                </CardBody>
-              </Card>
-            )
-          }
+          
 
           <Card w={'100%'}
                 bg={useColorModeValue('white', 'gray.800')}>

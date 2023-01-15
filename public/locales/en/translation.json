@@ -9,5 +9,23 @@
     "contact-admin": "Contact your administrator",
     "validate-error": "Please enter a valid username and password",
     "server-error": "Unexpected error occurred. Please try again later"
+  },
+  "routes": {
+    "home": "Home",
+    "profile": "Profile",
+    "logout": "Logout",
+    "settings": "Settings",
+    "grades": "Grades",
+    "attendance": "Attendance",
+    "schedule": "Schedule",
+    "users": "Users",
+    "manage-users": "Manage Users",
+    "faculties": "Faculties",
+    "manage-faculties": "Manage Faculties",
+    "departments": "Departments",
+    "manage-departments": "Manage Departments",
+    "manage-timetables": "Manage Timetables",
+    "courses": "Courses",
+    "manage-courses": "Manage Courses"
   }
 }

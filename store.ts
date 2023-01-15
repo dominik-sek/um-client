@@ -16,8 +16,7 @@ import {
   department_students,
 } from '@prisma/client';
 
-//type user extends person
-type userData =
+type UserData =
   person
   & {
   account: {
@@ -61,8 +60,8 @@ export interface IAuthStore {
 }
 
 export interface IUserStore {
-  user: userData;
-  setUser: (user: userData) => void;
+  user: UserData;
+  setUser: (user: UserData) => void;
   clearUser: () => void;
 }
 
@@ -78,9 +77,9 @@ let authStore = (set: any): IAuthStore => ({
 });
 
 let userStore = (set: any): IUserStore => ({
-  user: {} as userData,
-  setUser: (user) => set({ user }, true),
-  clearUser: () => set({ user: {} }, true),
+  user: {} as UserData,
+  setUser: (user) => set({ user }),
+  clearUser: () => set({ user: {} }),
 });
-export const useUserStore = create<IUserStore>()(persist(userStore, { name: 'user' }));
-export const useAuthStore = create<IAuthStore>()(devtools(persist(authStore, { name: 'auth' })));
+export const useUserStore = create<IUserStore>()(devtools(persist(userStore, { name: 'user' })));
+export const useAuthStore = create<IAuthStore>()(persist(authStore, { name: 'auth' }));

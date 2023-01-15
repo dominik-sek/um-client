@@ -1,53 +1,105 @@
 import React, { useState } from 'react';
-import { Input, Box, List } from '@chakra-ui/react';
+import { Box, Input, List } from '@chakra-ui/react';
+import SearchBar from './search-bar';
+import { motion } from 'framer-motion';
 
 type AutocompleteSearchbarProps = {
   suggestions: any[],
-  suggestionToString: (suggestion: any) => string,
   onSuggestionSelected: (suggestion: any) => void
 }
 
-const AutocompleteSearchbar: React.FC<AutocompleteSearchbarProps> = ({
-                                                                       suggestions,
-                                                                       suggestionToString,
-                                                                       onSuggestionSelected,
-                                                                     }) => {
-  const [inputValue, setInputValue] = useState('');
-  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+const AutocompleteSearchbar = ({ suggestions, onSuggestionSelected, ...rest }: AutocompleteSearchbarProps) => {
+  const [filteredSuggestions, setFilteredSuggestions] = useState<any>([]);
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+  const [selectedSuggestion, setSelectedSuggestion] = useState();
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-
-    // filter suggestions based on input value
-    const newFilteredSuggestions = suggestions.filter(
-      (suggestion) => suggestionToString(suggestion).toLowerCase().includes(e.target.value.toLowerCase()),
-    );
-
-    //@ts-ignore
-    setFilteredSuggestions(newFilteredSuggestions);
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFilteredSuggestions(suggestions);
+    setShowSuggestions(true);
+    const value = event.target.value;
+    const filtered = suggestions.filter(suggestion => suggestion.toLowerCase().includes(value.toLowerCase()));
+    setFilteredSuggestions(filtered);
+    setHighlightedIndex(-1);
   };
-
-  const handleSuggestionClick = (suggestion: any) => {
-    setInputValue(suggestionToString(suggestion));
-    setFilteredSuggestions([]);
-    onSuggestionSelected(suggestion);
+  const handleLostFocus = () => {
+    setTimeout(() => {
+      setShowSuggestions(false);
+    }, 150);
   };
-
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    switch (event.key) {
+      case 'Escape':
+        setShowSuggestions(false);
+        setHighlightedIndex(-1);
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        if (highlightedIndex > 0) {
+          setHighlightedIndex(highlightedIndex - 1);
+        }
+        break;
+      case 'ArrowDown':
+        event.preventDefault();
+        if (!showSuggestions) {
+          setFilteredSuggestions(suggestions);
+          setShowSuggestions(true);
+        }
+        if (highlightedIndex < filteredSuggestions.length - 1) {
+          setHighlightedIndex(highlightedIndex + 1);
+        }
+        break;
+      case 'Enter':
+        event.preventDefault();
+        if (highlightedIndex !== -1) {
+          onSuggestionSelected(filteredSuggestions[highlightedIndex]);
+          setSelectedSuggestion(filteredSuggestions[highlightedIndex]);
+          setShowSuggestions(false);
+        }
+        break;
+    }
+  };
+  const ref = React.useRef<HTMLInputElement>(null);
   return (
-    <Box>
-      <Input
-        placeholder='Search...'
-        value={inputValue}
-        onChange={handleInputChange}
-      />
-      <List>
-        {filteredSuggestions.map((suggestion) => (
-          <Box key={suggestionToString(suggestion)}
-               onClick={() => handleSuggestionClick(suggestion)}>{suggestionToString(suggestion)}</Box>
-        ))}
-      </List>
-    </Box>
+    <SearchBar onKeyDownInput={handleKeyPress} inputRef={ref} value={selectedSuggestion} position={'relative'} {...rest}
+               onBlur={handleLostFocus}
+               onChange={(e) => handleOnChange(e)}>
+      <Box position={'absolute'} top={'100%'} height={'100%'} left={0} right={0}
+           display={showSuggestions ? 'flex' : 'none'}
+           zIndex={99}>
+        <List width={'100%'} h={'100%'} zIndex={99}>
+          {filteredSuggestions.map((suggestion: string, index: number) => {
+            const hasBottomBorder = index === filteredSuggestions.length - 1;
+            return (
+              <Box
+                borderX={'1px solid'}
+                borderBottomRadius={hasBottomBorder ? '9px' : ''}
+                borderBottom={hasBottomBorder ? '1px solid' : ''}
+                borderColor={'inherit'}
+                w={'100%'} pl={10} pt={2}
+                bg={highlightedIndex === index ? 'gray.700' : 'gray.900'}
+                h={'100%'}
+                key={suggestion}
+                cursor={'pointer'}
+                _hover={{ bg: 'gray.700' }}
+                onClick={() => {
+                  onSuggestionSelected(suggestion);
+                  ref.current.value = suggestion;
+                  setShowSuggestions(false);
+                }}
+              >
+                <motion.div
+                  whileInView={{ opacity: 1 }}
+                  initial={{ opacity: 0 }}>
+                  {suggestion}
+                </motion.div>
+              </Box>
+
+            );
+          })}
+        </List>
+      </Box>
+    </SearchBar>
   );
 };
-
 export default AutocompleteSearchbar;

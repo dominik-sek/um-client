@@ -9,5 +9,23 @@
     "contact-admin": "Skontaktuj się z administratorem",
     "validate-error": "Niepoprawne dane logowania",
     "server-error": "Wystąpił nieoczekiwany błąd, spróbuj ponownie później"
+  },
+  "routes": {
+    "home": "Strona główna",
+    "profile": "Profil",
+    "logout": "Wyloguj się",
+    "settings": "Ustawienia",
+    "grades": "Oceny",
+    "attendance": "Frekwencja",
+    "schedule": "Plan zajęć",
+    "users": "Użytkownicy",
+    "manage-users": "Zarządzaj użytkownikami",
+    "faculties": "Wydziały",
+    "manage-faculties": "Zarządzaj wydziałami",
+    "departments": "Kierunki",
+    "manage-departments": "Zarządzaj kierunkami",
+    "manage-timetables": "Zarządzaj planami zajęć",
+    "courses": "Przedmioty",
+    "manage-courses": "Zarządzaj przedmiotami"
   }
 }

@@ -28,13 +28,20 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { FiChevronDown, FiMenu } from 'react-icons/fi';
+import { FiChevronDown, FiGlobe, FiMenu } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { useUserStore } from '../../../store';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useNavigate } from 'react-router-dom';
 import { routes } from '../../constants/routes';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { BiMessageAlt } from 'react-icons/all';
+import { UserRole } from '../../enums/user-role';
+import i18n, { changeLanguage } from 'i18next';
+import { PL } from 'country-flag-icons/react/3x2';
+import { GB } from 'country-flag-icons/react/3x2';
+import SearchBar from './search/search-bar';
+import { useTranslation } from 'react-i18next';
+import AutocompleteSearchbar from './search/autocomplete-searchbar';
 
 export default function SidebarWithNavbar({ children }: { children: ReactNode; }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -43,7 +50,6 @@ export default function SidebarWithNavbar({ children }: { children: ReactNode; }
     <Box
       minH='100vh'
       bg={useColorModeValue('gray.100', 'gray.900')}
-
     >
       <SidebarContent
         onClose={() => onClose}
@@ -73,9 +79,10 @@ interface SidebarProps extends BoxProps {
   onClose: () => void;
 }
 
+
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const user = useUserStore(state => state.user);
-
+  const { t, i18n } = useTranslation();
   return (
     <Box
       zIndex={20}
@@ -104,14 +111,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           //@ts-ignore
           if (route.permission.includes('*') || route.permission.includes(user.role!)) {
             if (route.subRoutes) {
-
               return (
                 <AccordionItem
                   border={'none'}
                   px={4}
                   key={route.name}
                 >
-
                   <AccordionButton
                     _hover={{
                       bg: useColorModeValue('cyan.600', 'cyan.800'),
@@ -129,7 +134,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                       />
                     )}
                     <Box as={'span'} flex={1} textAlign={'left'}>
-                      {route.name}
+                      {t(route.key)}
                     </Box>
                     <AccordionIcon
                       justifySelf={'end'}
@@ -142,7 +147,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                       return (
                         <NavItem mx={0} icon={subRoute.icon} to={subRoleBasedPath}
                                  key={subRoute.name}>
-                          {subRoute.name}
+                          {
+                            t(subRoute.key)}
                         </NavItem>
                       );
                     })}
@@ -150,14 +156,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                   </AccordionPanel>
                 </AccordionItem>
               );
-
-
             } else {
               return (
                 <NavItem icon={route.icon} key={route.name}
                   //@ts-ignore
                          to={route.permission.includes('*') ? route.path : roleBasedPath}>
-                  {route.name}
+                  {t(route.key)}
                 </NavItem>
               );
             }
@@ -173,7 +177,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
-  children: ReactText;
   to: string;
 }
 
@@ -214,23 +217,56 @@ interface MobileProps extends FlexProps {
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const user = useUserStore(state => state.user);
-  let hasAvatar = false;
-  if (user.account.account_images) {
-    hasAvatar = user.account.account_images.avatar_url !== null;
-  }
-  const [avatarLink, setAvatarLink] = React.useState<string>(user.account.account_images?.avatar_url || '');
-  //todo fix later
-  const userRole: any = {
-    'admin': 'Admin',
-    'student': 'Student',
-    'teacher': 'Teacher',
+  const user = useUserStore.getState().user;
+  let hasAvatar = user.account && user.account.account_images != null;
+  const userRole = {
+    'pl': {
+      'admin': 'Admin',
+      'student': 'Student',
+      'teacher': 'Prowadzący',
+    },
+    'en': {
+      'admin': 'Admin',
+      'student': 'Student',
+      'teacher': 'Teacher',
+    },
+
   };
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const generateRouteSuggestions = () => {
+    const routeNames: string[] = [];
+    routes.map((route) => {
+      if (route.subRoutes) {
+        route.subRoutes.map((subRoute) => {
+          if (subRoute.permission.includes('*') || subRoute.permission.includes(user.role!)) {
+            routeNames.push(t(subRoute.key));
+          }
+        });
+      }
+      if (route.permission.includes('*') || route.permission.includes(user.role!)) {
+        routeNames.push(t(route.key));
+      }
+    });
+    return routeNames;
+  };
+  const handleSuggestionSelect = (suggestion: string) => {
+    const route = routes.find((route) => {
+      if (route.subRoutes) {
+        return route.subRoutes.find((subRoute) => t(subRoute.key) === suggestion);
+      } else {
+        return t(route.key) === suggestion;
+      }
+    });
+    if (route) {
+      navigate(route.path);
+    }
+  };
+
   return (
     <Flex
-      pl={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
-
+      pl={{ base: 4, md: 64 }}
       alignItems='center'
       pos='fixed'
       width={'100%'}
@@ -238,8 +274,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       zIndex={10}
       bg={useColorModeValue('white', 'gray.900')}
       borderBottomWidth='1px'
+      gap={'4'}
       borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
-      justifyContent={{ base: 'space-between', md: 'flex-end' }}
+      justifyContent={{ base: 'space-between', md: 'space-between' }}
       {...rest}>
       <IconButton
         display={{ base: 'flex', md: 'none' }}
@@ -248,20 +285,32 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         aria-label='open menu'
         icon={<FiMenu />}
       />
+      <Flex
+        display={{ base: 'none', sm: 'flex' }}
+        w={'100%'}
+      >
+        <AutocompleteSearchbar w={'100%'} suggestions={generateRouteSuggestions()}
+                               onSuggestionSelected={(suggestion) => {
+                                 handleSuggestionSelect(suggestion);
+                               }} />
+      </Flex>
 
-      <Text
-        display={{ base: 'flex', md: 'none' }}
-        fontSize='2xl'
-        fontFamily='monospace'
-        fontWeight='bold'>
-        Logo
-      </Text>
-
-      <HStack spacing={{ base: '2', md: '6' }}>
+      <HStack spacing={{ base: '2', md: '4' }}>
         <IconButton
           aria-label={'Open Messages'}
           icon={<BiMessageAlt />}
         />
+
+        <Menu>
+          <MenuButton as={IconButton} aria-label='Language menu' icon={<FiGlobe />} />
+          <MenuList>
+            <MenuItem onClick={() => changeLanguage('en')} display={'flex'} gap={2}><GB
+              width={'36'} /> English</MenuItem>
+            <MenuItem onClick={() => changeLanguage('pl')} display={'flex'} gap={2}><PL
+              width={'36'} /> Polski</MenuItem>
+          </MenuList>
+        </Menu>
+
         <IconButton
           aria-label={'Toggle Color Mode'}
           onClick={toggleColorMode}
@@ -276,17 +325,24 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <HStack>
                 <Avatar
                   size={'sm'}
-                  src={hasAvatar ? avatarLink : ''}
+                  src={hasAvatar ? user.account.account_images.avatar_url! : ''}
                 />
                 <VStack
                   display={{ base: 'none', md: 'flex' }}
                   alignItems='flex-start'
                   spacing='1px'
                   ml='2'>
+                  <Flex>
+                    <Text fontSize='sm' fontWeight='medium'>
+                      {user.first_name.length > 10 ? user.first_name.slice(0, 10) + '...' : user.first_name}
+                    </Text>
 
-                  <Text fontSize='sm'>{user.first_name} {user.last_name}</Text>
+                  </Flex>
                   <Text fontSize='xs' color='gray.600'>
-                    {userRole[user.role]}
+                    {
+                      //@ts-ignore
+                      userRole[i18n.language][user.role]
+                    }
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
@@ -307,5 +363,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         </Flex>
       </HStack>
     </Flex>
+
+
   );
 };
