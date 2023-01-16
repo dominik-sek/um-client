@@ -1,14 +1,15 @@
-export const updateUserProfile = async (userProfile: {}, userId: number) => {
-  return fetch(`/api/v1/users/${userId}`, {
+export const updateUserProfile = async (params: { userProfile: {}, userId: number }) => {
+  const response = await fetch(`/api/v1/users/${params.userId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(userProfile),
+    body: JSON.stringify(params.userProfile),
     credentials: 'include',
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      return data;
-    });
+  });
+
+  if (response.status === 200) {
+    return response.json();
+  }
+  throw new Error('Something went wrong');
 };

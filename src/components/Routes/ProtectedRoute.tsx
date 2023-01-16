@@ -21,8 +21,6 @@ export const ProtectedRoute = ({ allowed }: ProtectedRouteProps): JSX.Element =>
   const isAuthed = data.auth;
   const userRole = data.role;
 
-
-  console.log('protected route');
   const isRoleAuthed = isAuthed && (allowed.includes('*') || allowed.includes(userRole));
 
   if (!isAuthed && !isLoading) {

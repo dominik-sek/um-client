@@ -27,5 +27,8 @@
     "manage-timetables": "Zarządzaj planami zajęć",
     "courses": "Przedmioty",
     "manage-courses": "Zarządzaj przedmiotami"
-  }
+  },
+  "admin": "Admin",
+  "student": "Student",
+  "teacher": "Prowadzący"
 }

@@ -2,25 +2,12 @@ import { useQuery } from 'react-query';
 import LoadingScreen from '../../../shared/loading-screen';
 import { fetchAllUsers } from '../../../../api/fetch-all-users';
 import UserCard from '../../../shared/user-card';
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex, FormHelperText,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Text,
-  useDisclosure,
-  Wrap,
-} from '@chakra-ui/react';
-import { AddIcon, SearchIcon } from '@chakra-ui/icons';
+import { Box, Button, Flex, Text, useDisclosure, Wrap } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useUserStore } from '../../../../../store';
-import AddUserModal from './add-user-modal';
-import { AutoCompleteItem, AutoCompleteList } from '@choc-ui/chakra-autocomplete';
-import AutocompleteSearchbar from '../../../shared/search/autocomplete-searchbar';
+import AddUserModal from './components/add-user-modal';
 import SearchBar from '../../../shared/search/search-bar';
 
 const Users = (): JSX.Element => {

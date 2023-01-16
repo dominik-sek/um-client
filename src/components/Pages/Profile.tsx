@@ -1,9 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Avatar,
   AvatarBadge,
   Box,
@@ -18,47 +13,33 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  HStack,
-  IconButton,
   Image,
   Input,
   InputGroup,
-  InputLeftElement,
   Modal,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
   Stack,
-  Table,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
   useColorModeValue,
   useDisclosure,
-  useModal,
   VStack,
   Wrap,
 } from '@chakra-ui/react';
 import { useUserStore } from '../../../store';
-import { ArrowForwardIcon, CloseIcon, EditIcon, InfoIcon, WarningIcon, WarningTwoIcon } from '@chakra-ui/icons';
-import React, { useEffect } from 'react';
+import { EditIcon, WarningTwoIcon } from '@chakra-ui/icons';
+import React from 'react';
 import { changeUserAvatar } from '../../api/change-user-avatar';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { fetchUserProfile } from '../../api/fetch-user-profile';
 import { FiDelete, FiSave } from 'react-icons/all';
-import { Form } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { gradebook } from '@prisma/client';
-import { UserRole } from '../../enums/user-role';
 import { Simulate } from 'react-dom/test-utils';
-import change = Simulate.change;
 import { updateUserProfile } from '../../api/update-user-profile';
 
-let addressKeyMap = {
+const addressKeyMap = {
   en: {
     city: 'City',
     state: 'State',
@@ -74,7 +55,7 @@ let addressKeyMap = {
     postal_code: 'Kod pocztowy',
   },
 };
-let contactKeyMap = {
+const contactKeyMap = {
   en: {
     email: 'Email',
     phone_number: 'Phone Number',
@@ -84,7 +65,7 @@ let contactKeyMap = {
     phone_number: 'Numer telefonu',
   },
 };
-let personalKeyMap = {
+const personalKeyMap = {
   en: {
     first_name: 'First Name',
     last_name: 'Last Name',
@@ -122,22 +103,26 @@ const Profile = () => {
   const [changedUser, setChangedUser] = React.useState({});
   const { t, i18n } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-
   const formRef = React.useRef<HTMLFormElement>(null);
+  const { refetch: refetchProfile } = useQuery('userProfile', fetchUserProfile, {
+    enabled: false,
+  });
+  const { mutate } = useMutation(updateUserProfile, {
+    onSuccess: (data) => {
+      refetchProfile().then(
+        (res) => {
+          setUser(res.data);
+          setEditBasicInfo(false);
+          setChangedUser({});
+        },
+      );
+    },
+  });
   const handleConfirm = () => {
     onClose();
     setEditBasicInfo(false);
     setHasChanged(false);
-    updateUserProfile(changedUser, user.id)
-      .then(() => {
-        fetchUserProfile()
-          .then((user) => {
-            setUser(user);
-          });
-        setChangedUser({});
-
-      });
+    mutate({ userProfile: changedUser, userId: user.id });
   };
   const handleDiscard = () => {
     onClose();
@@ -145,7 +130,6 @@ const Profile = () => {
     setEditBasicInfo(false);
     setHasChanged(false);
     setChangedUser(user);
-
   };
   const handleUserInformationChange = (key: string, field: string, e: React.ChangeEvent<HTMLInputElement>) => {
     setHasChanged(true);
@@ -200,8 +184,6 @@ const Profile = () => {
                   setUser({ ...updatedUser });
                 },
               );
-
-
           });
       });
   };
@@ -251,7 +233,7 @@ const Profile = () => {
               >
                 <FormControl>
                   <label htmlFor='avatar-upload'>
-                    <EditIcon cursor={'pointer'} boxSize={6} />
+                    <EditIcon cursor={'pointer'} boxSize={6} color={useColorModeValue('black', 'white')} />
                   </label>
                   <input id={'avatar-upload'}
                          accept='image/*'
@@ -323,6 +305,7 @@ const Profile = () => {
                             personalKeyMap[i18n.language][key]}:</FormLabel>
                           <Input
                             variant={'outlined'}
+                            bg={useColorModeValue('gray.200', 'gray.700')}
                             key={key}
                             //@ts-ignore
                             value={value}
@@ -360,7 +343,7 @@ const Profile = () => {
               </FormControl>
             </CardBody>
           </Card>
-          
+
 
           <Card w={'100%'}
                 bg={useColorModeValue('white', 'gray.800')}>
@@ -387,6 +370,7 @@ const Profile = () => {
                     gap={4}
                   >
                     <Heading as={'h5'} size={'md'}>Address</Heading>
+                    <Divider />
                     {
                       Object.entries(user.address).map(([key, value]) => {
                         if (key.includes('id')) {
@@ -398,7 +382,8 @@ const Profile = () => {
                             <FormLabel>{
                               //@ts-ignore
                               addressKeyMap[i18n.language][key]}:</FormLabel>
-                            <Input variant={'outlined'} key={key} defaultValue={value} onChange={(e) => {
+                            <Input bg={useColorModeValue('gray.200', 'gray.700')} variant={'outlined'} key={key}
+                                   defaultValue={value} onChange={(e) => {
 
                               handleUserInformationChange(key, 'address', e);
 
@@ -418,6 +403,7 @@ const Profile = () => {
                     gap={4}
                   >
                     <Heading as={'h5'} size={'md'}>Contact</Heading>
+                    <Divider />
 
                     {
                       Object.entries(user.contact).map(([key, value]) => {
@@ -432,6 +418,8 @@ const Profile = () => {
                             <Input variant={'outlined'}
                                    onChange={(e) => handleUserInformationChange(key, 'contact', e)}
                                    key={key}
+                                   bg={useColorModeValue('gray.200', 'gray.700')}
+                              //@ts-ignore
                                    defaultValue={value}
                                    isDisabled={!editBasicInfo} />
                           </Box>

@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactText } from 'react';
+import React, { ReactNode } from 'react';
 import {
   Accordion,
   AccordionButton,
@@ -31,17 +31,15 @@ import {
 import { FiChevronDown, FiGlobe, FiMenu } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { useUserStore } from '../../../store';
-import { Link as RouterLink, Navigate, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { routes } from '../../constants/routes';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { BiMessageAlt } from 'react-icons/all';
-import { UserRole } from '../../enums/user-role';
-import i18n, { changeLanguage } from 'i18next';
-import { PL } from 'country-flag-icons/react/3x2';
-import { GB } from 'country-flag-icons/react/3x2';
-import SearchBar from './search/search-bar';
+import { changeLanguage } from 'i18next';
+import { GB, PL } from 'country-flag-icons/react/3x2';
 import { useTranslation } from 'react-i18next';
 import AutocompleteSearchbar from './search/autocomplete-searchbar';
+import { UserRole } from '../../enums/user-role';
 
 export default function SidebarWithNavbar({ children }: { children: ReactNode; }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -83,6 +81,9 @@ interface SidebarProps extends BoxProps {
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const user = useUserStore(state => state.user);
   const { t, i18n } = useTranslation();
+  const accordionBg = useColorModeValue('cyan.600', 'cyan.800');
+  const accordionColor = useColorModeValue('gray.900', 'white');
+
   return (
     <Box
       zIndex={20}
@@ -108,8 +109,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         {routes.map((route) => {
 
           const roleBasedPath = `/${user.role}${route.path}`;
-          //@ts-ignore
-          if (route.permission.includes('*') || route.permission.includes(user.role!)) {
+          if (route.permission.includes('*' as UserRole) || route.permission.includes(user.role as UserRole)) {
             if (route.subRoutes) {
               return (
                 <AccordionItem
@@ -119,8 +119,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 >
                   <AccordionButton
                     _hover={{
-                      bg: useColorModeValue('cyan.600', 'cyan.800'),
-                      color: useColorModeValue('gray.900', 'white'),
+                      bg: accordionBg,
+                      color: accordionColor,
                     }}
                     borderRadius={'lg'}
                     p={2}
@@ -159,8 +159,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             } else {
               return (
                 <NavItem icon={route.icon} key={route.name}
-                  //@ts-ignore
-                         to={route.permission.includes('*') ? route.path : roleBasedPath}>
+                         to={route.permission.includes('*' as UserRole) ? route.path : roleBasedPath}>
                   {t(route.key)}
                 </NavItem>
               );
@@ -181,6 +180,7 @@ interface NavItemProps extends FlexProps {
 }
 
 const NavItem = ({ icon, children, to, ...rest }: NavItemProps) => {
+
   return (
     <Link as={RouterLink} to={to} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       <Flex
@@ -199,9 +199,6 @@ const NavItem = ({ icon, children, to, ...rest }: NavItemProps) => {
           <Icon
             mr='4'
             fontSize='16'
-            _groupHover={{
-              color: useColorModeValue('gray.900', 'white'),
-            }}
             as={icon}
           />
         )}
@@ -218,20 +215,7 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const user = useUserStore.getState().user;
-  let hasAvatar = user.account && user.account.account_images != null;
-  const userRole = {
-    'pl': {
-      'admin': 'Admin',
-      'student': 'Student',
-      'teacher': 'Prowadzący',
-    },
-    'en': {
-      'admin': 'Admin',
-      'student': 'Student',
-      'teacher': 'Teacher',
-    },
-
-  };
+  const hasAvatar = user.account && user.account.account_images != null;
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const generateRouteSuggestions = () => {
@@ -239,12 +223,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     routes.map((route) => {
       if (route.subRoutes) {
         route.subRoutes.map((subRoute) => {
-          if (subRoute.permission.includes('*') || subRoute.permission.includes(user.role!)) {
+          if (subRoute.permission.includes('*' as UserRole) || subRoute.permission.includes(user.role as UserRole)) {
             routeNames.push(t(subRoute.key));
           }
         });
       }
-      if (route.permission.includes('*') || route.permission.includes(user.role!)) {
+      if (route.permission.includes('*' as UserRole) || route.permission.includes(user.role! as UserRole)) {
         routeNames.push(t(route.key));
       }
     });
@@ -259,7 +243,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       }
     });
     if (route) {
-      navigate(route.path);
+      if (route.permission.includes('*' as UserRole)) {
+        navigate(route.path);
+      } else {
+        navigate(`/${user.role}${route.path}`);
+      }
     }
   };
 
@@ -334,14 +322,13 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   ml='2'>
                   <Flex>
                     <Text fontSize='sm' fontWeight='medium'>
-                      {user.first_name.length > 10 ? user.first_name.slice(0, 10) + '...' : user.first_name}
+                      {user.first_name?.length > 10 ? user.first_name.slice(0, 10) + '...' : user.first_name}
                     </Text>
 
                   </Flex>
                   <Text fontSize='xs' color='gray.600'>
                     {
-                      //@ts-ignore
-                      userRole[i18n.language][user.role]
+                      t(user.role)
                     }
                   </Text>
                 </VStack>

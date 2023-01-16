@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Input, List } from '@chakra-ui/react';
+import { Box, List, useColorModeValue } from '@chakra-ui/react';
 import SearchBar from './search-bar';
 import { motion } from 'framer-motion';
 
 type AutocompleteSearchbarProps = {
   suggestions: any[],
   onSuggestionSelected: (suggestion: any) => void
-}
+} & React.ComponentProps<typeof SearchBar>;
 
 const AutocompleteSearchbar = ({ suggestions, onSuggestionSelected, ...rest }: AutocompleteSearchbarProps) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<any>([]);
@@ -59,7 +59,8 @@ const AutocompleteSearchbar = ({ suggestions, onSuggestionSelected, ...rest }: A
         break;
     }
   };
-  const ref = React.useRef<HTMLInputElement>(null);
+  const ref = React.useRef<HTMLInputElement>(document.createElement('input'));
+  const hoverColor = useColorModeValue('gray.200', 'gray.700');
   return (
     <SearchBar onKeyDownInput={handleKeyPress} inputRef={ref} value={selectedSuggestion} position={'relative'} {...rest}
                onBlur={handleLostFocus}
@@ -77,11 +78,13 @@ const AutocompleteSearchbar = ({ suggestions, onSuggestionSelected, ...rest }: A
                 borderBottom={hasBottomBorder ? '1px solid' : ''}
                 borderColor={'inherit'}
                 w={'100%'} pl={10} pt={2}
-                bg={highlightedIndex === index ? 'gray.700' : 'gray.900'}
+                bg={highlightedIndex === index ?
+                  hoverColor :
+                  'inherit'}
                 h={'100%'}
                 key={suggestion}
                 cursor={'pointer'}
-                _hover={{ bg: 'gray.700' }}
+                _hover={{ hoverColor }}
                 onClick={() => {
                   onSuggestionSelected(suggestion);
                   ref.current.value = suggestion;

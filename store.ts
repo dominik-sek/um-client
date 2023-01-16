@@ -36,6 +36,7 @@ type UserData =
   gradebook: {
     gradebook_id: number;
     course: course,
+    semester: string;
     department_students: {
       department: {
         department_id: number;
@@ -45,7 +46,7 @@ type UserData =
         faculty: faculty;
       };
     };
-  }[];
+  }
 } & {
   course: course[];
 }
@@ -65,21 +66,30 @@ export interface IUserStore {
   clearUser: () => void;
 }
 
-let authStore = (set: any): IAuthStore => ({
+const initialAuthState = {
+  auth: false,
+  role: '',
+};
+const initialUserState = {
+  user: {} as UserData,
+};
+
+const authStore = (set: any): IAuthStore => ({
   auth: false,
   setAuth: (auth) => set({ auth }),
   role: '',
   setRole: role => (set({ role })),
   logout: () => {
-    set({ auth: false });
-    set({ role: '' });
+    set(initialAuthState);
   },
 });
 
-let userStore = (set: any): IUserStore => ({
+const userStore = (set: any, get: any): IUserStore => ({
   user: {} as UserData,
-  setUser: (user) => set({ user }),
-  clearUser: () => set({ user: {} }),
+  setUser: (user) => set({ user: user }),
+  clearUser: () => {
+    set(initialUserState);
+  },
 });
 export const useUserStore = create<IUserStore>()(devtools(persist(userStore, { name: 'user' })));
 export const useAuthStore = create<IAuthStore>()(persist(authStore, { name: 'auth' }));

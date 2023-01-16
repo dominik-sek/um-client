@@ -6,28 +6,32 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Heading, HStack, IconButton,
+  Heading,
+  HStack,
+  IconButton,
   Input,
   InputGroup,
   InputRightElement,
   Link,
   Stack,
-  Text, useColorMode,
+  Text,
+  useColorMode,
   useColorModeValue,
   useDisclosure,
   useToast,
-  VStack, Wrap,
+  VStack,
+  Wrap,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { MoonIcon, SunIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { loginUser } from '../../api/login-user';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { checkAuth } from '../../api/check-auth';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore, useUserStore } from '../../../store';
 import { fetchUserProfile } from '../../api/fetch-user-profile';
 import { useTranslation } from 'react-i18next';
-import { PL, GB } from 'country-flag-icons/react/3x2';
+import { GB, PL } from 'country-flag-icons/react/3x2';
 
 
 export default function Login() {
@@ -53,20 +57,32 @@ export default function Login() {
   const toast = useToast();
   const navigate = useNavigate();
   const { isOpen, onToggle, onClose } = useDisclosure();
+  const { colorMode, toggleColorMode } = useColorMode();
 
-  const { refetch, isLoading } = useQuery('loginUser', () => loginUser(username, password), {
-    enabled: false,
-    refetchOnWindowFocus: false,
-  });
   const { refetch: refetchProfile } = useQuery('fetchUserProfile', () => fetchUserProfile(), {
     enabled: false,
     refetchOnWindowFocus: false,
   });
+
   const { data: authData, refetch: refetchAuth } = useQuery('checkAuth', () => checkAuth(), {
     enabled: false,
     refetchOnWindowFocus: false,
   });
-  const { colorMode, toggleColorMode } = useColorMode();
+
+  const { mutate: LoginMutation, isLoading } = useMutation(loginUser, {
+    onSuccess: (data) => {
+      userAuth.setAuth(true);
+      userAuth.setRole(data.role);
+      refetchProfile().then((response) => {
+        userStore.setUser(response.data);
+      });
+      navigate('/', { replace: true });
+    },
+    onError: (error) => {
+      setFormError(true);
+    },
+
+  });
 
   const selectSampleAccount = (selection: string) => {
     switch (selection) {
@@ -101,19 +117,7 @@ export default function Login() {
       setFormError(true);
       return;
     }
-    refetch().then((response) => {
-      if (response.isSuccess) {
-        userAuth.setAuth(true);
-        userAuth.setRole(response.data.role);
-        refetchProfile().then((response) => {
-          userStore.setUser(response.data);
-        });
-
-        navigate('/');
-      } else {
-        setFormError(true);
-      }
-    });
+    LoginMutation({ username, password });
 
   };
 

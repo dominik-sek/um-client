@@ -1,4 +1,4 @@
-import { Box, BoxProps, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { Box, BoxProps, Input, InputGroup, InputLeftElement, useColorModeValue } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 
 interface SearchBarProps extends BoxProps {
@@ -17,7 +17,8 @@ const SearchBar = ({ onChange, value, inputRef, onKeyDownInput, ...rest }: Searc
           pointerEvents='none'
           children={<SearchIcon color='gray.300' />}
         />
-        <Input type='text' ref={inputRef} placeholder='Search' onChange={onChange} />
+        <Input bg={useColorModeValue('gray.200', 'gray.700')} type='search' ref={inputRef} placeholder='Search'
+               onChange={onChange} />
         {rest.children}
       </InputGroup>
     </Box>

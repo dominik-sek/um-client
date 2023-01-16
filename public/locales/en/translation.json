@@ -27,5 +27,8 @@
     "manage-timetables": "Manage Timetables",
     "courses": "Courses",
     "manage-courses": "Manage Courses"
-  }
+  },
+  "admin": "Admin",
+  "student": "Student",
+  "teacher": "Teacher"
 }

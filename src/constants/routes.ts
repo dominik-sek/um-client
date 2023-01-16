@@ -1,7 +1,6 @@
 import { UserRole } from '../enums/user-role';
-import { FiHome, FiSettings } from 'react-icons/fi';
+import { FiHome } from 'react-icons/fi';
 import { IconType } from 'react-icons';
-import i18next from 'i18next';
 import {
   AiFillProfile,
   AiOutlineBook,
@@ -11,7 +10,6 @@ import {
   HiBuildingLibrary,
   MdBuild,
 } from 'react-icons/all';
-import { useTranslation } from 'react-i18next';
 
 export interface Route {
   path: string;
@@ -39,16 +37,9 @@ export const routes: Route[] = [
     key: 'routes.profile',
   },
   {
-    path: '/settings',
-    name: 'Settings',
-    permission: ['*'],
-    icon: FiSettings,
-    key: 'routes.settings',
-  },
-  {
     path: '/grades',
     name: 'Grades',
-    permission: ['*'],
+    permission: [UserRole.ADMIN, UserRole.TEACHER, UserRole.STUDENT],
     icon: AiOutlineBook,
     key: 'routes.grades',
   },
