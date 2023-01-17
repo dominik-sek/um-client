@@ -11,7 +11,7 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs,
+  Tabs, useToast,
 } from '@chakra-ui/react';
 import React from 'react';
 import { account, address, contact, course, faculty, person, personal } from '@prisma/client';
@@ -39,27 +39,32 @@ type personCoalesced = person & {
 const EditUserModal = (props: UserModalProps) => {
   const { user } = props;
   const { account, address, contact, course, faculty, personal } = props.user;
-  //remove all id fields
+  const toast = useToast();
   const [editedPerson, setEditedPerson] = React.useState<personCoalesced>(user);
-  const [showSuccess, setShowSuccess] = React.useState(false);
-  const [showError, setShowError] = React.useState(false);
-  console.log(editedPerson);
   const { mutate, isLoading, error } = useMutation(updateUserProfile, {
     onSuccess: () => {
-      setShowSuccess(true);
-      setTimeout(() => {
-        setShowSuccess(false);
-        props.refetch();
-        props.onClose();
-
-      }, 1500);
+      toast({
+        title: 'User updated.',
+        description: 'We\'ve updated the user\'s profile.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'top-right',
+      });
+      props.refetch();
+      props.onClose();
     },
     onError: () => {
-      setShowError(true);
-      setTimeout(() => {
-        setShowError(false);
-        props.onClose();
-      }, 1500);
+      toast({
+        title: 'An error occurred.',
+        description: 'We\'ve encountered an error while updating the user\'s profile.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        position: 'top-right',
+      });
+      props.onClose();
+
     },
   });
 
@@ -73,17 +78,6 @@ const EditUserModal = (props: UserModalProps) => {
 
       <ModalOverlay />
       <ModalContent position={'relative'}>
-        <Message
-          variant={'success'}
-          show={showSuccess}
-          message={'Successfully edited user profile'}
-        />
-        <Message
-          variant={'error'}
-          show={showError}
-          message={'An error occurred while editing user profile'}
-        />
-
         <ModalHeader>{user.first_name} {user.last_name}</ModalHeader>
         <ModalCloseButton />
         <Tabs isFitted>

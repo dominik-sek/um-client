@@ -1,4 +1,4 @@
-import { Heading, Text } from '@chakra-ui/react';
+import { Heading, Text, useToast, Wrap } from '@chakra-ui/react';
 import React from 'react';
 import { person } from '@prisma/client';
 import { useMutation } from 'react-query';
@@ -14,14 +14,30 @@ interface UserModalProps {
 }
 
 const DeleteUserModal = (props: UserModalProps) => {
-
+  const toast = useToast();
   const { mutate, isLoading, error } = useMutation(removePerson, {
     onSuccess: () => {
+      toast({
+        title: 'User deleted.',
+        description: 'We\'ve deleted the user\'s profile.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'top-right',
+      });
       props.onClose();
       props.refetch();
     },
     onError: () => {
-      console.log('error', error);
+      toast({
+        title: 'An error occurred.',
+        description: 'We\'ve encountered an error while deleting the user\'s profile.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        position: 'top-right',
+      });
+      props.onClose();
     },
   });
 
@@ -36,7 +52,8 @@ const DeleteUserModal = (props: UserModalProps) => {
                  footerText={<Heading size={'sm'} textAlign={'center'}>Are you sure you want to delete the following
                    users?</Heading>
                  }>
-      <ul>
+
+      <Wrap display={'flex'} flexDir={'column'} justifyContent={'center'} alignItems={'center'}>
         {
           props.usersChecked.map((id) => {
             const user = props.users.find((user) => user.id.toString() === id);
@@ -47,7 +64,7 @@ const DeleteUserModal = (props: UserModalProps) => {
             );
           })
         }
-      </ul>
+      </Wrap>
 
     </DangerModal>
   );

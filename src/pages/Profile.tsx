@@ -24,7 +24,7 @@ import {
   Stack,
   Text,
   useColorModeValue,
-  useDisclosure,
+  useDisclosure, useToast,
   VStack,
   Wrap,
 } from '@chakra-ui/react';
@@ -106,15 +106,31 @@ const Profile = () => {
   const { refetch: refetchProfile } = useQuery('userProfile', fetchUserProfile, {
     enabled: false,
   });
+  const toast = useToast();
   const { mutate } = useMutation(updateUserProfile, {
     onSuccess: (data) => {
       refetchProfile().then(
         (res) => {
+          toast({
+            title: 'Profile updated',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          });
           setUser(res.data);
           setEditBasicInfo(false);
           setChangedUser({});
         },
       );
+    },
+    onError: (error) => {
+      toast({
+        title: 'Profile update failed',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top-right',
+      });
     },
   });
   const handleConfirm = () => {

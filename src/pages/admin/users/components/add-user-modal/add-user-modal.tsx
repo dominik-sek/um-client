@@ -8,7 +8,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useColorModeValue,
+  useColorModeValue, useToast,
 } from '@chakra-ui/react';
 import { Step, Steps, useSteps } from 'chakra-ui-steps';
 import React, { useState } from 'react';
@@ -36,24 +36,29 @@ const AddUserModal = (props: UserModalProps) => {
   const { nextStep, prevStep, reset, activeStep } = useSteps({
     initialStep: 0,
   });
-  const [showSuccess, setShowSuccess] = React.useState(false);
-  const [showError, setShowError] = React.useState(false);
+
   const { mutate: addPerson, isLoading: isAddingPerson, error: addingError } = useMutation(addNewPerson, {
     onSuccess: () => {
-      setShowSuccess(true);
-      setTimeout(() => {
-        setShowSuccess(false);
-        props.refetch();
-        props.onClose();
-        reset();
-      }, 1200);
+      toast({
+        title: 'User added successfully.',
+        status: 'success',
+        duration: 4000,
+        isClosable: true,
+        position: 'top-right',
+      })
+      props.refetch();
+      props.onClose();
+      reset();
     },
     onError: () => {
-      setShowError(true);
-      setTimeout(() => {
-        setShowError(false);
-        props.onClose();
-      }, 1500);
+      toast({
+        title: 'There has been a problem adding the user.',
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+        position: 'top-right',
+      })
+      props.onClose();
     },
   });
 
@@ -67,20 +72,12 @@ const AddUserModal = (props: UserModalProps) => {
     console.log(formValues);
     addPerson({ userProfile: formValues });
   };
+  const toast = useToast();
+
   return (
     <Modal isOpen={props.isOpen} onClose={handleClose} size={{ base: 'md', md: '2xl', lg: '4xl' }}>
       <ModalOverlay />
       <ModalContent position={'relative'}>
-        <Message
-          variant={'success'}
-          show={showSuccess}
-          message={'Successfully added a new user'}
-        />
-        <Message
-          variant={'error'}
-          show={showError}
-          message={'An error occurred while adding a new user'}
-        />
         <ModalHeader p={8} display={'flex'} flexDir={'column'} gap={4}>
           <Steps activeStep={activeStep} trackColor={useColorModeValue('', 'gray.200')}>
             {steps.map((step, index) => (
