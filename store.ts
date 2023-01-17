@@ -1,20 +1,7 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
-import {
-  person,
-  contact,
-  address,
-  personal,
-  library_access,
-  faculty,
-  gradebook,
-  account,
-  account_images,
-  course,
-  department,
-  department_students,
-} from '@prisma/client';
+import { account_images, address, contact, course, faculty, library_access, person, personal } from '@prisma/client';
 
 type UserData =
   person

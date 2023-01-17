@@ -34,7 +34,7 @@ import { useMutation, useQuery } from 'react-query';
 import { addGrade, deleteGrade, fetchAllGradesByTeacher } from '../api/grades';
 import { useUserStore } from '../../store';
 import DangerModal from '../components/shared/danger-modal';
-import { fetchStudentsCourses } from '../api/fetch-students-courses';
+import { fetchStudentsCourses } from '../api/courses';
 import { grade } from '@prisma/client';
 import { DataCard } from '../components/shared/data-card';
 

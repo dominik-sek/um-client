@@ -1,14 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Checkbox,
-  Flex,
-  Stack,
-  Text,
-  useColorModeValue,
-  Wrap,
-} from '@chakra-ui/react';
+import { Avatar, Box, Button, Checkbox, Flex, Stack, Text, useColorModeValue, Wrap } from '@chakra-ui/react';
 import React from 'react';
 
 interface UserProps {
@@ -24,6 +14,7 @@ interface UserProps {
 interface UserCardProps {
   user: UserProps;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onEditClick: (userId: number) => void;
 }
 
 
@@ -83,7 +74,8 @@ export default function UserCard(props: UserCardProps) {
               transform: 'translateY(-2px)',
               boxShadow: 'lg',
             }}
-          >
+            onClick={() => props.onEditClick(user.id)}>
+
             Edit
           </Button>
         </Box>

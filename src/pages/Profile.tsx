@@ -31,12 +31,12 @@ import {
 import { useUserStore } from '../../store';
 import { EditIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import React from 'react';
-import { changeUserAvatar } from '../api/change-user-avatar';
 import { useMutation, useQuery } from 'react-query';
-import { fetchUserProfile } from '../api/fetch-user-profile';
 import { FiDelete, FiSave } from 'react-icons/all';
 import { useTranslation } from 'react-i18next';
-import { updateUserProfile } from '../api/update-user-profile';
+import { changeUserAvatar } from '../api/users';
+import { fetchUserProfile } from '../api/users';
+import { updateUserProfile } from '../api/users';
 
 const addressKeyMap = {
   en: {

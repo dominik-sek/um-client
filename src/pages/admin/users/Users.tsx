@@ -1,22 +1,21 @@
 import { useQuery } from 'react-query';
-import { fetchAllUsers } from '../../api/fetch-all-users';
-import UserCard from '../../components/shared/user-card';
+import { fetchAllUsers } from '../../../api/users';
+import UserCard from '../../../components/shared/user-card';
 import { Box, Button, Flex, HStack, Spinner, Text, useDisclosure, Wrap } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { motion } from 'framer-motion';
 import React from 'react';
-import { useUserStore } from '../../../store';
+import { useUserStore } from '../../../../store';
 import AddUserModal from './components/add-user-modal/add-user-modal';
-import SearchBar from '../../components/shared/search/search-bar';
+import SearchBar from '../../../components/shared/search/search-bar';
 import DeleteUserModal from './components/delete-user-modal/delete-user-modal';
-import { useLocation } from 'react-router-dom';
+import EditUserModal from './components/edit-user-modal/edit-user.modal';
 
 const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JSX.Element => {
   const userStore = useUserStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
-  const { state } = useLocation();
-  console.log(state);
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
 
   const { data, isLoading, isError, error, refetch } = useQuery('users', fetchAllUsers, {
     refetchOnWindowFocus: false,
@@ -30,7 +29,6 @@ const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JS
     if (data) {
       setFilteredUsers(data);
     }
-
   }, [data]);
 
   React.useEffect(() => {
@@ -55,6 +53,14 @@ const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JS
     } else {
       setCheckedItems(checkedItems.filter(item => item !== value));
     }
+  };
+
+  const [editUser, setEditUser] = React.useState<any>({});
+
+  const handleEditClick = (userId: number) => {
+    const user = data?.find((user: any) => user.id === userId);
+    setEditUser(user);
+    onEditOpen();
   };
 
   return (
@@ -96,6 +102,7 @@ const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JS
           <DeleteUserModal isOpen={isDeleteOpen} onClose={onDeleteClose}
                            usersChecked={checkedItems} users={data}
                            refetch={refetch} />
+          <EditUserModal isOpen={isEditOpen} onClose={onEditClose} user={editUser} refetch={refetch} />
         </motion.div>
 
       </Box>
@@ -117,7 +124,8 @@ const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JS
                   key={user.id}
                 >
                   <UserCard user={user} key={user.id} onChange={(e) => handleChecked(e)}
-                  />
+                            onEditClick={(userId) => handleEditClick(userId)} />
+
                 </motion.div>
               );
             })

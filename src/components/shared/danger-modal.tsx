@@ -12,9 +12,9 @@ import {
 import { WarningTwoIcon } from '@chakra-ui/icons';
 import React from 'react';
 
-function DangerModal(props: { isOpen: boolean, onClose: () => void, handleConfirm: () => void, children: any, heading?: string, dangerText?: string }) {
+function DangerModal(props: { footerText?: JSX.Element, isOpen: boolean, onClose: () => void, handleConfirm: () => void, children: any, heading?: string, dangerText?: string }) {
   return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose}>
+    <Modal isOpen={props.isOpen} onClose={props.onClose} size={{ base: 'md', md: '2xl', lg: '4xl' }}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader w={'100%'} display={'flex'} flexDir={'column'} justifyContent={'center'}
@@ -27,10 +27,9 @@ function DangerModal(props: { isOpen: boolean, onClose: () => void, handleConfir
         <ModalBody>
           {props.children}
         </ModalBody>
-
         <Divider />
-
         <ModalFooter gap={6}>
+          {props.footerText ?? 'This action cannot be undone'}
           <Button colorScheme={'green'} variant={'solid'} onClick={props.handleConfirm}>Yes</Button>
           <Button colorScheme={'red'} variant={'solid'} onClick={props.onClose}>No</Button>
         </ModalFooter>

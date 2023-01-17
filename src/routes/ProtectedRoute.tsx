@@ -16,7 +16,7 @@ export const ProtectedRoute = ({ allowed }: ProtectedRouteProps): JSX.Element =>
     return <LoadingScreen />;
   }
   if (isError) {
-    console.log('error', error);
+    return <Navigate to='/login' />;
   }
   const isAuthed = data.auth;
   const userRole = data.role;

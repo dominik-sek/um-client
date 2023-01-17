@@ -1,20 +1,9 @@
 import { FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
 import React, { useCallback, useEffect } from 'react';
-import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-
-
-const schema = yup.object().shape({
-  city: yup.string().min(3, 'City must be at least 3 characters long').required(),
-  state: yup.string().min(3, 'State must be at least 3 characters long').required(),
-  country: yup.string().matches(/^[A-Z]{2}$/, 'Country code must be exactly 2 charaters long').required(),
-  postal_code: yup.string().matches(/^[0-9]{2}-[0-9]{3}$/, 'Invalid postal code'),
-  street: yup.string().required(),
-  email: yup.string().email().required(),
-  phone_number: yup.string().required().matches(/^[0-9]{9}$/, 'Phone number must be exactly 9 digits long'),
-
-});
+import { addressContactSchema as schema } from '../../../../../../../forms/yup-schemas';
+import onFormValueChange from '../../../../../../functions/onFormValueChange';
 
 export const AddAddressStep = (props: { setFormValues: (updatedFormValues: any) => void, formValues: any, setAllowNext: (b: boolean) => void }) => {
   const { setFormValues, formValues, setAllowNext } = props;
@@ -27,15 +16,7 @@ export const AddAddressStep = (props: { setFormValues: (updatedFormValues: any) 
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     fieldName: string,
     propertyName?: string) => {
-
-    const newField = { [fieldName]: event.target.value };
-    if (propertyName) {
-      const updatedFormValues = { ...formValues, [propertyName]: { ...formValues[propertyName], ...newField } };
-      setFormValues(updatedFormValues);
-    } else {
-      const updatedFormValues = { ...formValues, ...newField };
-      setFormValues(updatedFormValues);
-    }
+    onFormValueChange(event, fieldName, formValues, setFormValues, propertyName);
   }, [formValues, setFormValues]);
 
   useEffect(() => {

@@ -29,7 +29,7 @@ import { useMutation, useQuery } from 'react-query';
 import { checkAuth } from '../api/check-auth';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore, useUserStore } from '../../store';
-import { fetchUserProfile } from '../api/fetch-user-profile';
+import { fetchUserProfile } from '../api/users';
 import { useTranslation } from 'react-i18next';
 import { GB, PL } from 'country-flag-icons/react/3x2';
 

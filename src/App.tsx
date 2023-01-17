@@ -8,11 +8,15 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Logout from './pages/Logout';
 import AdminPanel from './pages/admin/AdminPanel';
-import Users from './pages/admin/Users';
+import Users from './pages/admin/users/Users';
 import StudentPanel from './pages/student/StudentPanel';
 import TeacherPanel from './pages/teacher/TeacherPanel';
 import Grades from './pages/Grades';
 import StudentGrades from './pages/student/StudentGrades';
+import Faculties from './pages/admin/faculties/Faculties';
+import Departments from './pages/admin/departments/Departments';
+import Courses from './pages/admin/courses/Courses';
+import Timetables from './pages/admin/departments/Timetables';
 
 function App() {
 
@@ -36,8 +40,12 @@ function App() {
 
               <Route element={<ProtectedRoute allowed={'admin'} />}>
                 <Route path={'/admin/'} element={<AdminPanel />} />
-                <Route path={'/admin/users/manage/'} element={<Users />} />
                 <Route path={'/admin/grades'} element={<Grades />} />
+                <Route path={'/admin/users/manage/'} element={<Users />} />
+                <Route path={'/admin/faculties/manage/'} element={<Faculties />} />
+                <Route path={'/admin/departments/manage/'} element={<Departments />} />
+                <Route path={'/admin/departments/timetables/manage/'} element={<Timetables />} />
+                <Route path={'/admin/courses/manage/'} element={<Courses />} />
 
               </Route>
               <Route element={<ProtectedRoute allowed={'student'} />}>
