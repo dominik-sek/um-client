@@ -1,18 +1,18 @@
 import { Flex } from '@chakra-ui/react';
 import { Route, Routes } from 'react-router-dom';
-import { ProtectedRoute } from './components/Routes/ProtectedRoute';
-import Login from './components/Pages/Login';
+import { ProtectedRoute } from './routes/ProtectedRoute';
+import Login from './pages/Login';
 import NavigationLayout from './layout/NavigationLayout';
-import NotFound from './components/Pages/NotFound';
-import Home from './components/Pages/Home';
-import Profile from './components/Pages/Profile';
-import Logout from './components/Pages/Logout';
-import AdminPanel from './components/Pages/admin/AdminPanel';
-import Users from './components/Pages/admin/users/Users';
-import StudentPanel from './components/Pages/student/StudentPanel';
-import TeacherPanel from './components/Pages/teacher/TeacherPanel';
-import Grades from './components/Pages/Grades';
-import StudentGrades from './components/Pages/student/StudentGrades';
+import NotFound from './pages/NotFound';
+import Home from './pages/Home';
+import Profile from './pages/Profile';
+import Logout from './pages/Logout';
+import AdminPanel from './pages/admin/AdminPanel';
+import Users from './pages/admin/Users';
+import StudentPanel from './pages/student/StudentPanel';
+import TeacherPanel from './pages/teacher/TeacherPanel';
+import Grades from './pages/Grades';
+import StudentGrades from './pages/student/StudentGrades';
 
 function App() {
 

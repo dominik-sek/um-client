@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { checkAuth } from '../../api/check-auth';
-import LoadingScreen from '../shared/loading-screen';
+import { checkAuth } from '../api/check-auth';
+import LoadingScreen from '../components/shared/loading-screen';
 
 interface ProtectedRouteProps {
   allowed: string | string[];
@@ -10,7 +10,7 @@ interface ProtectedRouteProps {
 export const ProtectedRoute = ({ allowed }: ProtectedRouteProps): JSX.Element => {
 
   const { data, isLoading, isError, error } = useQuery('checkAuth', checkAuth, {
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
   });
   if (isLoading) {
     return <LoadingScreen />;

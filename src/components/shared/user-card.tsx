@@ -1,6 +1,18 @@
-import { Avatar, Box, Button, Flex, Stack, Text, useColorModeValue, Wrap } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  Stack,
+  Text,
+  useColorModeValue,
+  Wrap,
+} from '@chakra-ui/react';
+import React from 'react';
 
 interface UserProps {
+  id: number;
   account: any;
   avatar: string;
   first_name: string;
@@ -11,6 +23,7 @@ interface UserProps {
 
 interface UserCardProps {
   user: UserProps;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 
@@ -18,7 +31,8 @@ export default function UserCard(props: UserCardProps) {
   const { user } = props;
 
   return (
-    <Wrap py={6}>
+
+    <Wrap py={2}>
       <Box
         w={'full'}
         minW={'20rem'}
@@ -28,6 +42,9 @@ export default function UserCard(props: UserCardProps) {
         rounded={'md'}
         overflow={'hidden'}>
 
+        <Wrap w={'100%'} display={'flex'} justifyContent={'flex-end'} pr={4} pt={4}>
+          <Checkbox size={'lg'} value={user.id} onChange={props.onChange} />
+        </Wrap>
         <Flex justify={'center'} mt={12}>
           <Avatar
             size={'xl'}
@@ -38,6 +55,7 @@ export default function UserCard(props: UserCardProps) {
               border: '2px solid white',
             }}
           />
+
         </Flex>
 
         <Box p={6}>

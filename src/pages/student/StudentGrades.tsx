@@ -19,10 +19,10 @@ import {
   Wrap,
 } from '@chakra-ui/react';
 import React from 'react';
-import { useUserStore } from '../../../../store';
-import { fetchAllGradesByStudent } from '../../../api/grades';
+import { useUserStore } from '../../../store';
+import { fetchAllGradesByStudent } from '../../api/grades';
 import { useQuery } from 'react-query';
-import { GradeColors } from '../../../constants/grade-colors';
+import { GradeColors } from '../../constants/grade-colors';
 import { FiRefreshCcw } from 'react-icons/all';
 
 const StudentGrades = () => {

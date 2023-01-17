@@ -21,13 +21,13 @@ import {
 } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import React from 'react';
-import { useUserStore } from '../../../../store';
+import { useUserStore } from '../../../store';
 import { Link } from 'react-router-dom';
-import { fetchAllGradesByStudent } from '../../../api/grades';
+import { fetchAllGradesByStudent } from '../../api/grades';
 import { useQuery } from 'react-query';
-import { fetchCourseByGradebook } from '../../../api/courses';
-import LoadingScreen from '../../shared/loading-screen';
-import { GradeColors } from '../../../constants/grade-colors';
+import { fetchCourseByGradebook } from '../../api/courses';
+import LoadingScreen from '../../components/shared/loading-screen';
+import { GradeColors } from '../../constants/grade-colors';
 
 
 const StudentPanel = () => {

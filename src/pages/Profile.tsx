@@ -28,16 +28,15 @@ import {
   VStack,
   Wrap,
 } from '@chakra-ui/react';
-import { useUserStore } from '../../../store';
+import { useUserStore } from '../../store';
 import { EditIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import React from 'react';
-import { changeUserAvatar } from '../../api/change-user-avatar';
+import { changeUserAvatar } from '../api/change-user-avatar';
 import { useMutation, useQuery } from 'react-query';
-import { fetchUserProfile } from '../../api/fetch-user-profile';
+import { fetchUserProfile } from '../api/fetch-user-profile';
 import { FiDelete, FiSave } from 'react-icons/all';
 import { useTranslation } from 'react-i18next';
-import { Simulate } from 'react-dom/test-utils';
-import { updateUserProfile } from '../../api/update-user-profile';
+import { updateUserProfile } from '../api/update-user-profile';
 
 const addressKeyMap = {
   en: {

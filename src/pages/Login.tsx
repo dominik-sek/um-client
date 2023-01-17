@@ -24,12 +24,12 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { MoonIcon, SunIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { loginUser } from '../../api/login-user';
+import { loginUser } from '../api/login-user';
 import { useMutation, useQuery } from 'react-query';
-import { checkAuth } from '../../api/check-auth';
+import { checkAuth } from '../api/check-auth';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore, useUserStore } from '../../../store';
-import { fetchUserProfile } from '../../api/fetch-user-profile';
+import { useAuthStore, useUserStore } from '../../store';
+import { fetchUserProfile } from '../api/fetch-user-profile';
 import { useTranslation } from 'react-i18next';
 import { GB, PL } from 'country-flag-icons/react/3x2';
 
@@ -76,6 +76,7 @@ export default function Login() {
       refetchProfile().then((response) => {
         userStore.setUser(response.data);
       });
+      //loading screen
       navigate('/', { replace: true });
     },
     onError: (error) => {

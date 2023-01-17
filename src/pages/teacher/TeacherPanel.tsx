@@ -18,12 +18,12 @@ import {
 } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import React from 'react';
-import { useUserStore } from '../../../../store';
-import { fetchStudentsCourses } from '../../../api/fetch-students-courses';
+import { useUserStore } from '../../../store';
+import { fetchStudentsCourses } from '../../api/fetch-students-courses';
 import { useQuery } from 'react-query';
-import LoadingScreen from '../../shared/loading-screen';
+import LoadingScreen from '../../components/shared/loading-screen';
 import { Link } from 'react-router-dom';
-import { fetchAllGradesByTeacher } from '../../../api/grades';
+import { fetchAllGradesByTeacher } from '../../api/grades';
 import { grade } from '@prisma/client';
 
 type courseGrades = {

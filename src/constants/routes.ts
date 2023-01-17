@@ -58,7 +58,6 @@ export const routes: Route[] = [
         icon: MdBuild,
         key: 'routes.manage-users',
       },
-
     ],
 
   },

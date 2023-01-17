@@ -234,6 +234,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     });
     return routeNames;
   };
+
   const handleSuggestionSelect = (suggestion: string) => {
     const route = routes.find((route) => {
       if (route.subRoutes) {
@@ -243,11 +244,25 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       }
     });
     if (route) {
-      if (route.permission.includes('*' as UserRole)) {
-        navigate(route.path);
+      if (route.subRoutes) {
+        const subRoute = route.subRoutes.find((subRoute) => t(subRoute.key) === suggestion);
+        if (subRoute) {
+          if (subRoute.permission.includes('*' as UserRole)) {
+            navigate(subRoute.path);
+          }
+          if (subRoute.permission.includes(user.role as UserRole)) {
+            navigate(`/${user.role}${subRoute.path}`);
+          }
+        }
       } else {
-        navigate(`/${user.role}${route.path}`);
+        if (route.permission.includes('*' as UserRole)) {
+          navigate(route.path);
+        }
+        if (route.permission.includes(user.role as UserRole)) {
+          navigate(`/${user.role}${route.path}`);
+        }
       }
+
     }
   };
 

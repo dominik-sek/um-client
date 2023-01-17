@@ -61,6 +61,7 @@ const AutocompleteSearchbar = ({ suggestions, onSuggestionSelected, ...rest }: A
   };
   const ref = React.useRef<HTMLInputElement>(document.createElement('input'));
   const hoverColor = useColorModeValue('gray.200', 'gray.700');
+  const suggestionBg = useColorModeValue('white', 'gray.800');
   return (
     <SearchBar onKeyDownInput={handleKeyPress} inputRef={ref} value={selectedSuggestion} position={'relative'} {...rest}
                onBlur={handleLostFocus}
@@ -80,7 +81,7 @@ const AutocompleteSearchbar = ({ suggestions, onSuggestionSelected, ...rest }: A
                 w={'100%'} pl={10} pt={2}
                 bg={highlightedIndex === index ?
                   hoverColor :
-                  'inherit'}
+                  suggestionBg}
                 h={'100%'}
                 key={suggestion}
                 cursor={'pointer'}

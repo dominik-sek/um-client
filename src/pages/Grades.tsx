@@ -1,11 +1,7 @@
 import {
   Box,
   Button,
-  Card,
-  CardBody,
-  CardHeader,
   FormControl,
-  Heading,
   IconButton,
   Menu,
   MenuButton,
@@ -30,17 +26,17 @@ import {
   Th,
   Thead,
   Tr,
-  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
 import { AddIcon, ChevronDownIcon, DeleteIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useMutation, useQuery } from 'react-query';
-import { addGrade, deleteGrade, fetchAllGradesByTeacher } from '../../api/grades';
-import { useUserStore } from '../../../store';
-import DangerModal from '../shared/danger-modal';
-import { fetchStudentsCourses } from '../../api/fetch-students-courses';
-import { grade, course } from '@prisma/client';
+import { addGrade, deleteGrade, fetchAllGradesByTeacher } from '../api/grades';
+import { useUserStore } from '../../store';
+import DangerModal from '../components/shared/danger-modal';
+import { fetchStudentsCourses } from '../api/fetch-students-courses';
+import { grade } from '@prisma/client';
+import { DataCard } from '../components/shared/data-card';
 
 type CourseGrades = {
   grade: GradeWithIndex[];
@@ -115,8 +111,6 @@ const Grades = () => {
       grade: gradeRef.current.value,
     });
   };
-
-
   const handleCancelAdd = () => {
     setPickedCourse(null);
     setPickedUser(null);
@@ -151,7 +145,7 @@ const Grades = () => {
             <MenuList>
               {
                 courseStudents.map((course: { course_students: any[]; id: any; }) => (
-                  course.course_students.map((student) => {
+                  course?.course_students.map((student) => {
                     const gradebook = student.gradebook;
                     const person = gradebook.person;
                     if (course.id === pickedCourse?.id) {
@@ -196,7 +190,7 @@ const Grades = () => {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme={'blue'} mr={3} onClick={onAddClose}>
+            <Button colorScheme={'blue'} mr={3} onClick={handleCancelAdd}>
               Close
             </Button>
 
@@ -221,62 +215,47 @@ const Grades = () => {
       </DangerModal>
 
       {editGradeModal()}
-      <Card w={'100%'}
-            bg={useColorModeValue('white', 'gray.800')}
-      >
-        <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
-          <Heading size={'md'}>Grades</Heading>
-          <Button colorScheme={'blue'} leftIcon={<AddIcon />} onClick={handleAddGrade}>
-            Add grade
-          </Button>
-        </CardHeader>
-        <CardBody
-          display={'flex'}
-          justifyContent={'center'}
-          gap={4}>
-          <FormControl>
-            {gradesLoading ? <Spinner /> : (
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>Course name</Th>
-                    <Th>Gradebook ID</Th>
-                    <Th>Date</Th>
-                    <Th>Grade</Th>
-                    <Th></Th>
-                  </Tr>
-                </Thead>
+      <DataCard header={'Grades'} hasButton
+                button={<Button colorScheme={'blue'} leftIcon={<AddIcon />} onClick={handleAddGrade}>
+                  Add grade
+                </Button>}>
+        {gradesLoading ? <Spinner /> : (
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>Course name</Th>
+                <Th>Gradebook ID</Th>
+                <Th>Date</Th>
+                <Th>Grade</Th>
+                <Th></Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {
+                grades.map((grade: CourseGrades) =>
+                  grade.grade.map((innerGrade: GradeWithIndex) => {
+                    return (
+                      <Tr key={innerGrade.entry_time.toString()}>
+                        <Td>{grade.name} - {grade.type}</Td>
+                        <Td>{innerGrade.gradebook_id}</Td>
+                        <Td>{innerGrade.entry_time.toString()}</Td>
+                        <Td>{innerGrade.grade}</Td>
+                        {user.role !== 'student' && (
+                          <Td>
+                            <GradeMenu gradebookId={innerGrade.gradebook_id} courseId={innerGrade.course_id}
+                                       handleDelete={() => handleDeleteGrade(innerGrade.grade_Id)} />
+                          </Td>
+                        )}
+                      </Tr>
+                    );
+                  }),
+                )
+              }
+            </Tbody>
 
-
-                <Tbody>
-                  {
-                    grades.map((grade: CourseGrades) =>
-                      grade.grade.map((innerGrade: GradeWithIndex) => {
-                        console.log(innerGrade);
-                        return (
-                          <Tr key={innerGrade.entry_time.toString()}>
-                            <Td>{grade.name} - {grade.type}</Td>
-                            <Td>{innerGrade.gradebook_id}</Td>
-                            <Td>{innerGrade.entry_time.toString()}</Td>
-                            <Td>{innerGrade.grade}</Td>
-                            {user.role !== 'student' && (
-                              <Td>
-                                <GradeMenu gradebookId={innerGrade.gradebook_id} courseId={innerGrade.course_id}
-                                           handleDelete={() => handleDeleteGrade(innerGrade.grade_Id)} />
-                              </Td>
-                            )}
-                          </Tr>
-                        );
-                      }),
-                    )
-                  }
-                </Tbody>
-
-              </Table>
-            )}
-          </FormControl>
-        </CardBody>
-      </Card>
+          </Table>
+        )}
+      </DataCard>
     </Box>
   );
 
