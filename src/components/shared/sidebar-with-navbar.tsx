@@ -363,11 +363,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             <MenuList
               bg={useColorModeValue('white', 'gray.700')}
               borderColor={useColorModeValue('white', 'gray.700')}>
-              <Link as={RouterLink} to={'/profile'}><MenuItem>Profile & Settings</MenuItem></Link>
+              <Link as={RouterLink} to={'/profile'}><MenuItem>{t('profileSettings')}</MenuItem></Link>
               <MenuDivider
                 borderColor={useColorModeValue('gray.200', 'gray.600')}
               />
-              <Link as={RouterLink} to={'/logout'}><MenuItem>Sign Out</MenuItem></Link>
+              <Link as={RouterLink} to={'/logout'}><MenuItem>{t('signOut')}</MenuItem></Link>
             </MenuList>
           </Menu>
         </Flex>

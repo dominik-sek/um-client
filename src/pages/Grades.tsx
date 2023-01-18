@@ -38,6 +38,7 @@ import { fetchStudentsCourses } from '../api/courses';
 import { grade } from '@prisma/client';
 import { DataCard } from '../components/shared/data-card';
 import { fetchUserProfile } from '../api/users';
+import { useTranslation } from 'react-i18next';
 
 type CourseGrades = {
   grade: GradeWithIndex[];
@@ -78,6 +79,7 @@ const Grades = () => {
   const [deletedGrade, setDeletedGrade] = React.useState<any>(null);
   const [pickedCourse, setPickedCourse] = React.useState<any>();
   const [pickedUser, setPickedUser] = React.useState<any>();
+  const { t, i18n } = useTranslation();
   const {
     data: courseStudents,
     isLoading: courseStudentsLoading,
@@ -157,12 +159,13 @@ const Grades = () => {
     setPickedUser(null);
     onAddClose();
   };
+
   const gradeRef = React.useRef<any>(null);
   const pickCourse = () => {
     return (
       <Menu matchWidth>
         <MenuButton width={'100%'} as={Button} rightIcon={<ChevronDownIcon />}>
-          {pickedCourse ? `${pickedCourse.name} - ${pickedCourse.type}` : 'Pick course'}
+          {pickedCourse ? `${pickedCourse.name} - ${pickedCourse.type}` : t('pickCourse')}
         </MenuButton>
         {userLoading ? <Spinner /> : (
           <MenuList>
@@ -181,7 +184,7 @@ const Grades = () => {
     return (
       <Menu matchWidth>
         <MenuButton disabled={!pickedCourse} width={'100%'} as={Button} rightIcon={<ChevronDownIcon />}>
-          {pickedUser ? `${pickedUser.gradebook.person.last_name} - ${pickedUser.gradebook.gradebook_id}` : 'Pick user'}
+          {pickedUser ? `${pickedUser.gradebook.person.last_name} - ${pickedUser.gradebook.gradebook_id}` : t('pickUser')}
         </MenuButton>
         {
           courseStudentsLoading ? <Spinner /> : (
@@ -213,10 +216,10 @@ const Grades = () => {
       <Modal isOpen={isAddOpen} onClose={onAddClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add grade</ModalHeader>
+          <ModalHeader>{t('addGrade')}</ModalHeader>
           <ModalBody>
             <FormControl>
-              <Text>Grade: </Text>
+              <Text>{t('grade')}: </Text>
               <NumberInput defaultValue={2.0} precision={1} min={2.0} max={5.0} step={0.5}>
                 <NumberInputField ref={gradeRef} />
                 <NumberInputStepper>
@@ -224,7 +227,7 @@ const Grades = () => {
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
-              <Text>Course:</Text>
+              <Text>{t('course')}:</Text>
               <Box width={'100%'}>
                 {pickCourse()}
               </Box>
@@ -234,11 +237,11 @@ const Grades = () => {
           </ModalBody>
           <ModalFooter>
             <Button colorScheme={'blue'} mr={3} onClick={handleCancelAdd}>
-              Close
+              {t('close')}
             </Button>
 
             <Button disabled={!pickedCourse || !pickedUser} colorScheme={'green'}
-                    onClick={handleSaveGrade}>Save</Button>
+                    onClick={handleSaveGrade}>{t('save')}</Button>
           </ModalFooter>
         </ModalContent>
 
@@ -258,18 +261,18 @@ const Grades = () => {
       </DangerModal>
 
       {editGradeModal()}
-      <DataCard header={'Grades'} hasButton
+      <DataCard header={t('grades')} hasButton
                 button={<Button colorScheme={'blue'} leftIcon={<AddIcon />} onClick={handleAddGrade}>
-                  Add grade
+                  {t('addGrade')}
                 </Button>}>
         {(gradesLoading || userLoading) ? <Spinner /> : (
           <Table>
             <Thead>
               <Tr>
-                <Th>Course name</Th>
-                <Th>Gradebook ID</Th>
-                <Th>Date</Th>
-                <Th>Grade</Th>
+                <Th>{t('courseName')}</Th>
+                <Th>{t('gradebookID')}</Th>
+                <Th>{t('date')}</Th>
+                <Th>{t('grade')}</Th>
                 <Th></Th>
               </Tr>
             </Thead>

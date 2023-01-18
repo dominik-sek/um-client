@@ -4,10 +4,10 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-import { StepsTheme as Steps } from 'chakra-ui-steps';
 import './index.css';
 import './i18n';
 import LoadingScreen from './components/shared/loading-screen';
+import theme from '../theme';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,11 +16,7 @@ const queryClient = new QueryClient({
     },
   },
 });
-const theme = extendTheme({
-  components: {
-    Steps,
-  },
-});
+
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

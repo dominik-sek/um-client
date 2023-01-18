@@ -28,6 +28,7 @@ import { useQuery } from 'react-query';
 import { fetchCourseByGradebook } from '../../api/courses';
 import LoadingScreen from '../../components/shared/loading-screen';
 import { GradeColors } from '../../constants/grade-colors';
+import { useTranslation } from 'react-i18next';
 
 
 const StudentPanel = () => {
@@ -51,13 +52,13 @@ const StudentPanel = () => {
   } = useQuery('fetchCourseByGradebook', () => fetchCourseByGradebook(gradebook?.gradebook_id), {
     refetchOnWindowFocus: false,
   });
+  const { t, i18n } = useTranslation();
 
   if (isLoading || coursesLoading) {
     return (
       <LoadingScreen />
     );
   } else {
-
 
     return (
       <Wrap
@@ -72,8 +73,8 @@ const StudentPanel = () => {
               user && (
                 <VStack alignItems={'flex-start'}>
                   <Heading size={'sm'}>{user.first_name} {user.last_name}</Heading>
-                  <Heading size={'sm'}>Gradebook ID: {gradebook.gradebook_id}</Heading>
-                  <Heading size={'sm'}>Semester: {gradebook.semester}</Heading>
+                  <Heading size={'sm'}>{t('gradebookID')}: {gradebook.gradebook_id}</Heading>
+                  <Heading size={'sm'}>{t('semester')}: {gradebook.semester}</Heading>
                 </VStack>
 
               )
@@ -95,14 +96,14 @@ const StudentPanel = () => {
                   <Spinner />
                 ) : (
                   <Wrap>
-                    <Heading size={'md'}>Courses you&apos;re enrolled into</Heading>
+                    <Heading size={'md'}>{t('coursesEnrolled')}</Heading>
                     <Table>
                       <Thead>
                         <Tr>
-                          <Th>Course name</Th>
-                          <Th>Course type</Th>
-                          <Th>Semester</Th>
-                          <Th>ECTS</Th>
+                          <Th>{t('courseName')}</Th>
+                          <Th>{t('courseType')}</Th>
+                          <Th>{t('semester')}</Th>
+                          <Th>{t('courseCredits')}</Th>
                         </Tr>
                       </Thead>
                       <Tbody>
@@ -130,7 +131,7 @@ const StudentPanel = () => {
               bg={cardBg}
         >
           <CardHeader display={'flex'} justifyContent={'space-between'}>
-            <Heading size={'md'}>Recent grades</Heading>
+            <Heading size={'md'}>{t('recentGrades')}</Heading>
             <IconButton as={Link} to={'/student/grades'} aria-label={'Go to all grades '} icon={<ArrowForwardIcon />} />
           </CardHeader>
           <Divider />
@@ -143,9 +144,9 @@ const StudentPanel = () => {
                 <Table w={'100%'}>
                   <Thead>
                     <Tr>
-                      <Th>Course name</Th>
-                      <Th>Course type</Th>
-                      <Th>Grade</Th>
+                      <Th>{t('courseName')}</Th>
+                      <Th>{t('courseType')}</Th>
+                      <Th>{t('grade')}</Th>
                     </Tr>
                   </Thead>
                   <Tbody>

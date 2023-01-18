@@ -93,8 +93,6 @@ const userStatus = {
   },
 };
 const Profile = () => {
-
-
   const user = useUserStore(state => state.user);
   const setUser = useUserStore(state => state.setUser);
   const [editBasicInfo, setEditBasicInfo] = React.useState(false);
@@ -202,7 +200,7 @@ const Profile = () => {
           });
       });
   };
-
+  const bgInput = useColorModeValue('gray.200', 'gray.700');
   return (
 
     <Flex
@@ -294,7 +292,7 @@ const Profile = () => {
             <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
               <VStack display={'flex'} w={'100%'} flexDir={'column'}>
                 <Box display={'flex'} w={'100%'} justifyContent={'space-between'}>
-                  <Heading size={'md'}>Personal</Heading>
+                  <Heading size={'md'}>{t('profile.personalInfo')}</Heading>
                 </Box>
                 <Divider />
               </VStack>
@@ -320,7 +318,7 @@ const Profile = () => {
                             personalKeyMap[i18n.language][key]}:</FormLabel>
                           <Input
                             variant={'outlined'}
-                            bg={useColorModeValue('gray.200', 'gray.700')}
+                            bg={bgInput}
                             key={key}
                             //@ts-ignore
                             value={value}
@@ -365,7 +363,7 @@ const Profile = () => {
             <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
               <VStack display={'flex'} w={'100%'} flexDir={'column'}>
                 <Box display={'flex'} w={'100%'} justifyContent={'space-between'}>
-                  <Heading size={'md'}>Basic Information</Heading>
+                  <Heading size={'md'}>{t('profile.addressAndContact')}</Heading>
                   <EditIcon cursor={'pointer'} boxSize={6} onClick={() => setEditBasicInfo(!editBasicInfo)} />
                 </Box>
                 <Divider />
@@ -384,7 +382,7 @@ const Profile = () => {
                     flexDir={'column'}
                     gap={4}
                   >
-                    <Heading as={'h5'} size={'md'}>Address</Heading>
+                    <Heading as={'h5'} size={'md'}>{t('profile.address')}</Heading>
                     <Divider />
                     {
                       Object.entries(user.address).map(([key, value]) => {
@@ -417,7 +415,7 @@ const Profile = () => {
                     flexDir={'column'}
                     gap={4}
                   >
-                    <Heading as={'h5'} size={'md'}>Contact</Heading>
+                    <Heading as={'h5'} size={'md'}>{t('profile.contact')}</Heading>
                     <Divider />
 
                     {
@@ -468,8 +466,9 @@ const Profile = () => {
               p={4}
             >
               <Button leftIcon={<FiSave />} minW={'25%'} colorScheme={'blue'}
-                      disabled={!hasChanged} onClick={onOpen}>Save</Button>
-              <Button leftIcon={<FiDelete />} minW={'25%'} colorScheme={'red'} onClick={handleDiscard}>Discard</Button>
+                      disabled={!hasChanged} onClick={onOpen}>{t('save')}</Button>
+              <Button leftIcon={<FiDelete />} minW={'25%'} colorScheme={'red'}
+                      onClick={handleDiscard}>{t('discard')}</Button>
             </ButtonGroup>
           </Card>
 

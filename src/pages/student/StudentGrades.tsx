@@ -24,6 +24,7 @@ import { fetchAllGradesByStudent } from '../../api/grades';
 import { useQuery } from 'react-query';
 import { GradeColors } from '../../constants/grade-colors';
 import { FiRefreshCcw } from 'react-icons/all';
+import { useTranslation } from 'react-i18next';
 
 const StudentGrades = () => {
 
@@ -44,6 +45,7 @@ const StudentGrades = () => {
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
   };
+  const { t, i18n } = useTranslation();
   return (
     <Wrap
       flexDir={'column'}
@@ -57,7 +59,7 @@ const StudentGrades = () => {
           <VStack alignItems={'flex-start'} width={'100%'} gap={2}>
             <HStack display={'flex'} justifyContent={'space-between'} w={'100%'}>
               <Heading size={'md'}>
-                Your grades
+                {t('yourGrades')}
               </Heading>
               <IconButton aria-label={'Refresh grades'} onClick={() => {
                 refetch();
@@ -82,9 +84,9 @@ const StudentGrades = () => {
               <Table w={'100%'}>
                 <Thead>
                   <Tr>
-                    <Th>Course name</Th>
-                    <Th>Course type</Th>
-                    <Th>Grade</Th>
+                    <Th>{t('courseName')}</Th>
+                    <Th>{t('courseType')}</Th>
+                    <Th>{t('grade')}</Th>
                   </Tr>
                 </Thead>
                 <Tbody>

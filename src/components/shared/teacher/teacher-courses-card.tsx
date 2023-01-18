@@ -16,9 +16,11 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { fetchUserProfile } from '../../../api/users';
+import { useTranslation } from 'react-i18next';
 
 export const TeacherCoursesCard = () => {
   const cardBg = useColorModeValue('white', 'gray.800');
+  const { t, i18n } = useTranslation();
   const { data: user, isLoading } = useQuery('profile', () => fetchUserProfile(), {
     refetchOnWindowFocus: false,
   });
@@ -27,7 +29,7 @@ export const TeacherCoursesCard = () => {
           bg={cardBg}
     >
       <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
-        <Heading size={'md'}>Your courses</Heading>
+        <Heading size={'md'}>{t('yourCourses')}</Heading>
       </CardHeader>
       <CardBody
         display={'flex'}
@@ -38,9 +40,9 @@ export const TeacherCoursesCard = () => {
             <Table>
               <Thead>
                 <Tr>
-                  <Th>Course name</Th>
-                  <Th>Course type</Th>
-                  <Th>Semester</Th>
+                  <Th>{t('courseName')}</Th>
+                  <Th>{t('courseType')}</Th>
+                  <Th>{t('semester')}</Th>
                 </Tr>
               </Thead>
 

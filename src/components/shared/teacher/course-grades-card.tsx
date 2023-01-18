@@ -18,6 +18,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { fetchAllGradesByTeacher } from '../../../api/grades';
 import { useAuthStore } from '../../../../store';
+import { useTranslation } from 'react-i18next';
 
 type courseGrades = {
   grade: grade[];
@@ -35,13 +36,13 @@ export const CourseGradesCard = () => {
   } = useQuery('fetchAllGradesByTeacher', fetchAllGradesByTeacher, {
     refetchOnWindowFocus: false,
   });
-
+  const { t, i18n } = useTranslation();
   return (
     <Card w={'100%'}
           bg={cardBg}
     >
       <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
-        <Heading size={'md'}>Grades</Heading>
+        <Heading size={'md'}>{t('grades')}</Heading>
         <Link to={`/${role}/grades`}> <IconButton aria-label='Go to grades' icon={<ArrowForwardIcon />} /></Link>
       </CardHeader>
       <CardBody
@@ -53,10 +54,11 @@ export const CourseGradesCard = () => {
             <Table>
               <Thead>
                 <Tr>
-                  <Th>Course name</Th>
-                  <Th>Gradebook ID</Th>
-                  <Th>Date</Th>
-                  <Th>Grade</Th>
+                  <Th>{t('courseName')}</Th>
+                  <Th>{t('gradebookID')}</Th>
+                  <Th>{t('date')}</Th>
+                  <Th>{t('grade')}</Th>
+
                 </Tr>
               </Thead>
 

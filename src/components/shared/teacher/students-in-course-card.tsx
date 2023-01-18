@@ -17,19 +17,20 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { fetchStudentsCourses } from '../../../api/courses';
+import { useTranslation } from 'react-i18next';
 
 export const StudentsInCourseCard = () => {
   const { data, isLoading, isError, error } = useQuery('fetchStudentsCourses', fetchStudentsCourses, {
     refetchOnWindowFocus: false,
   });
   const cardBg = useColorModeValue('white', 'gray.800');
-
+  const { t, i18n } = useTranslation();
   return (
     <Card w={'100%'}
           bg={cardBg}
     >
       <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
-        <Heading size={'md'}>Your students</Heading>
+        <Heading size={'md'}>{t('yourStudents')}</Heading>
       </CardHeader>
       <CardBody>
         {isLoading ? <Spinner /> : (
@@ -38,16 +39,15 @@ export const StudentsInCourseCard = () => {
               data.map((course: {
                 id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; type: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; course_students: { gradebook_id: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; gradebook: { person: { first_name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; last_name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; contact: { email: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; }; }; }; }[];
               }) => {
-                //fetch by course id
                 return (
                   <Flex key={course.id} direction={'column'} gap={4} w={'100%'}>
                     <Heading size={'md'}>{course.name} - {course.type}</Heading>
                     <Table>
                       <Thead>
                         <Tr>
-                          <Th>Gradebook ID</Th>
+                          <Th>{t('gradebookID')}</Th>
                           <Th>Student</Th>
-                          <Th>Student email</Th>
+                          <Th>{t('studentEmail')}</Th>
                         </Tr>
                       </Thead>
                       <Tbody>

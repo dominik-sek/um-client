@@ -21,8 +21,8 @@ export const ProtectedRoute = ({ allowed }: ProtectedRouteProps): JSX.Element =>
   if (isError) {
     return <Navigate to='/login' />;
   }
-  const isAuthed = data.auth;
-  const userRole = data.role;
+  const isAuthed = data?.auth;
+  const userRole = data?.role;
 
   const isRoleAuthed = isAuthed && (allowed.includes('*') || allowed.includes(userRole));
 
