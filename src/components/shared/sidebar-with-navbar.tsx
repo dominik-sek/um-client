@@ -49,10 +49,7 @@ export default function SidebarWithNavbar({ children }: { children: ReactNode; }
       minH='100vh'
       bg={useColorModeValue('gray.100', 'gray.900')}
     >
-      <SidebarContent
-        onClose={() => onClose}
-        display={{ base: 'none', md: 'block' }}
-      />
+
       <Drawer
         autoFocus={false}
         isOpen={isOpen}
@@ -60,13 +57,13 @@ export default function SidebarWithNavbar({ children }: { children: ReactNode; }
         onClose={onClose}
         returnFocusOnClose={false}
         onOverlayClick={onClose}
-        size='full'>
+        size='xs'>
         <DrawerContent>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p='4' pt='24'>
+      <Box p='4' pt='24'>
         {children}
       </Box>
     </Box>
@@ -90,7 +87,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       bg={useColorModeValue('white', 'gray.900')}
       borderRight='1px'
       borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-      w={{ base: 'full', md: 60 }}
+      w='full'
       pos='fixed'
       h='full'
       {...rest}>
@@ -98,7 +95,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <Text fontSize='2xl' fontFamily='monospace' fontWeight='bold'>
           Logo
         </Text>
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+        <CloseButton display={'flex'} onClick={onClose} />
       </Flex>
 
       <Accordion
@@ -277,7 +274,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   return (
     <Flex
       px={{ base: 4, md: 4 }}
-      pl={{ base: 4, md: 64 }}
+      pl='4'
       alignItems='center'
       pos='fixed'
       width={'100%'}
@@ -290,7 +287,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       justifyContent={{ base: 'space-between', md: 'space-between' }}
       {...rest}>
       <IconButton
-        display={{ base: 'flex', md: 'none' }}
+        display='flex'
         onClick={onOpen}
         variant='outline'
         aria-label='open menu'

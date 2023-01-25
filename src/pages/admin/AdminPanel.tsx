@@ -10,7 +10,6 @@ const AdminPanel = (): JSX.Element => {
   const { data, isLoading } = useQuery('profile', () => fetchUserProfile(), {
     refetchOnWindowFocus: false,
   });
-
   if (isLoading) {
     return (
       <LoadingScreen />
@@ -19,7 +18,7 @@ const AdminPanel = (): JSX.Element => {
 
   return (
     <Flex flexDir={'column'} gap={4}>
-      {data.course ? (
+      {data.course && data.course.length > 0 ? (
           <Wrap>
             <CourseGradesCard />
             <StudentsInCourseCard />
@@ -31,7 +30,7 @@ const AdminPanel = (): JSX.Element => {
         )}
 
       <Wrap>
-        
+
       </Wrap>
 
     </Flex>

@@ -16,7 +16,6 @@ import { useTranslation } from 'react-i18next';
 import { AddAddressStep, AddBasicStep, CheckAndFinishStep } from './steps';
 import { useMutation } from 'react-query';
 import { addNewPerson } from '../../../../../api/users';
-import Message from '../../../../../components/shared/message';
 
 interface UserModalProps {
   isOpen: boolean;
@@ -45,7 +44,7 @@ const AddUserModal = (props: UserModalProps) => {
         duration: 4000,
         isClosable: true,
         position: 'top-right',
-      })
+      });
       props.refetch();
       props.onClose();
       reset();
@@ -57,18 +56,18 @@ const AddUserModal = (props: UserModalProps) => {
         duration: 4000,
         isClosable: true,
         position: 'top-right',
-      })
+      });
       props.onClose();
     },
   });
-
+  console.log(formValues);
   const handleClose = () => {
     setFormValues({});
     props.onClose();
     reset();
     setAllowNext(false);
   };
-  const closeAndReset = () => {
+  const saveAndReset = () => {
     console.log(formValues);
     addPerson({ userProfile: formValues });
   };
@@ -98,7 +97,7 @@ const AddUserModal = (props: UserModalProps) => {
             Previous
           </Button>
           {activeStep === steps.length - 1 ? (
-            <Button colorScheme='green' isLoading={isAddingPerson} onClick={closeAndReset}>
+            <Button colorScheme='green' isLoading={isAddingPerson} onClick={saveAndReset}>
               Finish
             </Button>
           ) : (

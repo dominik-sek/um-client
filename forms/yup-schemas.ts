@@ -68,8 +68,15 @@ const addressContactSchema = yup.object().shape({
   email: yup.string().email().required(),
   phone_number: yup.string().required().matches(/^[0-9]{9}$/, 'Phone number must be exactly 9 digits long'),
 });
+const passwordChangeSchema = yup.object().shape({
+  password: yup.string().min(8, 'Password must be at least 8 characters long').required(),
+  password_confirmation: yup.string().test('passwords-match', 'Passwords must match', function(value) {
+    return this.parent.password === value;
+  }),
+});
 
 export {
   personalSchema,
   addressContactSchema,
+  passwordChangeSchema,
 };

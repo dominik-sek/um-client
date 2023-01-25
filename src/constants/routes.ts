@@ -121,7 +121,41 @@ export const routes: Route[] = [
       },
 
     ],
-
   },
+  // {
+  //   path: '/payments',
+  //   name: 'payments',
+  //   permission: [UserRole.ADMIN],
+  //   icon: AiOutlineBook,
+  //   key: 'routes.payments',
+  //   subRoutes: [
+  //     {
+  //       path: '/courses/manage',
+  //       name: 'Manage payments',
+  //       permission: [UserRole.ADMIN],
+  //       icon: MdBuild,
+  //       key: 'routes.manage-courses',
+  //     },
+  //
+  //   ],
+  // },
+
+  // {
+  //   path: '/applications',
+  //   name: 'applications',
+  //   permission: [UserRole.ADMIN],
+  //   icon: AiOutlineBook,
+  //   key: 'routes.applications',
+  //   subRoutes: [
+  //     {
+  //       path: '/courses/manage',
+  //       name: 'Manage payments',
+  //       permission: [UserRole.ADMIN],
+  //       icon: MdBuild,
+  //       key: 'routes.manage-courses',
+  //     },
+  //
+  //   ],
+  // },
 
 ];

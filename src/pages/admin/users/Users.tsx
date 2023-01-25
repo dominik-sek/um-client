@@ -10,6 +10,9 @@ import AddUserModal from './components/add-user-modal/add-user-modal';
 import SearchBar from '../../../components/shared/search/search-bar';
 import DeleteUserModal from './components/delete-user-modal/delete-user-modal';
 import EditUserModal from './components/edit-user-modal/edit-user.modal';
+import { FileUploader } from 'react-drag-drop-files';
+
+const fileTypes = ['csv', 'xls', 'xlsx'];
 
 const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JSX.Element => {
   const userStore = useUserStore();
@@ -30,7 +33,6 @@ const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JS
       setFilteredUsers(data);
     }
   }, [data]);
-
   React.useEffect(() => {
     if (data) {
       const results = data.filter((user: any) =>
@@ -40,8 +42,6 @@ const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JS
       setFilteredUsers(results);
     }
   }, [searchTerm]);
-
-
   if (isError) {
     console.log('error', error);
   }
@@ -54,34 +54,34 @@ const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JS
       setCheckedItems(checkedItems.filter(item => item !== value));
     }
   };
-
   const [editUser, setEditUser] = React.useState<any>({});
-
   const handleEditClick = (userId: number) => {
     const user = data?.find((user: any) => user.id === userId);
     setEditUser(user);
     onEditOpen();
   };
 
+  const [userFile, setUserFile] = React.useState<any>();
+  const handleFileUpload = (file: any) => {
+    setUserFile(file);
+  };
   return (
     <Flex flexDir={'column'} gap={10}>
       <Box
         w={'full'}
         p={4}
-        bg={''}
         display={'flex'}
-        flexDir={{ base: 'column', md: 'row' }}
-        gap={{ base: 4, md: 10 }}
+        flexDir={{ base: 'column', md: 'column' }}
+        gap={{ base: 4, md: 4 }}
         justifyContent={{ base: 'center', md: 'space-between' }}
         alignItems={{ base: 'center', md: 'flex-start' }}
+
       >
 
-        <Box w={'40%'}>
+        <Flex display={'flex'} justifyContent={'space-between'} w={'100%'}>
           <SearchBar onChange={handleChange} />
-        </Box>
-        <motion.div>
-          <HStack>
 
+          <Wrap spacing={4}>
             <Button leftIcon={<DeleteIcon />} colorScheme={'red'}
                     onClick={props.onOpenDelete ?? onDeleteOpen}
                     disabled={checkedItems.length === 0}
@@ -96,14 +96,22 @@ const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JS
                 Add new user
               </Text>
             </Button>
+          </Wrap>
 
-          </HStack>
-          <AddUserModal isOpen={isOpen} onClose={onClose} refetch={refetch} />
-          <DeleteUserModal isOpen={isDeleteOpen} onClose={onDeleteClose}
-                           usersChecked={checkedItems} users={data}
-                           refetch={refetch} />
-          <EditUserModal isOpen={isEditOpen} onClose={onEditClose} user={editUser} refetch={refetch} />
-        </motion.div>
+        </Flex>
+
+        <Flex display={'flex'} justifyContent={'space-between'} w={'100%'} border={'1px'} p={2}>
+          <FileUploader handleChange={handleFileUpload} name='file' types={fileTypes} />
+
+        </Flex>
+
+
+        <AddUserModal isOpen={isOpen} onClose={onClose} refetch={refetch} />
+        <DeleteUserModal isOpen={isDeleteOpen} onClose={onDeleteClose}
+                         usersChecked={checkedItems} users={data}
+                         refetch={refetch} />
+        <EditUserModal isOpen={isEditOpen} onClose={onEditClose} user={editUser} refetch={refetch} />
+
 
       </Box>
       {isLoading ? (

@@ -9,6 +9,7 @@ import { getAllDepartments } from '../../../../../../api/departments';
 
 export const AddBasicStep = (props: { setFormValues: (updatedFormValues: any) => void, formValues: any, setAllowNext: (b: boolean) => void }) => {
   const { setFormValues, formValues, setAllowNext } = props;
+
   const { register, handleSubmit, watch, formState: { errors, isValid }, control } = useForm({
     mode: 'all',
     resolver: yupResolver(schema),

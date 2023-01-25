@@ -21,6 +21,7 @@ export const ProtectedRoute = ({ allowed }: ProtectedRouteProps): JSX.Element =>
   if (isError) {
     return <Navigate to='/login' />;
   }
+
   const isAuthed = data?.auth;
   const userRole = data?.role;
 
@@ -32,5 +33,6 @@ export const ProtectedRoute = ({ allowed }: ProtectedRouteProps): JSX.Element =>
   if (!isRoleAuthed) {
     return <Navigate to={`/${userRole}`} replace />;
   }
+
   return <Outlet />;
 };

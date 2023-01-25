@@ -18,7 +18,6 @@ import { account, address, contact, course, faculty, person, personal } from '@p
 import { useMutation } from 'react-query';
 import { Address, Contact, Personal } from './tab-panels';
 import { updateUserProfile } from '../../../../../api/users';
-import Message from '../../../../../components/shared/message';
 
 interface UserModalProps {
   isOpen: boolean;

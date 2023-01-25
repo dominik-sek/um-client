@@ -26,8 +26,8 @@ export default function UserCard(props: UserCardProps) {
     <Wrap py={2}>
       <Box
         w={'full'}
-        minW={'20rem'}
-        minH={'15rem'}
+        minW={'15rem'}
+        minH={'10rem'}
         bg={useColorModeValue('white', 'gray.800')}
         boxShadow={'2xl'}
         rounded={'md'}

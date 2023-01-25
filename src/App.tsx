@@ -17,6 +17,8 @@ import Faculties from './pages/admin/faculties/Faculties';
 import Departments from './pages/admin/departments/Departments';
 import Courses from './pages/admin/courses/Courses';
 import Timetables from './pages/admin/departments/Timetables';
+import { ForgotPassword } from './pages/ForgotPassword';
+import { ResetPassword } from './pages/ResetPassword';
 
 function App() {
 
@@ -24,8 +26,11 @@ function App() {
     <Flex>
       {
         <Routes>
+          {/* /reset-password/:token */}
+          <Route path={'/reset-password/:token'} element={<ResetPassword />} />
 
           <Route path={'/login'} element={<Login />} />
+          <Route path={'/forgot-password'} element={<ForgotPassword />} />
 
           <Route element={<ProtectedRoute allowed={['*']} />}>
             <Route path={'/logout'} element={<Logout />} />

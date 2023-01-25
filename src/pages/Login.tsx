@@ -12,7 +12,6 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Link,
   Stack,
   Text,
   useColorMode,
@@ -32,7 +31,7 @@ import { useAuthStore, useUserStore } from '../../store';
 import { fetchUserProfile } from '../api/users';
 import { useTranslation } from 'react-i18next';
 import { GB, PL } from 'country-flag-icons/react/3x2';
-
+import { Link } from 'react-router-dom';
 
 export default function Login() {
   const { t, i18n } = useTranslation();
@@ -124,11 +123,11 @@ export default function Login() {
 
   return (
     <Flex
-      minH={'100vh'}
-      minW={'100vw'}
+      minH={'100%'}
+      minW={'100%'}
       align={'center'}
       justify={'center'}
-      flexDir={'column'}
+      flexDir={'row'}
       bg={useColorModeValue('gray.500', 'black.800')}>
 
       <Stack spacing={8} mx={'auto'} py={12} px={6}>
@@ -136,9 +135,24 @@ export default function Login() {
           rounded={'lg'}
           bg={useColorModeValue('white', 'gray.700')}
           boxShadow={'lg'}
-          p={8}>
+          p={8}
+        >
+          <VStack>
+            <Stack
+              flexDir={'column'}
+              spacing={4}
+            >
+              <Text>sample accounts:</Text>
+              <Code cursor={'pointer'} onClick={() => selectSampleAccount('student')}>student
+                account</Code>
+              <Code cursor={'pointer'} onClick={() => selectSampleAccount('teacher')}>teacher
+                account</Code>
+              <Code cursor={'pointer'} onClick={() => selectSampleAccount('admin')}>admin
+                account</Code>
 
-          <Stack spacing={4}>
+            </Stack>
+          </VStack>
+          <Stack spacing={10}>
             <HStack display={'flex'} justifyContent={'space-between'}>
               <Wrap>
                 <IconButton p={1} aria-label={'English'} icon={<GB />} onClick={() => changeLanguage('en')} />
@@ -157,21 +171,7 @@ export default function Login() {
               </Heading>
             </Stack>
 
-            <VStack>
-              <Stack
-                flexDir={'column'}
-                spacing={4}
-              >
-                <Text>sample accounts:</Text>
-                <Code cursor={'pointer'} onClick={() => selectSampleAccount('student')}>student
-                  account</Code>
-                <Code cursor={'pointer'} onClick={() => selectSampleAccount('teacher')}>teacher
-                  account</Code>
-                <Code cursor={'pointer'} onClick={() => selectSampleAccount('admin')}>admin
-                  account</Code>
 
-              </Stack>
-            </VStack>
             <FormControl isInvalid={formError}>
               <FormErrorMessage>
                 {t('login-screen.validate-error')}
@@ -205,8 +205,8 @@ export default function Login() {
               </FormControl>
             </FormControl>
 
-            <Text align={'right'}>
-              <Link color={'blue.400'}>{t('login-screen.forgot-password')}</Link>
+            <Text align={'right'} color={'blue.400'}>
+              <Link to={'/forgot-password'}>{t('login-screen.forgot-password')}</Link>
             </Text>
             <Stack spacing={10} pt={2}>
               <Button
@@ -224,11 +224,14 @@ export default function Login() {
               </Button>
             </Stack>
             <Stack pt={6} direction={'column'} align={'center'}>
-              <Link color={'red.400'}>{t('login-screen.contact-admin')}</Link>
+              <Link to={'/forgot-password'}><Text color={'red.400'}>{t('login-screen.contact-admin')}</Text></Link>
+
             </Stack>
           </Stack>
         </Box>
+
       </Stack>
+
 
     </Flex>
   );
