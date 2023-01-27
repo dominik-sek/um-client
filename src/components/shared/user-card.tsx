@@ -18,7 +18,7 @@ interface UserCardProps {
 }
 
 
-export default function UserCard(props: UserCardProps) {
+function UserCard(props: UserCardProps) {
   const { user } = props;
 
   return (
@@ -83,3 +83,5 @@ export default function UserCard(props: UserCardProps) {
     </Wrap>
   );
 }
+
+export default React.memo(UserCard);

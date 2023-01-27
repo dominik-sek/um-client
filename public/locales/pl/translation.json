@@ -26,7 +26,11 @@
     "manage-departments": "Zarządzaj kierunkami",
     "manage-timetables": "Zarządzaj planami zajęć",
     "courses": "Przedmioty",
-    "manage-courses": "Zarządzaj przedmiotami"
+    "manage-courses": "Zarządzaj przedmiotami",
+    "manage-documents": "Zarządzaj wnioskami",
+    "manage-printouts": "Zarządzaj wydrukami",
+    "documents": "Wnioski",
+    "printouts": "Wydruki"
   },
   "gradebookID": "Numer indeksu",
   "semester": "Semestr",
@@ -88,5 +92,6 @@
   "course": "Przedmiot",
   "close": "Zamknij",
   "pickCourse": "Wybierz przedmiot",
-  "pickUser": "Wybierz użytkownika"
+  "pickUser": "Wybierz użytkownika",
+  "fileUpload": "Prześlij plik zawierający użytkowników"
 }

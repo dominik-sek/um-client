@@ -11,7 +11,7 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs, useToast,
+  Tabs, Text, useToast,
 } from '@chakra-ui/react';
 import React from 'react';
 import { account, address, contact, course, faculty, person, personal } from '@prisma/client';
@@ -77,7 +77,10 @@ const EditUserModal = (props: UserModalProps) => {
 
       <ModalOverlay />
       <ModalContent position={'relative'}>
-        <ModalHeader>{user.first_name} {user.last_name}</ModalHeader>
+        <ModalHeader>
+          <Text>{user.first_name} {user.last_name}</Text>
+          <Text>{user.account?.username}</Text>
+        </ModalHeader>
         <ModalCloseButton />
         <Tabs isFitted>
           <TabList>

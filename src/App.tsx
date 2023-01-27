@@ -19,6 +19,8 @@ import Courses from './pages/admin/courses/Courses';
 import Timetables from './pages/admin/departments/Timetables';
 import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword } from './pages/ResetPassword';
+import Documents from './pages/admin/documents/Documents';
+import Printouts from './pages/printouts/Printouts';
 
 function App() {
 
@@ -51,15 +53,23 @@ function App() {
                 <Route path={'/admin/departments/manage/'} element={<Departments />} />
                 <Route path={'/admin/departments/timetables/manage/'} element={<Timetables />} />
                 <Route path={'/admin/courses/manage/'} element={<Courses />} />
+                <Route path={'/admin/documents/manage/'} element={<Documents />} />
+                <Route path={'/admin/printouts/manage/'} element={<Printouts />} />
 
               </Route>
               <Route element={<ProtectedRoute allowed={'student'} />}>
                 <Route path={'/student/'} element={<StudentPanel />} />
                 <Route path={'/student/grades'} element={<StudentGrades />} />
+                <Route path={'/student/printouts'} element={<Printouts />} />
+                <Route path={'/student/documents'} element={<Documents />} />
+                <Route path={'/student/payments'} element={<Documents />} />
               </Route>
               <Route element={<ProtectedRoute allowed={'teacher'} />}>
                 <Route path={'/teacher/'} element={<TeacherPanel />} />
                 <Route path={'/teacher/grades'} element={<Grades />} />
+                <Route path={'/teacher/documents/printouts/manage'} element={<Printouts />} />
+                <Route path={'/teacher/printouts'} element={<Printouts />} />
+                <Route path={'/teacher/documents'} element={<Documents />} />
               </Route>
             </Route>
           </Route>

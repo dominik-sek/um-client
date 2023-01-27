@@ -32,7 +32,7 @@ export const AddAddressStep = (props: { setFormValues: (updatedFormValues: any) 
         <FormLabel>City </FormLabel>
         <Input {...register('city')}
                defaultValue={formValues?.address?.city}
-               onChange={e => handleFormValuesChange(e, 'city', 'address')} required
+               onChange={e => handleFormValuesChange(e, 'city')} required
                placeholder='City'
                type={'text'} />
         <FormErrorMessage>{errors?.city?.message?.toString()}</FormErrorMessage>
@@ -42,7 +42,7 @@ export const AddAddressStep = (props: { setFormValues: (updatedFormValues: any) 
         <FormLabel>State </FormLabel>
         <Input {...register('state')}
                defaultValue={formValues?.address?.state}
-               onChange={e => handleFormValuesChange(e, 'state', 'address')} required
+               onChange={e => handleFormValuesChange(e, 'state')} required
                placeholder='State'
                type={'text'} />
         <FormErrorMessage>{errors?.state?.message?.toString()}</FormErrorMessage>
@@ -52,7 +52,7 @@ export const AddAddressStep = (props: { setFormValues: (updatedFormValues: any) 
         <FormLabel>Country code </FormLabel>
         <Input {...register('country')}
                defaultValue={formValues?.address?.country}
-               onChange={e => handleFormValuesChange(e, 'country', 'address')} required
+               onChange={e => handleFormValuesChange(e, 'country')} required
                placeholder='Country'
                type={'text'} />
         <FormErrorMessage>{errors?.country?.message?.toString()}</FormErrorMessage>
@@ -62,7 +62,7 @@ export const AddAddressStep = (props: { setFormValues: (updatedFormValues: any) 
         <FormLabel>Postal Code </FormLabel>
         <Input {...register('postal_code')}
                defaultValue={formValues?.address?.postal_code}
-               onChange={e => handleFormValuesChange(e, 'postal_code', 'address')} required
+               onChange={e => handleFormValuesChange(e, 'postal_code')} required
                placeholder='00-000'
                type={'text'} />
         <FormErrorMessage>{errors?.postal_code?.message?.toString()}</FormErrorMessage>
@@ -72,7 +72,7 @@ export const AddAddressStep = (props: { setFormValues: (updatedFormValues: any) 
         <FormLabel>Street </FormLabel>
         <Input {...register('street')}
                defaultValue={formValues?.address?.street}
-               onChange={e => handleFormValuesChange(e, 'street', 'address')} required
+               onChange={e => handleFormValuesChange(e, 'street')} required
                placeholder='Street'
                type={'text'} />
         <FormErrorMessage>{errors?.street?.message?.toString()}</FormErrorMessage>
@@ -82,7 +82,7 @@ export const AddAddressStep = (props: { setFormValues: (updatedFormValues: any) 
         <FormLabel>E-mail </FormLabel>
         <Input {...register('email')}
                defaultValue={formValues?.contact?.email}
-               onChange={e => handleFormValuesChange(e, 'email', 'contact')} required
+               onChange={e => handleFormValuesChange(e, 'email')} required
                placeholder='Email'
                type={'email'} />
         <FormErrorMessage>{errors?.email?.message?.toString()}</FormErrorMessage>
@@ -92,7 +92,7 @@ export const AddAddressStep = (props: { setFormValues: (updatedFormValues: any) 
         <FormLabel>Phone number </FormLabel>
         <Input {...register('phone_number')}
                defaultValue={formValues?.contact?.phone_number}
-               onChange={e => handleFormValuesChange(e, 'phone_number', 'contact')} required
+               onChange={e => handleFormValuesChange(e, 'phone_number')} required
                placeholder='Phone number'
                type={'text'} />
         <FormErrorMessage>{errors?.phone_number?.message?.toString()}</FormErrorMessage>

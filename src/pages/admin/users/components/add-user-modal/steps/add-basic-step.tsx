@@ -117,7 +117,7 @@ export const AddBasicStep = (props: { setFormValues: (updatedFormValues: any) =>
       <FormControl isRequired isInvalid={!!errors?.disabled?.message}>
         <FormLabel>Disabled: </FormLabel>
         <Select {...register('disabled', {
-          onChange: e => handleFormValuesChange(e, 'disabled', 'personal'),
+          onChange: e => handleFormValuesChange(e, 'disabled'),
         })} defaultValue={formValues.role ?? 'DEFAULT'}>
           <option hidden disabled value='DEFAULT'>Select disability status</option>
           <option value={'1'}>Yes</option>
@@ -129,7 +129,7 @@ export const AddBasicStep = (props: { setFormValues: (updatedFormValues: any) =>
       <FormControl isRequired isInvalid={!!errors?.married?.message}>
         <FormLabel>Marital status: </FormLabel>
         <Select {...register('married', {
-          onChange: e => handleFormValuesChange(e, 'married', 'personal'),
+          onChange: e => handleFormValuesChange(e, 'married'),
         })} defaultValue={formValues.role ?? 'DEFAULT'}>
           <option hidden disabled value='DEFAULT'>Select marital status</option>
           <option value={'1'}>Married</option>

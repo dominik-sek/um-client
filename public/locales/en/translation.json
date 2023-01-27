@@ -26,7 +26,11 @@
     "manage-departments": "Manage Departments",
     "manage-timetables": "Manage Timetables",
     "courses": "Courses",
-    "manage-courses": "Manage Courses"
+    "manage-courses": "Manage Courses",
+    "manage-documents": "Manage documents",
+    "manage-printouts": "Manage printouts",
+    "documents": "Documents",
+    "printouts": "Printouts"
   },
   "gradebookID": "Gradebook ID",
   "semester": "Semester",
@@ -87,5 +91,6 @@
   "course": "Course",
   "close": "Close",
   "pickCourse": "Pick course",
-  "pickUser": "Wybierz użytkownika"
+  "pickUser": "Pick user",
+  "fileUpload": "Upload a csv file containing users"
 }

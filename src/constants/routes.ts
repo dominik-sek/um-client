@@ -4,9 +4,11 @@ import { IconType } from 'react-icons';
 import {
   AiFillProfile,
   AiOutlineBook,
+  BiBriefcase,
   BsClock,
   BsPeopleFill,
   FaBuilding,
+  FaPrint,
   HiBuildingLibrary,
   MdBuild,
 } from 'react-icons/all';
@@ -130,32 +132,56 @@ export const routes: Route[] = [
   //   key: 'routes.payments',
   //   subRoutes: [
   //     {
-  //       path: '/courses/manage',
+  //       path: '/payments/manage',
   //       name: 'Manage payments',
   //       permission: [UserRole.ADMIN],
   //       icon: MdBuild,
-  //       key: 'routes.manage-courses',
+  //       key: 'routes.manage-payments',
   //     },
   //
   //   ],
   // },
 
-  // {
-  //   path: '/applications',
-  //   name: 'applications',
-  //   permission: [UserRole.ADMIN],
-  //   icon: AiOutlineBook,
-  //   key: 'routes.applications',
-  //   subRoutes: [
-  //     {
-  //       path: '/courses/manage',
-  //       name: 'Manage payments',
-  //       permission: [UserRole.ADMIN],
-  //       icon: MdBuild,
-  //       key: 'routes.manage-courses',
-  //     },
-  //
-  //   ],
-  // },
+  {
+    path: '/documents',
+    name: 'Documents',
+    permission: [],
+    icon: BiBriefcase,
+    key: 'routes.documents',
+    subRoutes: [],
+  },
+
+  {
+    path: '/documents',
+    name: 'Documents',
+    permission: [UserRole.ADMIN, UserRole.TEACHER, UserRole.STUDENT],
+    icon: BiBriefcase,
+    key: 'routes.documents',
+    subRoutes: [
+      {
+        path: '/documents/manage',
+        name: 'Manage documents',
+        permission: [UserRole.ADMIN],
+        icon: BiBriefcase,
+        key: 'routes.manage-documents',
+      },
+    ]
+  },
+  {
+    path: '/printouts',
+    name: 'Printouts',
+    permission: [UserRole.ADMIN, UserRole.TEACHER, UserRole.STUDENT],
+    icon: FaPrint,
+    key: 'routes.printouts',
+    subRoutes: [
+      {
+        path: '/printouts/manage',
+        name: 'Manage printouts',
+        permission: [UserRole.ADMIN, UserRole.TEACHER],
+        icon: FaPrint,
+        key: 'routes.manage-printouts',
+      },
+    ]
+  },
 
 ];

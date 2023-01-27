@@ -358,8 +358,8 @@ const Profile = () => {
           </Card>
 
 
-          <Card w={'100%'}
-                bg={useColorModeValue('white', 'gray.800')}>
+          <Card
+            bg={useColorModeValue('white', 'gray.800')}>
             <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
               <VStack display={'flex'} w={'100%'} flexDir={'column'}>
                 <Box display={'flex'} w={'100%'} justifyContent={'space-between'}>

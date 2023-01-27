@@ -113,6 +113,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             const roleBasedPath = `/${user.role}${route.path}`;
             if (route.permission.includes('*' as UserRole) || route.permission.includes(user.role as UserRole)) {
               if (route.subRoutes) {
+                console.log(route.subRoutes);
+                route.subRoutes = route.subRoutes.filter(subRoute => subRoute.permission.includes('*' as UserRole) || subRoute.permission.includes(user.role as UserRole));
+              }
+              if (route.subRoutes?.length > 0) {
                 return (
                   <AccordionItem
                     border={'none'}
@@ -147,13 +151,16 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 
                       {route.subRoutes.map((subRoute) => {
                         const subRoleBasedPath = `/${user.role}${subRoute.path}`;
-                        return (
-                          <NavItem mx={0} icon={subRoute.icon} to={subRoleBasedPath}
-                                   key={subRoute.name}>
-                            {
-                              t(subRoute.key)}
-                          </NavItem>
-                        );
+                        if (subRoute.permission.includes('*' as UserRole) || subRoute.permission.includes(user.role as UserRole)) {
+                          return (
+                            <NavItem mx={0} icon={subRoute.icon} to={subRoleBasedPath}
+                                     key={subRoute.name}>
+                              {
+                                t(subRoute.key)}
+                            </NavItem>
+                          );
+                        }
+
                       })}
 
                     </AccordionPanel>

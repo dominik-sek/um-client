@@ -4,36 +4,38 @@ import UserCard from '../../../components/shared/user-card';
 import { Box, Button, Flex, HStack, Spinner, Text, useDisclosure, Wrap } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useUserStore } from '../../../../store';
 import AddUserModal from './components/add-user-modal/add-user-modal';
 import SearchBar from '../../../components/shared/search/search-bar';
 import DeleteUserModal from './components/delete-user-modal/delete-user-modal';
 import EditUserModal from './components/edit-user-modal/edit-user.modal';
-import { FileUploader } from 'react-drag-drop-files';
+import { AddMultipleModal } from './components/add-multiple-modal/add-multiple-modal';
+import { FaUpload } from 'react-icons/all';
 
-const fileTypes = ['csv', 'xls', 'xlsx'];
 
-const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JSX.Element => {
+const Users = (): JSX.Element => {
   const userStore = useUserStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+  const { isOpen: isMultipleOpen, onOpen: onMultipleOpen, onClose: onMultipleClose } = useDisclosure();
 
   const { data, isLoading, isError, error, refetch } = useQuery('users', fetchAllUsers, {
     refetchOnWindowFocus: false,
   });
+
   const [searchTerm, setSearchTerm] = React.useState('');
   const [filteredUsers, setFilteredUsers] = React.useState<any[]>([]);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       setFilteredUsers(data);
     }
   }, [data]);
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       const results = data.filter((user: any) =>
         user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -61,10 +63,7 @@ const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JS
     onEditOpen();
   };
 
-  const [userFile, setUserFile] = React.useState<any>();
-  const handleFileUpload = (file: any) => {
-    setUserFile(file);
-  };
+
   return (
     <Flex flexDir={'column'} gap={10}>
       <Box
@@ -75,7 +74,6 @@ const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JS
         gap={{ base: 4, md: 4 }}
         justifyContent={{ base: 'center', md: 'space-between' }}
         alignItems={{ base: 'center', md: 'flex-start' }}
-
       >
 
         <Flex display={'flex'} justifyContent={'space-between'} w={'100%'}>
@@ -83,7 +81,7 @@ const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JS
 
           <Wrap spacing={4}>
             <Button leftIcon={<DeleteIcon />} colorScheme={'red'}
-                    onClick={props.onOpenDelete ?? onDeleteOpen}
+                    onClick={onDeleteOpen}
                     disabled={checkedItems.length === 0}
             >
               <Text>
@@ -91,27 +89,29 @@ const Users = (props: { onOpenAdd?: () => void, onOpenDelete?: () => void }): JS
               </Text>
             </Button>
             <Button id={'add-user-btn'} leftIcon={<AddIcon />} colorScheme={'whatsapp'}
-                    onClick={props.onOpenAdd ?? onOpen}>
+                    onClick={onOpen}>
               <Text>
                 Add new user
               </Text>
             </Button>
+
+            <Button id={'add-multiple-btn'} leftIcon={<FaUpload />} colorScheme={'telegram'}
+                    onClick={onMultipleOpen}>
+              <Text>
+                Add multiple users
+              </Text>
+            </Button>
+
           </Wrap>
 
         </Flex>
-
-        <Flex display={'flex'} justifyContent={'space-between'} w={'100%'} border={'1px'} p={2}>
-          <FileUploader handleChange={handleFileUpload} name='file' types={fileTypes} />
-
-        </Flex>
-
 
         <AddUserModal isOpen={isOpen} onClose={onClose} refetch={refetch} />
         <DeleteUserModal isOpen={isDeleteOpen} onClose={onDeleteClose}
                          usersChecked={checkedItems} users={data}
                          refetch={refetch} />
         <EditUserModal isOpen={isEditOpen} onClose={onEditClose} user={editUser} refetch={refetch} />
-
+        <AddMultipleModal isOpen={isMultipleOpen} onClose={onMultipleClose} />
 
       </Box>
       {isLoading ? (
