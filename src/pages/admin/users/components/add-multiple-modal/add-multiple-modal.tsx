@@ -72,12 +72,11 @@ export const AddMultipleModal = (props: { isOpen: boolean, onClose: () => void }
 
     setUploading(false);
   };
-
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add multiple users</ModalHeader>
+        <ModalHeader>{t('addMultipleUsers')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody display={'flex'} justifyContent={'center'}>
           {
@@ -87,7 +86,7 @@ export const AddMultipleModal = (props: { isOpen: boolean, onClose: () => void }
               <Wrap>
                 <FileUploader handleChange={handleFileUpload} name='file' types={fileTypes} label={t('fileUpload')} />
                 <HStack display={'flex'} justifyContent={'space-between'}>
-                  {userFile && <Text>{fileName} - found {userFile.length} user/s</Text>}
+                  {userFile && <Text>{fileName} - {t('found')} {userFile.length} {t('userOrUsers')}</Text>}
                   {userFile && <CloseButton color={'red'} onClick={() => setUserFile(undefined)} />}
                 </HStack>
               </Wrap>
@@ -96,10 +95,10 @@ export const AddMultipleModal = (props: { isOpen: boolean, onClose: () => void }
         </ModalBody>
         <ModalFooter>
           <Button disabled={!userFile} colorScheme='green' mr={3} onClick={validateAndUpload}>
-            Validate and upload
+            {t('validateAndUpload')}
           </Button>
           <Button colorScheme='red' mr={3} onClick={closeAndReset}>
-            Close
+            {t('close')}
           </Button>
         </ModalFooter>
       </ModalContent>

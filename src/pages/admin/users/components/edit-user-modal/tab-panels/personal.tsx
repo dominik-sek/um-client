@@ -4,6 +4,7 @@ import { personalSchema as schema } from '../../../../../../../forms/yup-schemas
 import { FormControl, FormErrorMessage, FormLabel, Input, Select } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import onFormValueChange from '../../../../../../functions/onFormValueChange';
+import { useTranslation } from 'react-i18next';
 
 export const Personal = (props: { formValues: any, setFormValues: (updated: any) => void }) => {
   const { formValues, setFormValues } = props;
@@ -20,11 +21,11 @@ export const Personal = (props: { formValues: any, setFormValues: (updated: any)
     propertyName?: string) => {
     onFormValueChange(event, fieldName, formValues, setFormValues, propertyName);
   }, [formValues, setFormValues]);
-
+  const { t } = useTranslation();
   return (
     <form>
       <FormControl isInvalid={!!errors?.first_name?.message}>
-        <FormLabel>First Name: </FormLabel>
+        <FormLabel>{t('profile.firstName')} </FormLabel>
         <Input {...register('first_name', {
           onChange: e => handleFormValuesChange(e, 'first_name'),
         })} defaultValue={first_name} />
@@ -32,7 +33,7 @@ export const Personal = (props: { formValues: any, setFormValues: (updated: any)
       </FormControl>
 
       <FormControl isInvalid={!!errors?.last_name?.message}>
-        <FormLabel>Last Name: </FormLabel>
+        <FormLabel>{t('profile.lastName')} </FormLabel>
         <Input {...register('last_name', {
           onChange: e => handleFormValuesChange(e, 'last_name'),
         })} defaultValue={last_name} />
@@ -40,7 +41,7 @@ export const Personal = (props: { formValues: any, setFormValues: (updated: any)
       </FormControl>
 
       <FormControl isInvalid={!!errors?.title?.message}>
-        <FormLabel>Title: </FormLabel>
+        <FormLabel>{t('profile.title')} </FormLabel>
         <Input {...register('title', {
           onChange: e => handleFormValuesChange(e, 'title'),
         })} defaultValue={title} />
@@ -48,7 +49,7 @@ export const Personal = (props: { formValues: any, setFormValues: (updated: any)
       </FormControl>
 
       <FormControl isInvalid={!!errors?.birth_date?.message}>
-        <FormLabel>Date of birth: </FormLabel>
+        <FormLabel>{t('profile.dateOfBirth')} </FormLabel>
         <Input {...register('birth_date', {
           onChange: e => handleFormValuesChange(e, 'birth_date'),
         })} defaultValue={birth_date} />

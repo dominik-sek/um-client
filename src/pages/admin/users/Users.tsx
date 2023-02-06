@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { fetchAllUsers } from '../../../api/users';
 import UserCard from '../../../components/shared/user-card';
-import { Box, Button, Flex, HStack, Spinner, Text, useDisclosure, Wrap } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Spinner, Text, useDisclosure, VStack, Wrap } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { motion } from 'framer-motion';
 import React, { useMemo, useEffect } from 'react';
@@ -12,6 +12,7 @@ import DeleteUserModal from './components/delete-user-modal/delete-user-modal';
 import EditUserModal from './components/edit-user-modal/edit-user.modal';
 import { AddMultipleModal } from './components/add-multiple-modal/add-multiple-modal';
 import { FaUpload } from 'react-icons/all';
+import { useTranslation } from 'react-i18next';
 
 
 const Users = (): JSX.Element => {
@@ -62,7 +63,7 @@ const Users = (): JSX.Element => {
     setEditUser(user);
     onEditOpen();
   };
-
+  const { t } = useTranslation();
 
   return (
     <Flex flexDir={'column'} gap={10}>
@@ -77,32 +78,33 @@ const Users = (): JSX.Element => {
       >
 
         <Flex display={'flex'} justifyContent={'space-between'} w={'100%'}>
-          <SearchBar onChange={handleChange} />
+          <SearchBar w={'50%'} onChange={handleChange} />
 
-          <Wrap spacing={4}>
+          <VStack display={'flex'} w={'40%'} alignItems={'end'}>
             <Button leftIcon={<DeleteIcon />} colorScheme={'red'}
                     onClick={onDeleteOpen}
                     disabled={checkedItems.length === 0}
+                    w={'50%'}
             >
               <Text>
-                Delete selected
+                {t('deleteSelected')}
               </Text>
             </Button>
-            <Button id={'add-user-btn'} leftIcon={<AddIcon />} colorScheme={'whatsapp'}
+            <Button w={'50%'} id={'add-user-btn'} leftIcon={<AddIcon />} colorScheme={'whatsapp'}
                     onClick={onOpen}>
               <Text>
-                Add new user
+                {t('addNewUser')}
               </Text>
             </Button>
 
-            <Button id={'add-multiple-btn'} leftIcon={<FaUpload />} colorScheme={'telegram'}
+            <Button w={'50%'} id={'add-multiple-btn'} leftIcon={<FaUpload />} colorScheme={'telegram'}
                     onClick={onMultipleOpen}>
               <Text>
-                Add multiple users
+                {t('addMultipleUsers')}
               </Text>
             </Button>
+          </VStack>
 
-          </Wrap>
 
         </Flex>
 
@@ -121,7 +123,7 @@ const Users = (): JSX.Element => {
       ) : (
         <Wrap spacing={8} w={'100%'} h={'100%'} align={'center'} justify={'space-around'}>
           {
-            filteredUsers.map((user: any, index: number) => {
+            filteredUsers.map((user: any) => {
               if (userStore.user.id === user.id) {
                 return null;
               }

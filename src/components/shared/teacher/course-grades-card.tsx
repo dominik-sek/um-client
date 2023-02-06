@@ -70,7 +70,7 @@ export const CourseGradesCard = () => {
                         <Tr key={innerGrade.entry_time.toString()}>
                           <Td>{course.name} - {course.type}</Td>
                           <Td>{innerGrade.gradebook_id}</Td>
-                          <Td>{innerGrade.entry_time.toString()}</Td>
+                          <Td>{new Date(innerGrade.entry_time).toLocaleDateString()}</Td>
                           <Td>{innerGrade.grade}</Td>
                         </Tr>
                       );

@@ -16,15 +16,17 @@ import { Link } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { forgotPassword } from '../api/password';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const ForgotPassword = () => {
   const toast = useToast();
   const [email, setEmail] = useState('');
+  const { t } = useTranslation();
   const { mutate: sendResetPasswordEmail } = useMutation(forgotPassword, {
     onSuccess: () => {
       toast({
-        title: 'Email sent',
-        description: 'Check your email for a link to reset your password',
+        title: t('success'),
+        description: t('forgotEmailSent'),
         status: 'success',
         duration: 5000,
         isClosable: true,
@@ -33,8 +35,8 @@ export const ForgotPassword = () => {
     },
     onError: () => {
       toast({
-        title: 'Error',
-        description: 'An error occurred while sending the email',
+        title: t('error'),
+        description: t('forgotEmailError'),
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -62,17 +64,17 @@ export const ForgotPassword = () => {
         <Heading lineHeight={1.1} fontSize={{ base: '2xl', md: '3xl' }}>
           <Flex gap={4}>
             <IconButton as={Link} to={'/login'} aria-label={'back'} icon={<ArrowBackIcon />} />
-            Forgot your password?
+            {t('forgotPassword')}
           </Flex>
         </Heading>
         <Text
           fontSize={{ base: 'sm', sm: 'md' }}
           color={useColorModeValue('gray.800', 'gray.400')}>
-          You&apos;ll get an email with a reset link
+          {t('forgotPasswordMessage')}
         </Text>
         <FormControl id='email'>
           <Input
-            placeholder='your-email@example.com'
+            placeholder={t('emailPlaceholder') ?? 'email'}
             _placeholder={{ color: 'gray.500' }}
             type='email'
             onChange={(e) => setEmail(e.target.value)}
@@ -86,7 +88,7 @@ export const ForgotPassword = () => {
               bg: 'blue.500',
             }}
             onClick={() => sendResetPasswordEmail(email)}>
-            Request Reset
+            {t('requestReset')}
           </Button>
         </Stack>
       </Stack>

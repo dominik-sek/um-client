@@ -1,5 +1,7 @@
 import { Avatar, Box, Button, Checkbox, Flex, Stack, Text, useColorModeValue, Wrap } from '@chakra-ui/react';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { UserRole } from '../../enums/user-role';
 
 interface UserProps {
   id: number;
@@ -20,7 +22,7 @@ interface UserCardProps {
 
 function UserCard(props: UserCardProps) {
   const { user } = props;
-
+  const { t } = useTranslation();
   return (
 
     <Wrap py={2}>
@@ -54,7 +56,7 @@ function UserCard(props: UserCardProps) {
             <Text textAlign={'center'} fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
               {user.first_name} {user.last_name}
             </Text>
-            <Text color={'gray.500'}>{user.role}</Text>
+            <Text color={'gray.500'}>{t(user.role as UserRole)}</Text>
           </Stack>
 
           <Stack direction={'row'} justify={'center'} spacing={6}>
@@ -76,7 +78,7 @@ function UserCard(props: UserCardProps) {
             }}
             onClick={() => props.onEditClick(user.id)}>
 
-            Edit
+            {t('edit')}
           </Button>
         </Box>
       </Box>

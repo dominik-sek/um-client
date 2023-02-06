@@ -2,6 +2,7 @@ import { Box, Table, Thead, Tbody, Tr, Td, Th, Spinner, Link, IconButton, Text }
 import { useQuery } from 'react-query';
 import { getAllPrintouts } from '../../../api/printouts';
 import { DeleteIcon, DownloadIcon } from '@chakra-ui/icons';
+import { Key, ReactElement, JSXElementConstructor, ReactFragment, ReactPortal, ReactNode } from 'react';
 
 export const PrintoutTable = (props: { userRole: string }) => {
   const isAuthorized = props.userRole && props.userRole === 'admin';
@@ -32,7 +33,7 @@ export const PrintoutTable = (props: { userRole: string }) => {
             <Tbody>
               {
                 data &&
-                data.map((printout) => {
+                data.map((printout: { id: Key | null | undefined; description: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | Iterable<ReactNode> | null | undefined; url: any; }) => {
                   return (
                     <Tr key={printout.id}>
                       <Td>{printout.description}</Td>

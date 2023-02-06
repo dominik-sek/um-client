@@ -4,6 +4,7 @@ import { addressContactSchema as schema } from '../../../../../../../forms/yup-s
 import { FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import onFormValueChange from '../../../../../../functions/onFormValueChange';
+import { useTranslation } from 'react-i18next';
 
 export const Address = (props: { formValues: any, setFormValues: (updated: any) => void }) => {
   const { formValues, setFormValues } = props;
@@ -18,11 +19,11 @@ export const Address = (props: { formValues: any, setFormValues: (updated: any) 
     propertyName?: string) => {
     onFormValueChange(event, fieldName, formValues, setFormValues, propertyName);
   }, [formValues, setFormValues]);
-
+  const { t } = useTranslation();
   return (
     <form>
       <FormControl isInvalid={!!errors?.city?.message}>
-        <FormLabel>City </FormLabel>
+        <FormLabel>{t('profile.city')} </FormLabel>
         <Input {...register('city')}
                defaultValue={formValues?.city}
                onChange={e => handleFormValuesChange(e, 'city', 'address')} required
@@ -31,7 +32,7 @@ export const Address = (props: { formValues: any, setFormValues: (updated: any) 
       </FormControl>
 
       <FormControl isInvalid={!!errors?.state?.message}>
-        <FormLabel>State </FormLabel>
+        <FormLabel>{t('profile.state')} </FormLabel>
         <Input {...register('state')}
                defaultValue={formValues?.state}
                onChange={e => handleFormValuesChange(e, 'state', 'address')} required
@@ -41,7 +42,7 @@ export const Address = (props: { formValues: any, setFormValues: (updated: any) 
       </FormControl>
 
       <FormControl isInvalid={!!errors?.country?.message}>
-        <FormLabel>Country code </FormLabel>
+        <FormLabel>{t('profile.country')} </FormLabel>
         <Input {...register('country')}
                defaultValue={formValues?.country}
                onChange={e => handleFormValuesChange(e, 'country', 'address')} required
@@ -51,7 +52,7 @@ export const Address = (props: { formValues: any, setFormValues: (updated: any) 
       </FormControl>
 
       <FormControl isInvalid={!!errors?.postal_code?.message}>
-        <FormLabel>Postal Code </FormLabel>
+        <FormLabel>{t('profile.zipCode')} </FormLabel>
         <Input {...register('postal_code')}
                defaultValue={formValues?.postal_code}
                onChange={e => handleFormValuesChange(e, 'postal_code', 'address')} required
@@ -61,7 +62,7 @@ export const Address = (props: { formValues: any, setFormValues: (updated: any) 
       </FormControl>
 
       <FormControl isInvalid={!!errors?.street?.message}>
-        <FormLabel>Street </FormLabel>
+        <FormLabel>{t('profile.street')} </FormLabel>
         <Input {...register('street')}
                defaultValue={formValues?.street}
                onChange={e => handleFormValuesChange(e, 'street', 'address')} required

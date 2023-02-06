@@ -321,7 +321,7 @@ const Profile = () => {
                             bg={bgInput}
                             key={key}
                             //@ts-ignore
-                            value={value}
+                            value={key === 'birth_date' ? new Date(value).toLocaleDateString() : value}
                             isDisabled={!editBasicInfo} />
                         </Box>
                       );

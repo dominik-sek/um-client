@@ -18,6 +18,7 @@ import { account, address, contact, course, faculty, person, personal } from '@p
 import { useMutation } from 'react-query';
 import { Address, Contact, Personal } from './tab-panels';
 import { updateUserProfile } from '../../../../../api/users';
+import { useTranslation } from 'react-i18next';
 
 interface UserModalProps {
   isOpen: boolean;
@@ -40,11 +41,12 @@ const EditUserModal = (props: UserModalProps) => {
   const { account, address, contact, course, faculty, personal } = props.user;
   const toast = useToast();
   const [editedPerson, setEditedPerson] = React.useState<personCoalesced>(user);
+  const { t } = useTranslation();
   const { mutate, isLoading, error } = useMutation(updateUserProfile, {
     onSuccess: () => {
       toast({
-        title: 'User updated.',
-        description: 'We\'ve updated the user\'s profile.',
+        title: t('success'),
+        description: t('userUpdated'),
         status: 'success',
         duration: 9000,
         isClosable: true,
@@ -55,8 +57,8 @@ const EditUserModal = (props: UserModalProps) => {
     },
     onError: () => {
       toast({
-        title: 'An error occurred.',
-        description: 'We\'ve encountered an error while updating the user\'s profile.',
+        title: t('error'),
+        description: t('userNotUpdated'),
         status: 'error',
         duration: 9000,
         isClosable: true,
@@ -70,6 +72,7 @@ const EditUserModal = (props: UserModalProps) => {
   const handleClose = () => {
     mutate({ userProfile: editedPerson, userId: user.id });
   };
+
   return (
 
     <Modal isOpen={props.isOpen} onClose={props.onClose}
@@ -84,9 +87,9 @@ const EditUserModal = (props: UserModalProps) => {
         <ModalCloseButton />
         <Tabs isFitted>
           <TabList>
-            <Tab>Personal</Tab>
-            <Tab>Address</Tab>
-            <Tab>Contact</Tab>
+            <Tab>{t('personal')}</Tab>
+            <Tab>{t('address')}</Tab>
+            <Tab>{t('contact')}</Tab>
           </TabList>
           <ModalBody>
             <TabPanels>
@@ -106,9 +109,9 @@ const EditUserModal = (props: UserModalProps) => {
 
         <ModalFooter>
           <Button colorScheme='blue' mr={3} onClick={props.onClose}>
-            Cancel
+            {t('cancel')}
           </Button>
-          <Button onClick={handleClose} isLoading={isLoading} colorScheme={'green'}>Confirm changes</Button>
+          <Button onClick={handleClose} isLoading={isLoading} colorScheme={'green'}>{t('confirmChanges')}</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

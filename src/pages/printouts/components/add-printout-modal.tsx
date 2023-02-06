@@ -1,5 +1,5 @@
 import {
-  Button, CloseButton, HStack, Input,
+  Button, CloseButton, FormControl, FormErrorMessage, HStack, Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -73,9 +73,14 @@ export const AddPrintoutModal = (props: { isOpen: boolean, onClose: () => void, 
               <Spinner size={'xl'} />
             ) : (
               <Wrap>
-                <Input placeholder={'Printout description/name'} onChange={e => setFileDescription(e.target.value)} />
-                <FileUploader handleChange={handleFileUpload} name='file' types={fileTypes}
-                              label={t('printoutUpload')} />
+                <FormControl isInvalid={!fileDescription} gap={2} display={'flex'} flexDir={'column'}>
+                  <FormErrorMessage>Provide a description</FormErrorMessage>
+                  <Input required placeholder={'Printout description/name'}
+                         onChange={e => setFileDescription(e.target.value)} />
+                </FormControl>
+                <FileUploader
+                  handleChange={handleFileUpload} name='file' types={fileTypes}
+                  label={t('printoutUpload')} />
                 {userFile && <CloseButton color={'red'} onClick={() => setUserFile(undefined)} />}
 
               </Wrap>
@@ -83,7 +88,7 @@ export const AddPrintoutModal = (props: { isOpen: boolean, onClose: () => void, 
           }
         </ModalBody>
         <ModalFooter>
-          <Button disabled={!userFile} colorScheme='green' mr={3} onClick={validateAndUpload}>
+          <Button disabled={!userFile || !fileDescription} colorScheme='green' mr={3} onClick={validateAndUpload}>
             Upload
           </Button>
           <Button colorScheme='red' mr={3} onClick={closeAndReset}>

@@ -28,10 +28,10 @@ import {
   Tr,
   useDisclosure, useToast,
 } from '@chakra-ui/react';
-import { AddIcon, ChevronDownIcon, DeleteIcon } from '@chakra-ui/icons';
+import { AddIcon, ChevronDownIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useMutation, useQuery } from 'react-query';
-import { addGrade, deleteGrade, fetchAllGradesByTeacher } from '../api/grades';
+import { addGrade, deleteGrade, fetchAllGradesByTeacher, updateGrade } from '../api/grades';
 import { useUserStore } from '../../store';
 import DangerModal from '../components/shared/danger-modal';
 import { fetchStudentsCourses } from '../api/courses';
@@ -50,10 +50,17 @@ type GradeWithIndex = {
   grade_Id: number;
 } & grade;
 
-function GradeMenu(props: { gradebookId: any, courseId: any, handleDelete: () => void }) {
-
+function GradeMenu(props: { gradebookId: any, courseId: any, handleDelete: () => void, handleEdit: () => void, isEdited: boolean, handleSave: () => void }) {
+  const { t, i18n } = useTranslation();
   return (
     <Box gap={2} display={'flex'}>
+      {props.isEdited ? (
+        <Button colorScheme={'green'} onClick={props.handleSave}>
+          {t('save')}
+        </Button>
+      ) : (
+        <IconButton aria-label={'Edit grade'} colorScheme={'blue'} icon={<EditIcon />} onClick={props.handleEdit} />
+      )}
       <IconButton aria-label={'Delete grade'} colorScheme={'red'} icon={<DeleteIcon />}
                   onClick={props.handleDelete} />
     </Box>
@@ -77,8 +84,12 @@ const Grades = () => {
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
   const [deletedGrade, setDeletedGrade] = React.useState<any>(null);
+  const [editedGrade, setEditedGrade] = React.useState<any>({});
+  const [isEdited, setIsEdited] = React.useState<any>();
   const [pickedCourse, setPickedCourse] = React.useState<any>();
   const [pickedUser, setPickedUser] = React.useState<any>();
+  const gradeRef = React.useRef<any>(null);
+
   const { t, i18n } = useTranslation();
   const {
     data: courseStudents,
@@ -139,6 +150,32 @@ const Grades = () => {
       });
     },
   });
+  const { mutate: editGradeMutation } = useMutation(updateGrade, {
+    onSuccess: () => {
+      toast({
+        title: 'Grade edited',
+        description: 'The grade has been edited',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-right',
+      });
+      refetchGrades();
+      setEditedGrade({});
+      setIsEdited(false);
+
+    },
+    onError: () => {
+      toast({
+        title: 'Grade not edited',
+        description: 'The grade has not been edited',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-right',
+      });
+    },
+  });
 
   const handleConfirmDelete = () => {
     deleteGradeMutation(deletedGrade);
@@ -147,6 +184,8 @@ const Grades = () => {
   const handleAddGrade = () => {
     onAddOpen();
   };
+
+
   const handleSaveGrade = () => {
     addGradeMutation({
       gradebookId: pickedUser.gradebook.gradebook_id,
@@ -154,13 +193,24 @@ const Grades = () => {
       grade: gradeRef.current.value,
     });
   };
+  const handleEditMutation = () => {
+    editGradeMutation({
+      gradeId: editedGrade.id,
+      grade: editedGrade.grade,
+    });
+    console.log(editedGrade);
+  };
+
   const handleCancelAdd = () => {
     setPickedCourse(null);
     setPickedUser(null);
     onAddClose();
   };
 
-  const gradeRef = React.useRef<any>(null);
+  const handleEditGrade = (gradeId: number) => {
+    setIsEdited(gradeId);
+  };
+
   const pickCourse = () => {
     return (
       <Menu matchWidth>
@@ -248,7 +298,6 @@ const Grades = () => {
       </Modal>
     );
   };
-
   return (
     <Box>
       <DangerModal
@@ -273,7 +322,7 @@ const Grades = () => {
                 <Th>{t('gradebookID')}</Th>
                 <Th>{t('date')}</Th>
                 <Th>{t('grade')}</Th>
-                <Th></Th>
+                <Th>{t('action')}</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -284,12 +333,38 @@ const Grades = () => {
                       <Tr key={innerGrade.entry_time.toString()}>
                         <Td>{grade.name} - {grade.type}</Td>
                         <Td>{innerGrade.gradebook_id}</Td>
-                        <Td>{innerGrade.entry_time.toString()}</Td>
-                        <Td>{innerGrade.grade}</Td>
+                        <Td>{new Date(innerGrade.entry_time).toLocaleDateString()}</Td>
+                        <Td>
+                          <NumberInput maxW={'fit-content'}
+                                       defaultValue={innerGrade.grade}
+                                       precision={1}
+                                       disabled={isEdited !== innerGrade.grade_Id}
+                                       min={2.0}
+                                       max={5.0}
+                                       onChange={(value) => {
+                                         setEditedGrade(
+                                           {
+                                             id: innerGrade.grade_Id,
+                                             grade: value,
+                                           },
+                                         );
+                                       }}
+                                       step={0.5}>
+                            <NumberInputField />
+                            <NumberInputStepper>
+                              <NumberIncrementStepper />
+                              <NumberDecrementStepper />
+                            </NumberInputStepper>
+                          </NumberInput>
+                        </Td>
                         {user?.role !== 'student' && (
                           <Td>
                             <GradeMenu gradebookId={innerGrade.gradebook_id} courseId={innerGrade.course_id}
-                                       handleDelete={() => handleDeleteGrade(innerGrade.grade_Id)} />
+                                       handleDelete={() => handleDeleteGrade(innerGrade.grade_Id)}
+                                       handleEdit={() => handleEditGrade(innerGrade.grade_Id)}
+                                       isEdited={isEdited === innerGrade.grade_Id}
+                                       handleSave={() => handleEditMutation()}
+                            />
                           </Td>
                         )}
                       </Tr>

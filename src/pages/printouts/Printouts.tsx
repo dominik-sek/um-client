@@ -10,9 +10,6 @@ import { checkAuth } from '../../api/check-auth';
 export const Printouts = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
-    data: printouts,
-    isLoading: printoutsLoading,
-    isError: printoutsError,
     refetch: refetchPrintouts,
   } = useQuery('getAllPrintouts', getAllPrintouts, {});
 

@@ -17,6 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { passwordChangeSchema as schema } from '../../forms/yup-schemas';
 import { resetPassword } from '../api/password';
 import { useMutation } from 'react-query';
+import { useTranslation } from 'react-i18next';
 
 export const ResetPassword = () => {
   const [email, setEmail] = useState('');
@@ -30,12 +31,14 @@ export const ResetPassword = () => {
     resolver: yupResolver(schema),
   });
   const toast = useToast();
+  const { t } = useTranslation();
+
   const { mutate: resetPasswordMutation } = useMutation(resetPassword, {
     onSuccess: (data) => {
       console.log(data);
       toast({
-        title: 'Password reset',
-        description: 'You can now log in with your new password',
+        title: t('success'),
+        description: t('resetPasswordSuccess'),
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -45,8 +48,8 @@ export const ResetPassword = () => {
     onError: (error) => {
       console.log(error);
       toast({
-        title: `${error}`,
-        description: 'An error occurred while resetting your password, please try again or contact support',
+        title: t('error'),
+        description: t('resetPasswordError'),
         status: 'error',
         duration: 2000,
         isClosable: true,
@@ -76,7 +79,7 @@ export const ResetPassword = () => {
         <Heading lineHeight={1.1} fontSize={{ base: '2xl', md: '3xl' }}>
           <Flex gap={4}>
             <IconButton as={Link} to={'/login'} aria-label={'back'} icon={<ArrowBackIcon />} />
-            Change your password
+            {t('changePassword')}
           </Flex>
         </Heading>
         <FormControl isInvalid={!!errors?.password?.message}>
@@ -87,22 +90,22 @@ export const ResetPassword = () => {
         </FormControl>
 
         <FormControl isRequired isInvalid={!!errors?.password?.message}>
-          <FormLabel>Password: </FormLabel>
+          <FormLabel>{t('password')}: </FormLabel>
           <Input
             {...register('password')}
             onChange={e => setPassword(e.target.value)}
             required
-            placeholder='Password'
+            placeholder={t('password') ?? ''}
             type={'password'} />
         </FormControl>
 
         <FormControl isRequired isInvalid={!!errors?.password_confirmation?.message}>
-          <FormLabel>Confirm Password: </FormLabel>
+          <FormLabel>{t('confirmPassword')} </FormLabel>
           <Input
             {...register('password_confirmation')}
             onChange={e => setConfirmPassword(e.target.value)}
             required
-            placeholder='Password'
+            placeholder={t('confirmPassword') ?? ''}
             type={'password'} />
         </FormControl>
 
@@ -116,7 +119,7 @@ export const ResetPassword = () => {
             disabled={!!errors?.password?.message || !!errors?.password_confirmation?.message}
             onClick={handleSubmit(handleResetPassword)}
           >
-            Change password
+            {t('changePassword')}
           </Button>
         </Stack>
       </Stack>

@@ -355,7 +355,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   </Flex>
                   <Text fontSize='xs' color='gray.600'>
                     {
-                      t(user.role)
+                      t(user.role as UserRole)
                     }
                   </Text>
                 </VStack>

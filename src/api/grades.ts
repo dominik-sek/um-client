@@ -108,6 +108,19 @@ const addGrade = async (params: { gradebookId: number, courseId: number, grade: 
   });
   return response.json();
 };
+const updateGrade = async (params: { gradeId: number, grade: number }) => {
+  const response = await fetch(`/api/v1/grades/${params.gradeId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({
+      grade: params.grade,
+    }),
+  });
+  return response.json();
+};
 export {
   fetchAllGrades,
   fetchAllGradesByCourse,
@@ -116,4 +129,5 @@ export {
   fetchAllGradesByTeacher,
   deleteGrade,
   addGrade,
+  updateGrade,
 };

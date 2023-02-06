@@ -123,7 +123,7 @@ export default function Login() {
 
   return (
     <Flex
-      minH={'100%'}
+      minH={'100vh'}
       minW={'100%'}
       align={'center'}
       justify={'center'}

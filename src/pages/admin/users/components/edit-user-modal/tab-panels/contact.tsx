@@ -4,6 +4,7 @@ import { addressContactSchema as schema } from '../../../../../../../forms/yup-s
 import { FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import onFormValueChange from '../../../../../../functions/onFormValueChange';
+import { useTranslation } from 'react-i18next';
 
 export const Contact = (props: { formValues: any, setFormValues: (updated: any) => void }) => {
   const { formValues, setFormValues } = props;
@@ -18,7 +19,7 @@ export const Contact = (props: { formValues: any, setFormValues: (updated: any) 
     propertyName?: string) => {
     onFormValueChange(event, fieldName, formValues, setFormValues, propertyName);
   }, [formValues, setFormValues]);
-
+  const { t } = useTranslation();
   return (
     <form>
       <FormControl isRequired isInvalid={!!errors?.email?.message}>
@@ -32,7 +33,7 @@ export const Contact = (props: { formValues: any, setFormValues: (updated: any) 
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors?.phone_number?.message}>
-        <FormLabel>Phone number </FormLabel>
+        <FormLabel>{t('profile.phone')} </FormLabel>
         <Input {...register('phone_number')}
                defaultValue={formValues?.phone_number}
                onChange={e => handleFormValuesChange(e, 'phone_number', 'contact')} required
