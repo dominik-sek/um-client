@@ -20,10 +20,10 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { useUserStore } from '../../../store';
-import { fetchAllGradesByStudent } from '../../api/grades';
-import { useQuery } from 'react-query';
+import { fetchAllGradesByStudent, generatePdfByGradebook } from '../../api/grades';
+import { useMutation, useQuery } from 'react-query';
 import { GradeColors } from '../../constants/grade-colors';
-import { FiRefreshCcw } from 'react-icons/all';
+import { FiDownload, FiRefreshCcw } from 'react-icons/all';
 import { useTranslation } from 'react-i18next';
 
 const StudentGrades = () => {
@@ -39,11 +39,23 @@ const StudentGrades = () => {
   } = useQuery('fetchStudentGrades', () => fetchAllGradesByStudent(gradebook.gradebook_id), {
     refetchOnWindowFocus: false,
   });
+
+  const { mutate: generatePDF } = useMutation(() => generatePdfByGradebook(gradebook.gradebook_id), {
+    onSuccess: () => {
+      console.log('success');
+    },
+    onError: () => {
+      console.log('error');
+    }
+  });
   const openFilterMenu = () => {
     console.log('filter');
   };
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
+  };
+  const generateGradeReport = () => {
+    generatePDF();
   };
   const { t, i18n } = useTranslation();
   return (
@@ -61,9 +73,14 @@ const StudentGrades = () => {
               <Heading size={'md'}>
                 {t('yourGrades')}
               </Heading>
-              <IconButton aria-label={'Refresh grades'} onClick={() => {
-                refetch();
-              }} icon={<FiRefreshCcw />} />
+              <HStack>
+                <IconButton aria-label={'Generate report'} onClick={() => {
+                  generateGradeReport();
+                }} icon={<FiDownload />} />
+                <IconButton aria-label={'Refresh grades'} onClick={() => {
+                  refetch();
+                }} icon={<FiRefreshCcw />} />
+              </HStack>
             </HStack>
 
             {/*<HStack>*/}

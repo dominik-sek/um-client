@@ -121,6 +121,22 @@ const updateGrade = async (params: { gradeId: number, grade: number }) => {
   });
   return response.json();
 };
+const generatePdfByGradebook = async (gradebookId: number) => {
+  const res = await fetch(`/api/v1/grades/pdf/${gradebookId}`, {
+    method: 'GET',
+    //get the pdf file
+    headers: {
+      'Content-Type': 'application/pdf',
+    },
+    credentials: 'include',
+  });
+  //open the pdf file
+  const file = await res.blob();
+  const fileURL = URL.createObjectURL(file);
+  window.open(fileURL);
+  return res.blob();
+
+};
 export {
   fetchAllGrades,
   fetchAllGradesByCourse,
@@ -130,4 +146,5 @@ export {
   deleteGrade,
   addGrade,
   updateGrade,
+  generatePdfByGradebook,
 };
