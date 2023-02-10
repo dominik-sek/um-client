@@ -1,7 +1,19 @@
 import { useQuery } from 'react-query';
 import { fetchAllUsers } from '../../../api/users';
 import UserCard from '../../../components/shared/user-card';
-import { Box, Button, Flex, HStack, Spinner, Text, useDisclosure, VStack, Wrap } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  IconButton,
+  Spinner,
+  Text,
+  useDisclosure,
+  useMediaQuery,
+  VStack,
+  Wrap,
+} from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { motion } from 'framer-motion';
 import React, { useMemo, useEffect } from 'react';
@@ -64,7 +76,7 @@ const Users = (): JSX.Element => {
     onEditOpen();
   };
   const { t } = useTranslation();
-
+  const [isLargerThanMedium] = useMediaQuery('(min-width: 768px)');
   return (
     <Flex flexDir={'column'} gap={10}>
       <Box
@@ -77,33 +89,65 @@ const Users = (): JSX.Element => {
         alignItems={{ base: 'center', md: 'flex-start' }}
       >
 
-        <Flex display={'flex'} justifyContent={'space-between'} w={'100%'}>
-          <SearchBar w={'50%'} onChange={handleChange} />
+        <Flex display={'flex'} flexDir={{ base: 'column', md: 'row' }} justifyContent={'space-between'} gap={2}
+              w={'100%'}
+        >
+          <SearchBar w={{ base: '100%', md: '60%' }} onChange={handleChange} />
+          {
+            isLargerThanMedium ?
+              <VStack display={'flex'} alignItems={'end'}
+                      position={{ base: 'flex', md: 'fixed' }}
+                      right={'10'}
+                      zIndex={'99'}
 
-          <VStack display={'flex'} w={'40%'} alignItems={'end'}>
-            <Button leftIcon={<DeleteIcon />} colorScheme={'red'}
-                    onClick={onDeleteOpen}
-                    disabled={checkedItems.length === 0}
-                    w={'50%'}
-            >
-              <Text>
-                {t('deleteSelected')}
-              </Text>
-            </Button>
-            <Button w={'50%'} id={'add-user-btn'} leftIcon={<AddIcon />} colorScheme={'whatsapp'}
-                    onClick={onOpen}>
-              <Text>
-                {t('addNewUser')}
-              </Text>
-            </Button>
+              >
+                <Button leftIcon={<DeleteIcon />} colorScheme={'red'}
+                        onClick={onDeleteOpen}
+                        disabled={checkedItems.length === 0}
+                        width={'100%'}
+                >
+                  <Text>
+                    {t('deleteSelected')}
+                  </Text>
+                </Button>
+                <Button width={'100%'} id={'add-user-btn'} leftIcon={<AddIcon />} colorScheme={'whatsapp'}
+                        onClick={onOpen}>
+                  <Text>
+                    {t('addNewUser')}
+                  </Text>
+                </Button>
 
-            <Button w={'50%'} id={'add-multiple-btn'} leftIcon={<FaUpload />} colorScheme={'telegram'}
-                    onClick={onMultipleOpen}>
-              <Text>
-                {t('addMultipleUsers')}
-              </Text>
-            </Button>
-          </VStack>
+                <Button id={'add-multiple-btn'} leftIcon={<FaUpload />} colorScheme={'telegram'}
+                        width={'100%'} onClick={onMultipleOpen}>
+                  <Text>
+                    {t('addMultipleUsers')}
+                  </Text>
+                </Button>
+              </VStack>
+              :
+              <VStack display={'flex'} alignItems={'end'}
+                      position={{ base: 'fixed', md: 'fixed' }}
+                      zIndex={'99'}
+                      right={'2'}
+                      bottom={'10'}
+              >
+                <IconButton icon={<DeleteIcon />}
+                            colorScheme={'red'}
+                            onClick={onDeleteOpen}
+                            disabled={checkedItems.length === 0}
+                            opacity={checkedItems.length === 0 ? 0.9 : 1}
+                            width={'100%'}
+                            aria-label={'delete selected users'}
+                />
+                <IconButton aria-label={'add one user'} width={'100%'} id={'add-user-btn'} icon={<AddIcon />}
+                            colorScheme={'whatsapp'}
+                            onClick={onOpen} />
+
+                <IconButton icon={<FaUpload />} aria-label={'upload file to add multiple users'} id={'add-multiple-btn'}
+                            colorScheme={'telegram'}
+                            width={'100%'} onClick={onMultipleOpen} />
+              </VStack>
+          }
 
 
         </Flex>
@@ -121,7 +165,7 @@ const Users = (): JSX.Element => {
           <Spinner size={'lg'} />
         </Flex>
       ) : (
-        <Wrap spacing={8} w={'100%'} h={'100%'} align={'center'} justify={'space-around'}>
+        <Wrap spacing={8} pt={10} w={'100%'} h={'100%'} align={'center'} justify={'space-around'}>
           {
             filteredUsers.map((user: any) => {
               if (userStore.user.id === user.id) {
