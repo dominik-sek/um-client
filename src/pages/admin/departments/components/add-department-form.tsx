@@ -28,6 +28,7 @@ export const AddDepartmentForm = (props: { formValues: any, setFormValues: Dispa
     refetchOnWindowFocus: false,
   });
   const { t } = useTranslation();
+  console.log(formValues);
   return (
     <form>
       <Flex flexDir={'column'}>
@@ -66,6 +67,7 @@ export const AddDepartmentForm = (props: { formValues: any, setFormValues: Dispa
           <Select  {...register('faculty', {
             onChange: e => handleFormValuesChange(e, 'faculty_id'),
           })}>
+            <option value={null}>{t('selectFaculty')}</option>
             {
               faculties?.map((faculty: any) => {
                 return (

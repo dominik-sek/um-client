@@ -80,6 +80,7 @@ export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<
           <Select  {...register('person', {
             onChange: e => handleFormValuesChange(e, 'person_id'),
           })}>
+            <option value={null}>{t('courseTeacher')}</option>
             {teachers.map((teacher: person) => (
               <option key={teacher.id} value={teacher.id}>{teacher.first_name} {teacher.last_name}</option>
             ))}
@@ -92,6 +93,7 @@ export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<
           <Select  {...register('department', {
             onChange: e => handleFormValuesChange(e, 'department_id'),
           })}>
+            <option value=''>{t('selectDept')}</option>
             {departments?.map((department: { id: number; name: string; }) => (
               <option key={department.id} value={department.id}>{department.name}</option>
             ))}

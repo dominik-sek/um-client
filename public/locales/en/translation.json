@@ -172,5 +172,6 @@
   "addPrintout": "Add printout",
   "descriptionRequired": "Description is required",
   "printoutUpload": "Upload printout",
-  "upload": "Upload"
+  "upload": "Upload",
+  "selectFaculty": "Select faculty"
 }
