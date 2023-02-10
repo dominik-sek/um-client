@@ -33,7 +33,7 @@ export const Contact = (props: { formValues: any, setFormValues: (updated: any) 
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors?.phone_number?.message}>
-        <FormLabel>{t('profile.phone')} </FormLabel>
+        <FormLabel>{t('phone')} </FormLabel>
         <Input {...register('phone_number')}
                defaultValue={formValues?.phone_number}
                onChange={e => handleFormValuesChange(e, 'phone_number', 'contact')} required

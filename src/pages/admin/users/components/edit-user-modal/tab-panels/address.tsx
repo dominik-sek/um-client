@@ -23,7 +23,7 @@ export const Address = (props: { formValues: any, setFormValues: (updated: any) 
   return (
     <form>
       <FormControl isInvalid={!!errors?.city?.message}>
-        <FormLabel>{t('profile.city')} </FormLabel>
+        <FormLabel>{t('city')} </FormLabel>
         <Input {...register('city')}
                defaultValue={formValues?.city}
                onChange={e => handleFormValuesChange(e, 'city', 'address')} required
@@ -32,7 +32,7 @@ export const Address = (props: { formValues: any, setFormValues: (updated: any) 
       </FormControl>
 
       <FormControl isInvalid={!!errors?.state?.message}>
-        <FormLabel>{t('profile.state')} </FormLabel>
+        <FormLabel>{t('state')} </FormLabel>
         <Input {...register('state')}
                defaultValue={formValues?.state}
                onChange={e => handleFormValuesChange(e, 'state', 'address')} required
@@ -42,7 +42,7 @@ export const Address = (props: { formValues: any, setFormValues: (updated: any) 
       </FormControl>
 
       <FormControl isInvalid={!!errors?.country?.message}>
-        <FormLabel>{t('profile.country')} </FormLabel>
+        <FormLabel>{t('country')} </FormLabel>
         <Input {...register('country')}
                defaultValue={formValues?.country}
                onChange={e => handleFormValuesChange(e, 'country', 'address')} required
@@ -52,7 +52,7 @@ export const Address = (props: { formValues: any, setFormValues: (updated: any) 
       </FormControl>
 
       <FormControl isInvalid={!!errors?.postal_code?.message}>
-        <FormLabel>{t('profile.zipCode')} </FormLabel>
+        <FormLabel>{t('zipCode')} </FormLabel>
         <Input {...register('postal_code')}
                defaultValue={formValues?.postal_code}
                onChange={e => handleFormValuesChange(e, 'postal_code', 'address')} required
@@ -62,7 +62,7 @@ export const Address = (props: { formValues: any, setFormValues: (updated: any) 
       </FormControl>
 
       <FormControl isInvalid={!!errors?.street?.message}>
-        <FormLabel>{t('profile.street')} </FormLabel>
+        <FormLabel>{t('street')} </FormLabel>
         <Input {...register('street')}
                defaultValue={formValues?.street}
                onChange={e => handleFormValuesChange(e, 'street', 'address')} required

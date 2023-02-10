@@ -292,7 +292,7 @@ const Profile = () => {
             <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
               <VStack display={'flex'} w={'100%'} flexDir={'column'}>
                 <Box display={'flex'} w={'100%'} justifyContent={'space-between'}>
-                  <Heading size={'md'}>{t('profile.personalInfo')}</Heading>
+                  <Heading size={'md'}>{t('personalInfo')}</Heading>
                 </Box>
                 <Divider />
               </VStack>
@@ -363,7 +363,7 @@ const Profile = () => {
             <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
               <VStack display={'flex'} w={'100%'} flexDir={'column'}>
                 <Box display={'flex'} w={'100%'} justifyContent={'space-between'}>
-                  <Heading size={'md'}>{t('profile.addressAndContact')}</Heading>
+                  <Heading size={'md'}>{t('addressAndContact')}</Heading>
                   <EditIcon cursor={'pointer'} boxSize={6} onClick={() => setEditBasicInfo(!editBasicInfo)} />
                 </Box>
                 <Divider />
@@ -382,7 +382,7 @@ const Profile = () => {
                     flexDir={'column'}
                     gap={4}
                   >
-                    <Heading as={'h5'} size={'md'}>{t('profile.address')}</Heading>
+                    <Heading as={'h5'} size={'md'}>{t('address')}</Heading>
                     <Divider />
                     {
                       Object.entries(user.address).map(([key, value]) => {
@@ -415,7 +415,7 @@ const Profile = () => {
                     flexDir={'column'}
                     gap={4}
                   >
-                    <Heading as={'h5'} size={'md'}>{t('profile.contact')}</Heading>
+                    <Heading as={'h5'} size={'md'}>{t('contact')}</Heading>
                     <Divider />
 
                     {

@@ -22,6 +22,7 @@ import { SectionHeader } from '../../../components/shared/section-header';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { addCourse, deleteCourse, fetchAllCourses } from '../../../api/courses';
 import { AddCourseModal } from './components/add-course-modal';
+import { useTranslation } from 'react-i18next';
 
 const Courses = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -64,22 +65,23 @@ const Courses = () => {
     mutate(courseId);
   };
 
-
+  const { t } = useTranslation();
   return (
     <Flex gap={10} flexDir={'column'}>
       <AddCourseModal isOpen={isOpen} onClose={onClose} refetch={refetch} />
-      <SectionHeader deleteButton={false} onChange={handleSearch} onAddClick={onOpen} addText={'Add new course'} />
+      <SectionHeader deleteButton={false} onChange={handleSearch} onAddClick={onOpen}
+                     addText={t('addNewCourse')} />
       {isLoading ? (
         <Spinner />
       ) : (
         <Table>
           <Thead>
             <Tr>
-              <Th>Course name</Th>
-              <Th>Department</Th>
-              <Th>Course teacher</Th>
-              <Th>Semester</Th>
-              <Th>ECTS</Th>
+              <Th>{t('courseName')}</Th>
+              <Th>{t('deptName')}</Th>
+              <Th>{t('courseTeacher')}</Th>
+              <Th>{t('semester')}</Th>
+              <Th>{t('courseCredits')}</Th>
               <Th></Th>
             </Tr>
           </Thead>

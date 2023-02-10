@@ -3,16 +3,18 @@ import { useQuery } from 'react-query';
 import { getAllPrintouts } from '../../../api/printouts';
 import { DeleteIcon, DownloadIcon } from '@chakra-ui/icons';
 import { Key, ReactElement, JSXElementConstructor, ReactFragment, ReactPortal, ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const PrintoutTable = (props: { userRole: string }) => {
   const isAuthorized = props.userRole && props.userRole === 'admin';
   // const canDelete todo: add person who uploaded it and give permission to edit/delete
   const { data, isLoading, isError } = useQuery('getAllPrintouts', getAllPrintouts);
   console.log(data);
+  const { t } = useTranslation();
+
   if (isLoading) {
     return <Spinner />;
   }
-
   return (
     <Box overflowX={'auto'} display={'flex'} justifyContent={'center'}>
       {
@@ -21,10 +23,10 @@ export const PrintoutTable = (props: { userRole: string }) => {
             <Thead>
               <Tr>
                 <Th>
-                  Description
+                  {t('description')}
                 </Th>
                 <Th>
-                  Action
+                  {t('action')}
                 </Th>
 
 
@@ -64,7 +66,7 @@ export const PrintoutTable = (props: { userRole: string }) => {
           </Table>
         ) : (
           <Text>
-            No printouts avaliable at this moment!
+            {t('noPrintouts')}
           </Text>
         )
       }

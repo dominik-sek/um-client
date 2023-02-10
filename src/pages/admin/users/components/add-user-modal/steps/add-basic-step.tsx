@@ -6,10 +6,11 @@ import { personalSchema as schema } from '../../../../../../../forms/yup-schemas
 import onFormValueChange from '../../../../../../functions/onFormValueChange';
 import { useQuery } from 'react-query';
 import { getAllDepartments } from '../../../../../../api/departments';
+import { useTranslation } from 'react-i18next';
 
 export const AddBasicStep = (props: { setFormValues: (updatedFormValues: any) => void, formValues: any, setAllowNext: (b: boolean) => void }) => {
   const { setFormValues, formValues, setAllowNext } = props;
-
+  const { t } = useTranslation();
   const { register, handleSubmit, watch, formState: { errors, isValid }, control } = useForm({
     mode: 'all',
     resolver: yupResolver(schema),
@@ -33,30 +34,31 @@ export const AddBasicStep = (props: { setFormValues: (updatedFormValues: any) =>
   return (
     <form style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       <FormControl isInvalid={false} display={'flex'} justifyContent={'center'}>
-        <FormErrorMessage>Please fill out all of the required fields</FormErrorMessage>
+        <FormErrorMessage>{t('fillRequired')}</FormErrorMessage>
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors?.first_name?.message}>
-        <FormLabel>First Name: </FormLabel>
+        <FormLabel>{t('firstName')}</FormLabel>
         <Input {...register('first_name')}
                defaultValue={formValues.first_name}
                onChange={e => handleFormValuesChange(e, 'first_name')} required
-               placeholder='First name'
+               placeholder={t('firstName')}
                type={'text'} />
         <FormErrorMessage>{errors?.first_name?.message?.toString()}</FormErrorMessage>
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors?.last_name?.message}>
-        <FormLabel>Last Name: </FormLabel>
+        <FormLabel>{t('lastName')} </FormLabel>
         <Input {...register('last_name')}
                defaultValue={formValues.last_name}
                onChange={e => handleFormValuesChange(e, 'last_name')}
-               placeholder='Last name' type={'text'} />
+               placeholder={t('lastName')}
+               type={'text'} />
         <FormErrorMessage>{errors?.last_name?.message?.toString()}</FormErrorMessage>
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors?.date_of_birth?.message}>
-        <FormLabel>Date of birth: </FormLabel>
+        <FormLabel>{t('dateOfBirth')}</FormLabel>
         <Input {...register('date_of_birth')}
                defaultValue={formValues.birth_date}
                onChange={e => handleFormValuesChange(e, 'birth_date')}
@@ -73,37 +75,37 @@ export const AddBasicStep = (props: { setFormValues: (updatedFormValues: any) =>
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors?.gender?.message}>
-        <FormLabel>Gender: </FormLabel>
+        <FormLabel>{t('gender')} </FormLabel>
         <Select {...register('gender', {
           onChange: e => handleFormValuesChange(e, 'gender'),
         })}
                 defaultValue={formValues.gender ?? 'DEFAULT'}>
-          <option hidden disabled value='DEFAULT'>Select gender</option>
-          <option value={'M'}>Male</option>
-          <option value={'F'}>Female</option>
-          <option value={'O'}>Other</option>
+          <option hidden disabled value='DEFAULT'>{t('selectGender')}</option>
+          <option value={'M'}>{t('male')}</option>
+          <option value={'F'}>{t('female')}</option>
+          <option value={'O'}>{t('other')}</option>
         </Select>
         <FormErrorMessage>{errors?.gender?.message?.toString()}</FormErrorMessage>
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors?.role?.message}>
-        <FormLabel>Role: </FormLabel>
+        <FormLabel>{t('role')} </FormLabel>
         <Select {...register('role', {
           onChange: e => handleFormValuesChange(e, 'role'),
         })} defaultValue={formValues.role ?? 'DEFAULT'}>
-          <option hidden disabled value='DEFAULT'>Select role</option>
-          <option value={'admin'}>Admin</option>
-          <option value={'teacher'}>Teacher</option>
-          <option value={'student'}>Student</option>
+          <option hidden disabled value='DEFAULT'>{t('selectRole')}</option>
+          <option value={'admin'}>{t('admin')}</option>
+          <option value={'teacher'}>{t('teacher')}</option>
+          <option value={'student'}>{t('student')}</option>
         </Select>
 
         {watch('role') === 'student' && (
           <FormControl isRequired isInvalid={!!errors?.class?.message}>
-            <FormLabel>Department: </FormLabel>
+            <FormLabel>{t('deptName')} </FormLabel>
             <Select {...register('department', {
               onChange: e => handleFormValuesChange(e, 'department_id'),
             })} defaultValue={formValues.class ?? 'DEFAULT'}>
-              <option hidden disabled value='DEFAULT'>Select department</option>
+              <option hidden disabled value='DEFAULT'>{t('selectDept')}</option>
               {departments?.map((department: any) => (
                 <option key={department.id} value={department.id}>{department.name}</option>
               ))}
@@ -115,25 +117,25 @@ export const AddBasicStep = (props: { setFormValues: (updatedFormValues: any) =>
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors?.disabled?.message}>
-        <FormLabel>Disabled: </FormLabel>
+        <FormLabel>{t('disabled')} </FormLabel>
         <Select {...register('disabled', {
           onChange: e => handleFormValuesChange(e, 'disabled'),
         })} defaultValue={formValues.role ?? 'DEFAULT'}>
-          <option hidden disabled value='DEFAULT'>Select disability status</option>
-          <option value={'1'}>Yes</option>
-          <option value={'0'}>No</option>
+          <option hidden disabled value='DEFAULT'>{t('selectDisabledStatus')}</option>
+          <option value={'1'}>{t('yes')}</option>
+          <option value={'0'}>{t('no')}</option>
         </Select>
         <FormErrorMessage>{errors?.disabled?.message?.toString()}</FormErrorMessage>
       </FormControl>
 
       <FormControl isRequired isInvalid={!!errors?.married?.message}>
-        <FormLabel>Marital status: </FormLabel>
+        <FormLabel>{t('maritalStatus')} </FormLabel>
         <Select {...register('married', {
           onChange: e => handleFormValuesChange(e, 'married'),
         })} defaultValue={formValues.role ?? 'DEFAULT'}>
-          <option hidden disabled value='DEFAULT'>Select marital status</option>
-          <option value={'1'}>Married</option>
-          <option value={'0'}>Single</option>
+          <option hidden disabled value='DEFAULT'>{t('selectMaritalStatus')}</option>
+          <option value={'1'}>{t('married')}</option>
+          <option value={'0'}>{t('single')}</option>
         </Select>
         <FormErrorMessage>{errors?.married?.message?.toString()}</FormErrorMessage>
       </FormControl>

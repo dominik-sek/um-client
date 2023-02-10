@@ -8,6 +8,7 @@ import { useQuery } from 'react-query';
 import { fetchAllUsers } from '../../../../api/users';
 import { person } from '@prisma/client';
 import { getAllFaculties } from '../../../../api/faculties';
+import { useTranslation } from 'react-i18next';
 
 export const AddDepartmentForm = (props: { formValues: any, setFormValues: Dispatch<SetStateAction<any>> }) => {
   const { setFormValues, formValues } = props;
@@ -26,42 +27,42 @@ export const AddDepartmentForm = (props: { formValues: any, setFormValues: Dispa
   const { data: faculties, isLoading } = useQuery('getAllFaculties', getAllFaculties, {
     refetchOnWindowFocus: false,
   });
-
+  const { t } = useTranslation();
   return (
     <form>
       <Flex flexDir={'column'}>
         <FormControl>
-          <FormLabel>Department name</FormLabel>
+          <FormLabel>{t('name')}</FormLabel>
           <Input {...register('name', {
             onChange: e => handleFormValuesChange(e, 'name'),
           })} />
         </FormControl>
 
         <FormControl>
-          <FormLabel>Length (in semesters)</FormLabel>
+          <FormLabel>{t('lengthOfStudies')}</FormLabel>
           <Input {...register('length', {
             onChange: e => handleFormValuesChange(e, 'length'),
           })} />
         </FormControl>
         <FormControl>
-          <FormLabel>Study type</FormLabel>
+          <FormLabel>{t('studyType')}</FormLabel>
           <Select {...register('study_type', {
             onChange: e => handleFormValuesChange(e, 'study_type'),
           })} >
-            <option value='full-time'>Full-time</option>
-            <option value='part-time'>Part-time</option>
+            <option value='full-time'>{t('fullTime')}</option>
+            <option value='part-time'>{t('partTime')}</option>
           </Select>
         </FormControl>
 
         <FormControl>
-          <FormLabel>Degree</FormLabel>
+          <FormLabel>{t('degree')}</FormLabel>
           <Input {...register('degree', {
             onChange: e => handleFormValuesChange(e, 'degree'),
           })} />
         </FormControl>
 
         <FormControl>
-          <FormLabel>Faculty</FormLabel>
+          <FormLabel>{t('facultyName')}</FormLabel>
           <Select  {...register('faculty', {
             onChange: e => handleFormValuesChange(e, 'faculty_id'),
           })}>

@@ -9,6 +9,7 @@ import { fetchAllUsers } from '../../../../api/users';
 import { person } from '@prisma/client';
 import { getAllFaculties } from '../../../../api/faculties';
 import { getAllDepartments } from '../../../../api/departments';
+import { useTranslation } from 'react-i18next';
 
 export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<SetStateAction<any>> }) => {
   const { setFormValues, formValues } = props;
@@ -38,44 +39,44 @@ export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<
       setTeachers(users.filter((user: { role: string; }) => user.role === 'teacher' || user.role === 'admin'));
     }
   }, [users]);
-  
+  const { t } = useTranslation();
   return (
     <form>
       <Flex flexDir={'column'}>
         <FormControl>
-          <FormLabel>Course name</FormLabel>
+          <FormLabel>{t('name')}</FormLabel>
           <Input {...register('name', {
             onChange: e => handleFormValuesChange(e, 'name'),
           })} />
         </FormControl>
 
         <FormControl>
-          <FormLabel>Course type</FormLabel>
+          <FormLabel>{t('courseType')}</FormLabel>
           <Select {...register('type', {
             onChange: e => handleFormValuesChange(e, 'type'),
           })} >
-            <option value='laboratory'>Laboratory</option>
-            <option value='lecture'>Lecture</option>
-            <option value='exercise'>Exercise</option>
+            <option value='laboratory'>{t('courseLab')}</option>
+            <option value='lecture'>{t('courseLecture')}</option>
+            <option value='exercise'>{t('courseExercise')}</option>
           </Select>
         </FormControl>
 
         <FormControl>
-          <FormLabel>ECTS</FormLabel>
+          <FormLabel>{t('courseCredits')}</FormLabel>
           <Input {...register('ects', {
             onChange: e => handleFormValuesChange(e, 'ects'),
           })} />
         </FormControl>
 
         <FormControl>
-          <FormLabel>Semester in which the course takes place</FormLabel>
+          <FormLabel>{t('semester')}</FormLabel>
           <Input {...register('semester', {
             onChange: e => handleFormValuesChange(e, 'semester'),
           })} />
         </FormControl>
 
         <FormControl>
-          <FormLabel>Teacher</FormLabel>
+          <FormLabel>{t('courseTeacher')}</FormLabel>
           <Select  {...register('person', {
             onChange: e => handleFormValuesChange(e, 'person_id'),
           })}>
@@ -87,7 +88,7 @@ export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<
         </FormControl>
 
         <FormControl>
-          <FormLabel>Department</FormLabel>
+          <FormLabel>{t('deptName')}</FormLabel>
           <Select  {...register('department', {
             onChange: e => handleFormValuesChange(e, 'department_id'),
           })}>

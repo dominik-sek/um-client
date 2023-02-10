@@ -12,14 +12,16 @@ import { AddDepartmentForm } from './add-department-form';
 import React, { Dispatch, SetStateAction } from 'react';
 import { useMutation } from 'react-query';
 import { createDepartment } from '../../../../api/departments';
+import { useTranslation } from 'react-i18next';
 
 export const AddDepartmentModal = (props: { isOpen: boolean, onClose: () => void, refetch: () => void }) => {
   const [formValues, setFormValues] = React.useState({});
   const toast = useToast();
+  const { t } = useTranslation();
   const { mutate } = useMutation(createDepartment, {
     onSuccess: () => {
       toast({
-        title: 'Department added successfully.',
+        title: t('deptAdded'),
         status: 'success',
         duration: 4000,
         isClosable: true,
@@ -31,7 +33,7 @@ export const AddDepartmentModal = (props: { isOpen: boolean, onClose: () => void
     },
     onError: () => {
       toast({
-        title: 'There has been a problem adding the department.',
+        title: t('deptNotAdded'),
         status: 'error',
         duration: 4000,
         isClosable: true,
@@ -47,14 +49,14 @@ export const AddDepartmentModal = (props: { isOpen: boolean, onClose: () => void
            size={{ base: 'md', md: '2xl', lg: '4xl' }}>
       <ModalOverlay />
       <ModalContent position={'relative'}>
-        <ModalHeader>Add department</ModalHeader>
+        <ModalHeader>{t('addDepartment')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <AddDepartmentForm formValues={formValues} setFormValues={setFormValues} />
         </ModalBody>
         <ModalFooter>
           <Button colorScheme={'blue'} mr={3} onClick={handleAdd}>
-            Add department
+            {t('add')}
           </Button>
         </ModalFooter>
       </ModalContent>

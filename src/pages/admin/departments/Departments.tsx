@@ -21,10 +21,11 @@ import React, { useEffect } from 'react';
 import { SectionHeader } from '../../../components/shared/section-header';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { AddDepartmentModal } from './components/add-department-modal';
+import { useTranslation } from 'react-i18next';
 
 const Departments = () => {
   const { onOpen, isOpen, onClose } = useDisclosure();
-
+  const { t } = useTranslation();
   const { data, isLoading, isError, refetch } = useQuery('getAllDepartments', getAllDepartments, {
     refetchOnWindowFocus: false,
   });
@@ -64,17 +65,17 @@ const Departments = () => {
   return (
     <Flex gap={10} flexDir={'column'}>
       <AddDepartmentModal isOpen={isOpen} onClose={onClose} refetch={refetch} />
-      <SectionHeader addText={'Add new department'} deleteButton={false} onChange={handleSearch} onAddClick={onOpen} />
+      <SectionHeader addText={t('addNewDepartment')} deleteButton={false} onChange={handleSearch} onAddClick={onOpen} />
       {isLoading ? (
         <Spinner />
       ) : (
         <Table>
           <Thead>
             <Tr>
-              <Th>Department name </Th>
-              <Th>Faculty name</Th>
-              <Th>Length (in semesters)</Th>
-              <Th>Type</Th>
+              <Th>{t('deptName')} </Th>
+              <Th>{t('facultyName')}</Th>
+              <Th>{t('lengthOfStudies')}</Th>
+              <Th>{t('studyType')}</Th>
               <Th></Th>
             </Tr>
           </Thead>

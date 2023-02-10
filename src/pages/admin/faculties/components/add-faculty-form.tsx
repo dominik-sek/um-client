@@ -7,6 +7,7 @@ import onFormValueChange from '../../../../functions/onFormValueChange';
 import { useQuery } from 'react-query';
 import { fetchAllUsers } from '../../../../api/users';
 import { person } from '@prisma/client';
+import { useTranslation } from 'react-i18next';
 
 export const AddFacultyForm = (props: { formValues: any, setFormValues: Dispatch<SetStateAction<any>> }) => {
   const { setFormValues, formValues } = props;
@@ -31,19 +32,19 @@ export const AddFacultyForm = (props: { formValues: any, setFormValues: Dispatch
       setTeachers(users.filter((user: { role: string; }) => user.role === 'teacher' || user.role === 'admin'));
     }
   }, [users]);
-
+  const { t } = useTranslation();
   return (
     <form>
       <Flex flexDir={'column'}>
         <FormControl>
-          <FormLabel>Faculty name</FormLabel>
+          <FormLabel>{t('name')}</FormLabel>
           <Input {...register('name', {
             onChange: e => handleFormValuesChange(e, 'name'),
           })} />
         </FormControl>
 
         <FormControl>
-          <FormLabel>Dean</FormLabel>
+          <FormLabel>{t('dean')}</FormLabel>
           <Select  {...register('person', {
             onChange: e => handleFormValuesChange(e, 'person_id'),
           })}>

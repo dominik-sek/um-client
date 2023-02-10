@@ -137,21 +137,21 @@ export default function Login() {
           boxShadow={'lg'}
           p={8}
         >
-          <VStack>
-            <Stack
-              flexDir={'column'}
-              spacing={4}
-            >
-              <Text>sample accounts:</Text>
-              <Code cursor={'pointer'} onClick={() => selectSampleAccount('student')}>student
-                account</Code>
-              <Code cursor={'pointer'} onClick={() => selectSampleAccount('teacher')}>teacher
-                account</Code>
-              <Code cursor={'pointer'} onClick={() => selectSampleAccount('admin')}>admin
-                account</Code>
+          {/*<VStack>*/}
+          {/*  <Stack*/}
+          {/*    flexDir={'column'}*/}
+          {/*    spacing={4}*/}
+          {/*  >*/}
+          {/*    <Text>sample accounts:</Text>*/}
+          {/*    <Code cursor={'pointer'} onClick={() => selectSampleAccount('student')}>student*/}
+          {/*      account</Code>*/}
+          {/*    <Code cursor={'pointer'} onClick={() => selectSampleAccount('teacher')}>teacher*/}
+          {/*      account</Code>*/}
+          {/*    <Code cursor={'pointer'} onClick={() => selectSampleAccount('admin')}>admin*/}
+          {/*      account</Code>*/}
 
-            </Stack>
-          </VStack>
+          {/*  </Stack>*/}
+          {/*</VStack>*/}
           <Stack spacing={10}>
             <HStack display={'flex'} justifyContent={'space-between'}>
               <Wrap>

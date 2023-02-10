@@ -4,6 +4,7 @@ import { person } from '@prisma/client';
 import { useMutation } from 'react-query';
 import DangerModal from '../../../../../components/shared/danger-modal';
 import { removePerson } from '../../../../../api/users';
+import { useTranslation } from 'react-i18next';
 
 interface UserModalProps {
   isOpen: boolean;
@@ -15,11 +16,11 @@ interface UserModalProps {
 
 const DeleteUserModal = (props: UserModalProps) => {
   const toast = useToast();
+  const { t } = useTranslation();
   const { mutate, isLoading, error } = useMutation(removePerson, {
     onSuccess: () => {
       toast({
-        title: 'User deleted.',
-        description: 'We\'ve deleted the user\'s profile.',
+        title: t('userDeleted'),
         status: 'success',
         duration: 9000,
         isClosable: true,
@@ -30,8 +31,7 @@ const DeleteUserModal = (props: UserModalProps) => {
     },
     onError: () => {
       toast({
-        title: 'An error occurred.',
-        description: 'We\'ve encountered an error while deleting the user\'s profile.',
+        title: t('userNotDeleted'),
         status: 'error',
         duration: 9000,
         isClosable: true,
@@ -48,9 +48,10 @@ const DeleteUserModal = (props: UserModalProps) => {
   };
   return (
     <DangerModal isOpen={props.isOpen} onClose={props.onClose} handleConfirm={handleClose}
-                 dangerText={'Deleting a user will also delete all of their data, including grades, courses, and assignments.'}
-                 footerText={<Heading size={'sm'} textAlign={'center'}>Are you sure you want to delete the following
-                   users?</Heading>
+                 dangerText={t('deleteUserModalText')}
+                 footerText={<Heading size={'sm'} textAlign={'center'}>
+
+                 </Heading>
                  }>
 
       <Wrap display={'flex'} flexDir={'column'} justifyContent={'center'} alignItems={'center'}>

@@ -25,7 +25,7 @@ export const Personal = (props: { formValues: any, setFormValues: (updated: any)
   return (
     <form>
       <FormControl isInvalid={!!errors?.first_name?.message}>
-        <FormLabel>{t('profile.firstName')} </FormLabel>
+        <FormLabel>{t('firstName')} </FormLabel>
         <Input {...register('first_name', {
           onChange: e => handleFormValuesChange(e, 'first_name'),
         })} defaultValue={first_name} />
@@ -33,7 +33,7 @@ export const Personal = (props: { formValues: any, setFormValues: (updated: any)
       </FormControl>
 
       <FormControl isInvalid={!!errors?.last_name?.message}>
-        <FormLabel>{t('profile.lastName')} </FormLabel>
+        <FormLabel>{t('lastName')} </FormLabel>
         <Input {...register('last_name', {
           onChange: e => handleFormValuesChange(e, 'last_name'),
         })} defaultValue={last_name} />
@@ -41,7 +41,7 @@ export const Personal = (props: { formValues: any, setFormValues: (updated: any)
       </FormControl>
 
       <FormControl isInvalid={!!errors?.title?.message}>
-        <FormLabel>{t('profile.title')} </FormLabel>
+        <FormLabel>{t('title')} </FormLabel>
         <Input {...register('title', {
           onChange: e => handleFormValuesChange(e, 'title'),
         })} defaultValue={title} />
@@ -49,7 +49,7 @@ export const Personal = (props: { formValues: any, setFormValues: (updated: any)
       </FormControl>
 
       <FormControl isInvalid={!!errors?.birth_date?.message}>
-        <FormLabel>{t('profile.dateOfBirth')} </FormLabel>
+        <FormLabel>{t('dateOfBirth')} </FormLabel>
         <Input {...register('birth_date', {
           onChange: e => handleFormValuesChange(e, 'birth_date'),
         })} defaultValue={birth_date} />
@@ -65,52 +65,52 @@ export const Personal = (props: { formValues: any, setFormValues: (updated: any)
       </FormControl>
 
       <FormControl isInvalid={!!errors?.gender?.message}>
-        <FormLabel>Gender: </FormLabel>
+        <FormLabel>{t('gender')} </FormLabel>
         <Select {...register('gender', {
           onChange: e => handleFormValuesChange(e, 'gender'),
         })}
                 defaultValue={formValues.gender ?? 'DEFAULT'}>
-          <option hidden disabled value='DEFAULT'>Select gender</option>
-          <option value={'M'}>Male</option>
-          <option value={'F'}>Female</option>
-          <option value={'O'}>Other</option>
+          <option hidden disabled value='DEFAULT'>{t('selectGender')}</option>
+          <option value={'M'}>{t('male')}</option>
+          <option value={'F'}>{t('female')}</option>
+          <option value={'O'}>{t('other')}</option>
         </Select>
         <FormErrorMessage>{errors?.gender?.message?.toString()}</FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={!!errors?.role?.message}>
-        <FormLabel>Role: </FormLabel>
+        <FormLabel>{t('role')}: </FormLabel>
         <Select {...register('role', {
           onChange: e => handleFormValuesChange(e, 'role'),
         })} defaultValue={formValues.role ?? 'DEFAULT'}>
-          <option hidden disabled value='DEFAULT'>Select role</option>
-          <option value={'admin'}>Admin</option>
-          <option value={'teacher'}>Teacher</option>
-          <option value={'student'}>Student</option>
+          <option hidden disabled value='DEFAULT'>{t('selectRole')}</option>
+          <option value={'admin'}>{t('admin')}</option>
+          <option value={'teacher'}>{t('teacher')}</option>
+          <option value={'student'}>{t('student')}</option>
         </Select>
         <FormErrorMessage>{errors?.role?.message?.toString()}</FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={!!errors?.disabled?.message}>
-        <FormLabel>Disabled: </FormLabel>
+        <FormLabel>{t('disabled')}: </FormLabel>
         <Select {...register('disabled', {
           onChange: e => handleFormValuesChange(e, 'disabled', 'personal'),
         })} defaultValue={formValues.role ?? 'DEFAULT'}>
-          <option hidden disabled value='DEFAULT'>Select disability status</option>
-          <option value={'1'}>Yes</option>
-          <option value={'0'}>No</option>
+          <option hidden disabled value='DEFAULT'>{t('selectDisabledStatus')}</option>
+          <option value={'1'}>{t('yes')}</option>
+          <option value={'0'}>{t('no')}</option>
         </Select>
         <FormErrorMessage>{errors?.disabled?.message?.toString()}</FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={!!errors?.married?.message}>
-        <FormLabel>Marital status: </FormLabel>
+        <FormLabel>{t('maritalStatus')}</FormLabel>
         <Select {...register('married', {
           onChange: e => handleFormValuesChange(e, 'married', 'personal'),
         })} defaultValue={formValues.role ?? 'DEFAULT'}>
-          <option hidden disabled value='DEFAULT'>Select marital status</option>
-          <option value={'1'}>Married</option>
-          <option value={'0'}>Single</option>
+          <option hidden disabled value='DEFAULT'>{t('selectMaritalStatus')}</option>
+          <option value={'1'}>{t('married')}</option>
+          <option value={'0'}>{t('single')}</option>
         </Select>
         <FormErrorMessage>{errors?.married?.message?.toString()}</FormErrorMessage>
       </FormControl>

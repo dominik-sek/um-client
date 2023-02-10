@@ -27,10 +27,11 @@ const AddUserModal = (props: UserModalProps) => {
   const { t, i18n } = useTranslation();
   const [formValues, setFormValues] = useState({});
   const [allowNext, setAllowNext] = useState(false);
+
   const steps = [
-    { label: 'Add basic information', content: AddBasicStep },
-    { label: 'Add Address & contact info', content: AddAddressStep },
-    { label: 'check and finish', content: CheckAndFinishStep },
+    { label: t('addBasicInfo'), content: AddBasicStep },
+    { label: t('addAddressAndContact'), content: AddAddressStep },
+    { label: t('checkAndSave'), content: CheckAndFinishStep },
   ];
   const { nextStep, prevStep, reset, activeStep } = useSteps({
     initialStep: 0,
@@ -39,7 +40,7 @@ const AddUserModal = (props: UserModalProps) => {
   const { mutate: addPerson, isLoading: isAddingPerson, error: addingError } = useMutation(addNewPerson, {
     onSuccess: () => {
       toast({
-        title: 'User added successfully.',
+        title: t('userAdded'),
         status: 'success',
         duration: 4000,
         isClosable: true,
@@ -51,7 +52,7 @@ const AddUserModal = (props: UserModalProps) => {
     },
     onError: () => {
       toast({
-        title: 'There has been a problem adding the user.',
+        title: t('userNotAdded'),
         status: 'error',
         duration: 4000,
         isClosable: true,
@@ -60,7 +61,6 @@ const AddUserModal = (props: UserModalProps) => {
       props.onClose();
     },
   });
-  console.log(formValues);
   const handleClose = () => {
     setFormValues({});
     props.onClose();
@@ -68,7 +68,6 @@ const AddUserModal = (props: UserModalProps) => {
     setAllowNext(false);
   };
   const saveAndReset = () => {
-    console.log(formValues);
     addPerson({ userProfile: formValues });
   };
   const toast = useToast();
@@ -94,15 +93,15 @@ const AddUserModal = (props: UserModalProps) => {
         <ModalFooter>
 
           <Button colorScheme='blue' mr={3} onClick={prevStep} isDisabled={activeStep === 0}>
-            Previous
+            {t('previous')}
           </Button>
           {activeStep === steps.length - 1 ? (
             <Button colorScheme='green' isLoading={isAddingPerson} onClick={saveAndReset}>
-              Finish
+              {t('save')}
             </Button>
           ) : (
             <Button colorScheme='green' isDisabled={!allowNext} onClick={nextStep}>
-              Next
+              {t('next')}
             </Button>
           )
           }

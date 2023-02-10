@@ -43,12 +43,11 @@ export const AddPrintoutModal = (props: { isOpen: boolean, onClose: () => void, 
 
     cloudinaryUpload(userFile, import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET_DOCS)
       .then((res) => {
-        console.log(res);
         const { secure_url } = res;
         addPrintout({ url: secure_url, description: fileDescription }, {
           onSuccess: () => {
             toast({
-              title: t('printouts.added'),
+              title: t('printoutAdded'),
               status: 'success',
               duration: 3000,
               isClosable: true,
@@ -65,7 +64,7 @@ export const AddPrintoutModal = (props: { isOpen: boolean, onClose: () => void, 
     <Modal isOpen={props.isOpen} onClose={props.onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Printouts</ModalHeader>
+        <ModalHeader>{t('addPrintout')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody display={'flex'} justifyContent={'center'}>
           {
@@ -74,8 +73,8 @@ export const AddPrintoutModal = (props: { isOpen: boolean, onClose: () => void, 
             ) : (
               <Wrap>
                 <FormControl isInvalid={!fileDescription} gap={2} display={'flex'} flexDir={'column'}>
-                  <FormErrorMessage>Provide a description</FormErrorMessage>
-                  <Input required placeholder={'Printout description/name'}
+                  <FormErrorMessage>{t('descriptionRequired')}</FormErrorMessage>
+                  <Input required placeholder={t('description')}
                          onChange={e => setFileDescription(e.target.value)} />
                 </FormControl>
                 <FileUploader
@@ -89,10 +88,10 @@ export const AddPrintoutModal = (props: { isOpen: boolean, onClose: () => void, 
         </ModalBody>
         <ModalFooter>
           <Button disabled={!userFile || !fileDescription} colorScheme='green' mr={3} onClick={validateAndUpload}>
-            Upload
+            {t('upload')}
           </Button>
           <Button colorScheme='red' mr={3} onClick={closeAndReset}>
-            Close
+            {t('close')}
           </Button>
         </ModalFooter>
       </ModalContent>

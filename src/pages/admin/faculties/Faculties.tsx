@@ -21,6 +21,7 @@ import React, { useEffect } from 'react';
 import { SectionHeader } from '../../../components/shared/section-header';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { AddFacultyModal } from './components/add-faculty-modal';
+import { useTranslation } from 'react-i18next';
 
 const Faculties = () => {
   const { data, isLoading, isError, refetch } = useQuery('getAllFaculties', getAllFaculties, {
@@ -56,19 +57,19 @@ const Faculties = () => {
   const handleDelete = (id: string) => {
     deleteOneFaculty(id);
   };
-
+  const { t } = useTranslation();
   return (
     <Flex gap={10} flexDir={'column'}>
       <AddFacultyModal isOpen={isOpen} onClose={onClose} refetch={refetch} />
-      <SectionHeader addText={'Add new faculty'} deleteButton={false} onChange={handleSearch} onAddClick={onOpen} />
+      <SectionHeader addText={t('addNewFaculty')} deleteButton={false} onChange={handleSearch} onAddClick={onOpen} />
       {isLoading ? (
         <Spinner />
       ) : (
         <Table>
           <Thead>
             <Tr>
-              <Th>Faculty dean </Th>
-              <Th>Faculty name</Th>
+              <Th>{t('dean')}</Th>
+              <Th>{t('facultyName')}</Th>
               <Th></Th>
             </Tr>
           </Thead>

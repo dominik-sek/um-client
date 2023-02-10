@@ -113,7 +113,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             const roleBasedPath = `/${user.role}${route.path}`;
             if (route.permission.includes('*' as UserRole) || route.permission.includes(user.role as UserRole)) {
               if (route.subRoutes) {
-                console.log(route.subRoutes);
                 route.subRoutes = route.subRoutes.filter(subRoute => subRoute.permission.includes('*' as UserRole) || subRoute.permission.includes(user.role as UserRole));
               }
               if (route.subRoutes?.length > 0) {
