@@ -53,7 +53,10 @@ export const CourseGradesCard = () => {
         justifyContent={'center'}
         gap={4}>
         <FormControl
-            overflowX={'scroll'}
+            overflowX={{
+              base: 'auto',
+              md: 'hidden',
+            }}
         >
           {gradesLoading ? <Spinner /> : (
             <Table>

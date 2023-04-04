@@ -38,7 +38,7 @@ import { grade } from '@prisma/client';
 import { DataCard } from '../components/shared/data-card';
 import { fetchUserProfile } from '../api/users';
 import { useTranslation } from 'react-i18next';
-
+import {course} from "@prisma/client";
 type CourseGrades = {
   grade: GradeWithIndex[];
   id: number;
@@ -82,14 +82,19 @@ const Grades = () => {
 
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
-  const [deletedGrade, setDeletedGrade] = React.useState<any>(null);
-  const [editedGrade, setEditedGrade] = React.useState<any>({});
+  const [deletedGrade, setDeletedGrade] = React.useState<number>(-1);
+  const [editedGrade, setEditedGrade] = React.useState<
+      {
+        id: number;
+        grade: string;
+      }>({} as { id: number; grade: string; });
+
   const [isEdited, setIsEdited] = React.useState<number>(-1);
-  const [pickedCourse, setPickedCourse] = React.useState<any>();
+  const [pickedCourse, setPickedCourse] = React.useState<course>(null);
   const [pickedUser, setPickedUser] = React.useState<any>();
   const gradeRef = React.useRef<any>(null);
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const {
     data: courseStudents,
     isLoading: courseStudentsLoading,
@@ -160,7 +165,7 @@ const Grades = () => {
         position: 'top-right',
       });
       refetchGrades();
-      setEditedGrade({});
+      setEditedGrade({} as { id: number; grade: string; });
       setIsEdited(-1);
 
     },
@@ -188,26 +193,26 @@ const Grades = () => {
   const handleSaveGrade = () => {
     addGradeMutation({
       gradebookId: pickedUser.gradebook.gradebook_id,
-      courseId: pickedCourse.id,
+      courseId: pickedCourse!.id,
       grade: gradeRef.current.value,
     });
   };
   const handleEditMutation = () => {
     editGradeMutation({
       gradeId: editedGrade.id,
-      grade: editedGrade.grade,
+      grade: Number(editedGrade.grade),
     });
-    console.log(editedGrade);
   };
 
   const handleCancelAdd = () => {
-    setPickedCourse(null);
+    setPickedCourse({} as course);
     setPickedUser(null);
     onAddClose();
   };
 
   const handleEditGrade = (gradeId: number) => {
     setIsEdited(gradeId);
+
   };
 
   const pickCourse = () => {
@@ -219,7 +224,7 @@ const Grades = () => {
         {userLoading ? <Spinner /> : (
           <MenuList>
             {
-              user.course.map((course: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; type: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; }) => (
+              user.course.map((course: course) => (
                 <MenuItem w={'100%'} key={course.id}
                           onClick={() => setPickedCourse(course)}>{course.name} - {course.type}</MenuItem>
               ))
@@ -237,7 +242,7 @@ const Grades = () => {
         </MenuButton>
         {
           courseStudentsLoading ? <Spinner /> : (
-            <MenuList>
+            <MenuList overflowY={'scroll'} maxH={'300px'}>
               {
                 courseStudents.map((course: { course_students: any[]; id: any; }) => (
                   course?.course_students.map((student) => {
@@ -248,7 +253,6 @@ const Grades = () => {
                         <MenuItem w={'100%'} key={gradebook.gradebook_id}
                                   onClick={() => setPickedUser(student)}>{person.last_name} - {gradebook.gradebook_id}</MenuItem>
                       );
-
                     }
                   })
 

@@ -9,7 +9,7 @@ type AutocompleteSearchbarProps = {
 } & React.ComponentProps<typeof SearchBar>;
 type AutocompleteSearchbarPropsOmit = Omit<AutocompleteSearchbarProps, "onChange">
 
-const AutocompleteSearchbar = ({ suggestions, onSuggestionSelected, ...rest }: AutocompleteSearchbarPropsOmit) => {
+const AutocompleteSearchbar = ({ suggestions, onSuggestionSelected,searchPlaceholder, ...rest }: AutocompleteSearchbarPropsOmit) => {
 
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
@@ -71,6 +71,7 @@ const AutocompleteSearchbar = ({ suggestions, onSuggestionSelected, ...rest }: A
                value={selectedSuggestion}
                position={'relative'}
                {...rest}
+                searchPlaceholder={searchPlaceholder}
                onBlur={handleLostFocus}
                onChange={(e) => handleOnChange(e)}>
       <Box position={'absolute'} top={'100%'} height={'100%'} left={0} right={0}

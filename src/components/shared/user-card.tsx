@@ -10,7 +10,6 @@ interface UserCardProps {
   onEditClick: (userId: number) => void;
 }
 
-
 function UserCard(props: UserCardProps) {
   const { user } = props;
   const { t } = useTranslation();

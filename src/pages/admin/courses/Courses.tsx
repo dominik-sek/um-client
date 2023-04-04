@@ -70,6 +70,7 @@ const Courses = () => {
     <Flex gap={10} flexDir={'column'}>
       <AddCourseModal isOpen={isOpen} onClose={onClose} refetch={refetch} />
       <SectionHeader deleteButton={false} onChange={handleSearch} onAddClick={onOpen}
+                     searchPlaceholder={t('searchCourses') as string}
                      addText={t('addNewCourse')} />
       {isLoading ? (
         <Spinner />

@@ -13,7 +13,7 @@ import {
   Text,
   Th,
   Thead,
-  Tr, useDisclosure,
+  Tr, useDisclosure, useToast,
   Wrap,
 } from '@chakra-ui/react';
 
@@ -22,9 +22,11 @@ import { SectionHeader } from '../../../components/shared/section-header';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { AddDepartmentModal } from './components/add-department-modal';
 import { useTranslation } from 'react-i18next';
+import {useActionNotAllowed} from "../../../hooks/useActionNotAllowed";
 
 const Departments = () => {
   const { onOpen, isOpen, onClose } = useDisclosure();
+  const toast = useToast();
   const { t } = useTranslation();
   const { data, isLoading, isError, refetch } = useQuery('getAllDepartments', getAllDepartments, {
     refetchOnWindowFocus: false,
@@ -39,6 +41,7 @@ const Departments = () => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
+
   useEffect(() => {
     if (data) {
       setFilteredData(data);
@@ -59,13 +62,21 @@ const Departments = () => {
   }, [searchTerm]);
 
   const handleDelete = (departmentId: string) => {
-    deleteOneDepartment(departmentId);
+    toast({
+      title: t('cannotLetYouDoThat'),
+
+      status: "info",
+      duration: 2000,
+      isClosable: true,
+      position: 'top-right',
+    })
+    // deleteOneDepartment(departmentId);
   };
 
   return (
     <Flex gap={10} flexDir={'column'}>
       <AddDepartmentModal isOpen={isOpen} onClose={onClose} refetch={refetch} />
-      <SectionHeader addText={t('addNewDepartment')} deleteButton={false} onChange={handleSearch} onAddClick={onOpen} />
+      <SectionHeader addText={t('addNewDepartment')} deleteButton={false} onChange={handleSearch} onAddClick={onOpen} searchPlaceholder={t('searchDepartments') as string} />
       {isLoading ? (
         <Spinner />
       ) : (

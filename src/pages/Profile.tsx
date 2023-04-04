@@ -111,7 +111,6 @@ const Profile = () => {
     }
   };
 
-  let hasAvatar = false;
   let hasBackgroundPicture = false;
 
   if (user.account?.account_images) {
@@ -224,17 +223,19 @@ const Profile = () => {
           </Box>
         </Box>
 
-        <Wrap
+        <Flex
           maxW={'80%'}
           w={'full'}
           overflow={'hidden'}
           justify={'space-between'}
-          spacing={8}
+          gap={8}
+            flexDir={{ base: 'column', md: 'row' }}
         >
 
           <Card
             bg={useColorModeValue('white', 'gray.800')}
-            flex={1}>
+            w={'100%'}
+            >
             <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
               <VStack display={'flex'} w={'100%'} flexDir={'column'}>
                 <Box display={'flex'} w={'100%'} justifyContent={'space-between'}>
@@ -296,9 +297,8 @@ const Profile = () => {
               </FormControl>
             </CardBody>
           </Card>
-
-
           <Card
+            w={'100%'}
             bg={useColorModeValue('white', 'gray.800')}>
             <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
               <VStack display={'flex'} w={'100%'} flexDir={'column'}>
@@ -409,7 +409,7 @@ const Profile = () => {
             </ButtonGroup>
           </Card>
 
-        </Wrap>
+        </Flex>
       </Stack>
 
     </Flex>

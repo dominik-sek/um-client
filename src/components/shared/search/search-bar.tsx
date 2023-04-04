@@ -8,11 +8,12 @@ interface SearchBarProps extends BoxProps {
   value?: string;
   inputRef?: React.RefObject<HTMLInputElement>;
   onKeyDownInput?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  searchPlaceholder?: string;
 }
 
-const SearchBar = ({ onChange, value, inputRef, onKeyDownInput, ...rest }: SearchBarProps) => {
+const SearchBar = ({ onChange, value, inputRef, onKeyDownInput,searchPlaceholder, ...rest }: SearchBarProps) => {
   const { t } = useTranslation();
-  const debouncedOnChange = debounce(onChange, 500);
+  const debouncedOnChange = debounce(onChange, 200);
   return (
     <Box {...rest}>
       <InputGroup onKeyDown={onKeyDownInput}>
@@ -20,7 +21,7 @@ const SearchBar = ({ onChange, value, inputRef, onKeyDownInput, ...rest }: Searc
           pointerEvents='none'
           children={<SearchIcon color='gray.300' />}
         />
-        <Input bg={useColorModeValue('gray.200', 'gray.700')} type='search' ref={inputRef} placeholder={t('search')}
+        <Input bg={useColorModeValue('gray.200', 'gray.700')} type='search' ref={inputRef} placeholder={searchPlaceholder || t('search') as string}
                onChange={debouncedOnChange} />
         {rest.children}
       </InputGroup>

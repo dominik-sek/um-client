@@ -191,5 +191,11 @@
   "validateAndUpload": "Sprawdź i prześlij",
   "lecture": "Wykłady",
   "exercise": "Ćwiczenia",
-  "laboratory": "Laboratoria"
+  "laboratory": "Laboratoria",
+  "searchUsers": "Wyszukaj użytkowników",
+  "searchCourses": "Wyszukaj przedmioty",
+  "searchFaculties": "Wyszukaj wydziały",
+  "searchDepartments": "Wyszukaj kierunki",
+  "searchApp": "Wyszukaj w aplikacji",
+  "cannotLetYouDoThat": "Nie mogę pozwolić na wykonanie tej akcji"
 }

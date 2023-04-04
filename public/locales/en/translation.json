@@ -183,5 +183,13 @@
   "validateAndUpload": "Validate and upload",
   "lecture": "Lecture",
   "exercise": "Exercise",
-  "laboratory": "Laboratory"
+  "laboratory": "Laboratory",
+  "searchUsers": "Search users",
+  "searchCourses": "Search courses",
+  "searchFaculties": "Search faculties",
+  "searchDepartments": "Search departments",
+  "searchApp": "Search the app",
+  "cannotLetYouDoThat": "Sorry, I can't let you do that",
+  "state": "Voivodeship/State",
+  "street": "Street"
 }

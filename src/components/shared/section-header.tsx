@@ -11,6 +11,7 @@ interface SectionHeaderProps {
   onAddClick?: () => void;
   children?: React.ReactNode;
   search?: boolean;
+  searchPlaceholder?: string;
 }
 
 export const SectionHeader = (props: SectionHeaderProps) => {
@@ -26,7 +27,7 @@ export const SectionHeader = (props: SectionHeaderProps) => {
       alignItems={{ base: 'center', md: 'flex-start' }}
     >
       <Box w={'40%'}>
-        {props.onChange && !props.search && <SearchBar onChange={props.onChange} />}
+        {props.onChange && !props.search && <SearchBar searchPlaceholder={props.searchPlaceholder} onChange={props.onChange} />}
       </Box>
       {props.children ? (
         props.children

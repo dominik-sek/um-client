@@ -20,7 +20,15 @@ const addOnePrintout = async (printout: {
   return response.json();
 
 };
+const deleteOnePrintout = async (id: string) => {
+    const response = await fetch(`/api/v1/printouts/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+    return response.json();
+}
 export {
   getAllPrintouts,
   addOnePrintout,
+  deleteOnePrintout
 };

@@ -76,6 +76,7 @@ const Users = (): JSX.Element => {
   };
   const { t } = useTranslation();
   const [isLargerThanMedium] = useMediaQuery('(min-width: 768px)');
+
   return (
     <Flex flexDir={'column'} gap={10}>
       <Box
@@ -91,13 +92,13 @@ const Users = (): JSX.Element => {
         <Flex display={'flex'} flexDir={{ base: 'column', md: 'row' }} justifyContent={'space-between'} gap={2}
               w={'100%'}
         >
-          <SearchBar w={{ base: '100%', md: '60%' }} onChange={handleChange} />
+          <SearchBar w={{ base: '100%', md: '40%' }} onChange={handleChange} searchPlaceholder={t('searchUsers') as string} />
+
           {
             isLargerThanMedium ?
               <VStack display={'flex'} alignItems={'end'}
                       bgPosition={{ base: 'flex', md: 'fixed' }}
                       right={'10'}
-                      zIndex={'99'}
 
               >
                 <Button leftIcon={<DeleteIcon />} colorScheme={'red'}

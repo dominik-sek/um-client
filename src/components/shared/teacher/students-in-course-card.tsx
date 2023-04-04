@@ -39,7 +39,6 @@ export const StudentsInCourseCard = () => {
       isExpanded:!expand.isExpanded
     })
   }
-
   return (
     <Card w={'100%'}
           bg={cardBg}
@@ -49,12 +48,14 @@ export const StudentsInCourseCard = () => {
       </CardHeader>
       <CardBody>
         {isLoading ? <Spinner /> : (
-          <Wrap spacing={12} w={'100%'}       overflowX={'scroll'}
+          <Wrap spacing={12} w={'100%'}
+                overflowX={{
+                  base: 'auto',
+                  md: 'hidden',
+                }}
           >
             {
-              data.map((course: {
-                id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; type: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; course_students: { gradebook_id: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; gradebook: { person: { first_name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; last_name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; contact: { email: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; }; }; }; }[];
-              }) => {
+              data.map((course: { id: React.Key | null | undefined; course_students: string | any[]; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; type: any; }) => {
                 const courseStudents = expand.isExpanded && expand.courseId === course.id
                     ? course.course_students
                     : course.course_students.slice(0, MAX_VISIBLE);
@@ -62,10 +63,10 @@ export const StudentsInCourseCard = () => {
                 return (
                   <Flex key={course.id} direction={'column'} gap={4} w={'100%'}>
                     <Heading size={'md'} display={'flex'} justifyContent={'space-between'}>
-                      {course.name} - {t(course.type)}
+                      {course.name} - {t(course.type) as string}
                       {
                           course?.course_students?.length > MAX_VISIBLE && (
-                              <IconButton aria-label={'Expand'} icon={<BsThreeDots/>} onClick={()=>handleExpand(course.id)} />
+                              <IconButton aria-label={'Expand'} icon={<BsThreeDots/>} onClick={()=>handleExpand(course.id as number)} />
                           )
                       }
                     </Heading>

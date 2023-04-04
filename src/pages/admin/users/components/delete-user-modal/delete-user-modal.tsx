@@ -29,6 +29,7 @@ const DeleteUserModal = (props: UserModalProps) => {
       props.onClose();
       props.refetch();
     },
+
     onError: () => {
       toast({
         title: t('userNotDeleted'),
@@ -42,15 +43,25 @@ const DeleteUserModal = (props: UserModalProps) => {
   });
 
   const handleClose = () => {
-    props.usersChecked.forEach((id) => {
-      mutate({ userId: Number(id) });
+    toast({
+      title: t('cannotLetYouDoThat'),
+      status: 'info',
+      duration: 9000,
+      isClosable: true,
+      position: 'top-right',
     });
+    props.onClose();
+    //
+    // props.usersChecked.forEach((id) => {
+    //   // mutate({ userId: Number(id) });
+    // });
   };
   return (
-    <DangerModal isOpen={props.isOpen} onClose={props.onClose} handleConfirm={handleClose}
+    <DangerModal isOpen={props.isOpen}
+                 onClose={props.onClose}
+                 handleConfirm={handleClose}
                  dangerText={t('deleteUserModalText')}
                  footerText={<Heading size={'sm'} textAlign={'center'}>
-
                  </Heading>
                  }>
 

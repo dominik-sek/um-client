@@ -28,8 +28,6 @@ export const TeacherCoursesCard = () => {
   return (
     <Card w={'100%'}
           bg={cardBg}
-
-
     >
       <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
         <Heading size={'md'}>{t('yourCourses')}</Heading>
@@ -38,7 +36,10 @@ export const TeacherCoursesCard = () => {
         display={'flex'}
         justifyContent={'center'}
         gap={4}>
-        <FormControl overflowX={'scroll'}>
+        <FormControl overflowX={{
+            base: 'auto',
+            md: 'hidden',
+        }}>
           {isLoading ? <Spinner /> : (
             <Table>
               <Thead>

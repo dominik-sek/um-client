@@ -322,10 +322,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         display={{ base: 'none', sm: 'flex' }}
         w={'100%'}
       >
-        <AutocompleteSearchbar w={'100%'} suggestions={generateRouteSuggestions()}
-                               onSuggestionSelected={(suggestion) => {
-                                 handleSuggestionSelect(suggestion);
-                               }} />
+        <AutocompleteSearchbar w={'100%'}
+                               suggestions={generateRouteSuggestions()}
+                               onSuggestionSelected={(suggestion) => {handleSuggestionSelect(suggestion);}}
+                               searchPlaceholder={t('searchApp')}
+        />
       </Flex>
 
       <HStack spacing={{ base: '2', md: '4' }}>

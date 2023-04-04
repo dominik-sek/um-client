@@ -9,8 +9,7 @@ import {
   ModalOverlay, Spinner, Text, useToast, Wrap,
 } from '@chakra-ui/react';
 import { FileUploader } from 'react-drag-drop-files';
-import { Dispatch, SetStateAction, useState } from 'react';
-import Papa from 'papaparse';
+import {  useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { cloudinaryUpload } from '../../../api/cloudinary-upload';
@@ -59,7 +58,6 @@ export const AddPrintoutModal = (props: { isOpen: boolean, onClose: () => void, 
       });
 
   };
-  console.log(fileDescription);
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}>
       <ModalOverlay />
