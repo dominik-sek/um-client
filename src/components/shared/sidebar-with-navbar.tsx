@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import {
   Accordion,
   AccordionButton,
@@ -40,6 +40,7 @@ import { GB, PL } from 'country-flag-icons/react/3x2';
 import { useTranslation } from 'react-i18next';
 import AutocompleteSearchbar from './search/autocomplete-searchbar';
 import { UserRole } from '../../enums/user-role';
+import {useQuery} from "react-query";
 
 export default function SidebarWithNavbar({ children }: { children: ReactNode; }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -77,7 +78,8 @@ interface SidebarProps extends BoxProps {
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const user = useUserStore(state => state.user);
-  const { t, i18n } = useTranslation();
+
+  const { t } = useTranslation();
   const accordionBg = useColorModeValue('cyan.600', 'cyan.800');
   const accordionColor = useColorModeValue('gray.900', 'white');
 
@@ -115,68 +117,72 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
               if (route.subRoutes) {
                 route.subRoutes = route.subRoutes.filter(subRoute => subRoute.permission.includes('*' as UserRole) || subRoute.permission.includes(user.role as UserRole));
               }
-              if (route.subRoutes?.length > 0) {
-                return (
-                  <AccordionItem
-                    border={'none'}
-                    px={4}
-                    key={route.name}
-                  >
-                    <AccordionButton
-                      _hover={{
-                        bg: accordionBg,
-                        color: accordionColor,
-                      }}
-                      borderRadius={'lg'}
-                      p={2}
-                      display={'flex'}
-                      gap={4}
-                      w={'100%'}
-                    >
-                      {route.icon && (
-                        <Icon
-                          as={route.icon}
-                        />
-                      )}
-                      <Box as={'span'} flex={1} textAlign={'left'}>
+
+                if (route.subRoutes && route.subRoutes?.length > 0) {
+                  return (
+                      <AccordionItem
+                          border={'none'}
+                          px={4}
+                          key={route.name}
+                      >
+                        <AccordionButton
+                            _hover={{
+                              bg: accordionBg,
+                              color: accordionColor,
+                            }}
+                            borderRadius={'lg'}
+                            p={2}
+                            display={'flex'}
+                            gap={4}
+                            w={'100%'}
+                        >
+                          {route.icon && (
+                              <Icon
+                                  as={route.icon}
+                              />
+                          )}
+                          <Box as={'span'} flex={1} textAlign={'left'}>
+                            {t(route.key)}
+                          </Box>
+
+                          <AccordionIcon
+                              justifySelf={'end'}
+                          />
+                        </AccordionButton>
+                        <AccordionPanel w='full' pb={'0'}>
+
+                          {
+                              route.subRoutes && (
+                                  route.subRoutes.map((subRoute) => {
+                                    const subRoleBasedPath = `/${user.role}${subRoute.path}`;
+                                    if (subRoute.permission.includes('*' as UserRole) || subRoute.permission.includes(user.role as UserRole)) {
+                                      return (
+                                          <NavItem mx={0} icon={subRoute.icon} to={subRoleBasedPath}
+                                                   key={subRoute.name}>
+                                            {
+                                              t(subRoute.key)}
+                                          </NavItem>
+                                      );
+                                    }
+
+                                  })
+                              )
+                          }
+
+                        </AccordionPanel>
+                      </AccordionItem>
+                  );
+                } else {
+                  return (
+                      <NavItem icon={route.icon} key={route.name}
+                               to={route.permission.includes('*' as UserRole) ? route.path : roleBasedPath}>
                         {t(route.key)}
-                      </Box>
-
-                      <AccordionIcon
-                        justifySelf={'end'}
-                      />
-                    </AccordionButton>
-                    <AccordionPanel w='full' pb={'0'}>
-
-                      {route.subRoutes.map((subRoute) => {
-                        const subRoleBasedPath = `/${user.role}${subRoute.path}`;
-                        if (subRoute.permission.includes('*' as UserRole) || subRoute.permission.includes(user.role as UserRole)) {
-                          return (
-                            <NavItem mx={0} icon={subRoute.icon} to={subRoleBasedPath}
-                                     key={subRoute.name}>
-                              {
-                                t(subRoute.key)}
-                            </NavItem>
-                          );
-                        }
-
-                      })}
-
-                    </AccordionPanel>
-                  </AccordionItem>
-                );
-              } else {
-                return (
-                  <NavItem icon={route.icon} key={route.name}
-                           to={route.permission.includes('*' as UserRole) ? route.path : roleBasedPath}>
-                    {t(route.key)}
-                  </NavItem>
-                );
-              }
-
+                      </NavItem>
+                  );
+                }
             }
+          })};
 
-          })}
         </VStack>
       </Accordion>
 
@@ -225,10 +231,23 @@ interface MobileProps extends FlexProps {
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const user = useUserStore.getState().user;
-  const hasAvatar = user.account && user.account.account_images != null;
-  const { t, i18n } = useTranslation();
+  const [user, setUser] = useState(useUserStore.getState().user);
+
+  useEffect(() => {
+    console.log('useEffect in sidebar');
+    const unsubscribe = useUserStore.subscribe(
+        (newState) => {
+          setUser(newState.user);
+        }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const { t } = useTranslation();
   const navigate = useNavigate();
+
   const generateRouteSuggestions = () => {
     const routeNames: string[] = [];
     routes.map((route) => {
@@ -239,7 +258,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           }
         });
       }
-      if (route.permission.includes('*' as UserRole) || route.permission.includes(user.role! as UserRole)) {
+      if (route.permission.includes('*' as UserRole) || route.permission.includes(user.role as UserRole)) {
         routeNames.push(t(route.key));
       }
     });
@@ -339,7 +358,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <HStack>
                 <Avatar
                   size={'sm'}
-                  src={hasAvatar ? user.account.account_images.avatar_url! : ''}
+                  src={user.account?.account_images?.avatar_url || ''}
                 />
                 <VStack
                   display={{ base: 'none', md: 'flex' }}

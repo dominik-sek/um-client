@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Flex,
-  HStack,
   IconButton,
   Spinner,
   Text,
@@ -16,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { motion } from 'framer-motion';
-import React, { useMemo, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useUserStore } from '../../../../store';
 import AddUserModal from './components/add-user-modal/add-user-modal';
 import SearchBar from '../../../components/shared/search/search-bar';
@@ -25,7 +24,7 @@ import EditUserModal from './components/edit-user-modal/edit-user.modal';
 import { AddMultipleModal } from './components/add-multiple-modal/add-multiple-modal';
 import { FaUpload } from 'react-icons/all';
 import { useTranslation } from 'react-i18next';
-
+import {UserData} from "../../../types/User";
 
 const Users = (): JSX.Element => {
   const userStore = useUserStore();
@@ -39,7 +38,7 @@ const Users = (): JSX.Element => {
   });
 
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [filteredUsers, setFilteredUsers] = React.useState<any[]>([]);
+  const [filteredUsers, setFilteredUsers] = React.useState<UserData[]>([]);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
@@ -50,7 +49,7 @@ const Users = (): JSX.Element => {
   }, [data]);
   useEffect(() => {
     if (data) {
-      const results = data.filter((user: any) =>
+      const results = data.filter((user: UserData) =>
         user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.last_name.toLowerCase().includes(searchTerm.toLowerCase()),
       );
@@ -69,9 +68,9 @@ const Users = (): JSX.Element => {
       setCheckedItems(checkedItems.filter(item => item !== value));
     }
   };
-  const [editUser, setEditUser] = React.useState<any>({});
+  const [editUser, setEditUser] = React.useState<UserData>({} as UserData);
   const handleEditClick = (userId: number) => {
-    const user = data?.find((user: any) => user.id === userId);
+    const user = data?.find((user: UserData) => user.id === userId);
     setEditUser(user);
     onEditOpen();
   };
@@ -96,7 +95,7 @@ const Users = (): JSX.Element => {
           {
             isLargerThanMedium ?
               <VStack display={'flex'} alignItems={'end'}
-                      position={{ base: 'flex', md: 'fixed' }}
+                      bgPosition={{ base: 'flex', md: 'fixed' }}
                       right={'10'}
                       zIndex={'99'}
 
@@ -167,7 +166,7 @@ const Users = (): JSX.Element => {
       ) : (
         <Wrap spacing={8} pt={10} w={'100%'} h={'100%'} align={'center'} justify={'space-around'}>
           {
-            filteredUsers.map((user: any) => {
+            filteredUsers.map((user: UserData) => {
               if (userStore.user.id === user.id) {
                 return null;
               }

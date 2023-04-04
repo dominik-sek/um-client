@@ -173,5 +173,15 @@
   "descriptionRequired": "Description is required",
   "printoutUpload": "Upload printout",
   "upload": "Upload",
-  "selectFaculty": "Select faculty"
+  "selectFaculty": "Select faculty",
+  "postal_code": "Postal code",
+  "phone_number": "Phone number",
+  "first_name": "First name",
+  "last_name": "Last name",
+  "birth_date": "Birth date",
+  "pesel": "PESEL",
+  "validateAndUpload": "Validate and upload",
+  "lecture": "Lecture",
+  "exercise": "Exercise",
+  "laboratory": "Laboratory"
 }

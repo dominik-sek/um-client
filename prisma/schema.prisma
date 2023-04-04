@@ -8,12 +8,14 @@ datasource db {
 }
 
 model account {
-  username       String          @db.VarChar(64)
-  password       String          @db.VarChar(64)
-  person_id      Int             @id(map: "account_pk")
-  last_login     DateTime        @db.Timestamp(6)
-  person         person          @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "account_person_id_fk")
-  account_images account_images?
+  username            String          @db.VarChar(64)
+  password            String          @db.VarChar(64)
+  person_id           Int             @id(map: "account_pk")
+  last_login          DateTime        @db.Timestamp(6)
+  reset_token         String?         @db.VarChar
+  reset_token_expires DateTime?       @db.Timestamp(6)
+  person              person          @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "account_person_id_fk")
+  account_images      account_images?
 }
 
 model account_images {
@@ -27,7 +29,7 @@ model address {
   city        String @db.VarChar(64)
   state       String @db.VarChar(32)
   country     String @db.Char(2)
-  postal_code Int
+  postal_code String @db.VarChar(6)
   street      String @db.VarChar(64)
   person_id   Int    @id(map: "address_pk")
   person      person @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "address_person_id_fk")
@@ -41,17 +43,25 @@ model contact {
 }
 
 model course {
-  id                                       Int              @id(map: "course_pk") @default(autoincrement())
-  name                                     String           @db.VarChar(64)
-  type                                     String           @db.VarChar(64)
-  ects                                     Int
-  person_id                                Int
-  semester                                 String           @db.Char(2)
-  department                               Int
-  department_course_departmentTodepartment department       @relation("course_departmentTodepartment", fields: [department], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "course_department_id_fk")
-  person                                   person           @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "course_person_id_fk")
-  course_students                          course_students[]
-  grade                                    grade[]
+  id                Int               @id(map: "course_pk") @default(autoincrement())
+  name              String            @db.VarChar(64)
+  type              String            @db.VarChar(64)
+  ects              Int
+  person_id         Int
+  semester          String            @db.Char(2)
+  department        Int
+  department_course department        @relation("course_departmentTodepartment", fields: [department], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "course_department_id_fk")
+  person            person            @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "course_person_id_fk")
+  course_students   course_students[]
+  grade             grade[]
+}
+
+model course_students {
+  course_id    Int
+  gradebook_id Int
+  id           Int       @id(map: "course_students_pk") @default(autoincrement())
+  course       course    @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "course_students_course_id_fk")
+  gradebook    gradebook @relation(fields: [gradebook_id], references: [gradebook_id], onDelete: Cascade, onUpdate: NoAction, map: "course_students_gradebook_gradebook_id_fk")
 }
 
 model department {
@@ -61,16 +71,17 @@ model department {
   study_type                           String                @db.VarChar(32)
   faculty_id                           Int
   degree                               String                @db.VarChar(32)
+  ects                                 Int?
   course_course_departmentTodepartment course[]              @relation("course_departmentTodepartment")
-  faculty                              faculty               @relation(fields: [faculty_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "department_faculty_id_fk")
+  faculty                              faculty               @relation(fields: [faculty_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "department_faculty_id_fk")
   department_students                  department_students[]
 }
 
 model department_students {
   gradebook_id  Int        @id(map: "department_students_pk")
   department_id Int
-  department    department @relation(fields: [department_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "department_students_department_id_fk")
-  gradebook     gradebook  @relation(fields: [gradebook_id], references: [gradebook_id], onDelete: NoAction, onUpdate: NoAction, map: "department_students_gradebook_gradebook_id_fk")
+  department    department @relation(fields: [department_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "department_students_department_id_fk")
+  gradebook     gradebook  @relation(fields: [gradebook_id], references: [gradebook_id], onDelete: Cascade, onUpdate: NoAction, map: "department_students_gradebook_gradebook_id_fk")
 }
 
 model faculty {
@@ -78,7 +89,7 @@ model faculty {
   name       String       @db.VarChar(64)
   person_id  Int
   department department[]
-  person     person       @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "faculty_person_id_fk")
+  person     person       @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "faculty_person_id_fk")
 }
 
 model grade {
@@ -87,18 +98,18 @@ model grade {
   entry_time   DateTime  @db.Timestamp(6)
   grade        Float
   grade_Id     Int       @id(map: "grade_pk") @default(autoincrement())
-  course       course    @relation(fields: [course_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "grade_course_id_fk")
-  gradebook    gradebook @relation(fields: [gradebook_id], references: [gradebook_id], onDelete: NoAction, onUpdate: NoAction, map: "grade_gradebook_gradebook_id_fk")
+  course       course    @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "grade_course_id_fk")
+  gradebook    gradebook @relation(fields: [gradebook_id], references: [gradebook_id], onDelete: Cascade, onUpdate: NoAction, map: "grade_gradebook_gradebook_id_fk")
 }
 
 model gradebook {
-  person_id           Int                 @unique
+  person_id           Int                  @unique
   gradebook_id        Int                  @id(map: "gradebook_pk") @default(0)
   semester            String               @db.Char(1)
   course_students     course_students[]
   department_students department_students?
   grade               grade[]
-  person              person              @relation(fields: [person_id], references: [id],  map: "gradebook_person_id_fk")
+  person              person               @relation(fields: [person_id], references: [id], onDelete: Cascade, map: "gradebook_person_id_fk")
 }
 
 model library_access {
@@ -113,7 +124,7 @@ model payments {
   type         String   @db.VarChar(128)
   amount       Int      @default(0)
   person_id    Int
-  person       person   @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "payments_person_id_fk")
+  person       person   @relation(fields: [person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payments_person_id_fk")
 }
 
 model person {
@@ -122,7 +133,7 @@ model person {
   last_name              String          @db.VarChar(64)
   title                  String?         @db.VarChar(64)
   birth_date             DateTime        @db.Date
-  pesel                  Int?
+  pesel                  BigInt
   gender                 String?         @db.Char(1)
   role                   String          @db.VarChar(12)
   account                account?
@@ -149,9 +160,8 @@ model role {
   person_person_roleTorole person[] @relation("person_roleTorole")
 }
 
-model course_students {
-  course_id    Int       @id(map: "course_students_pk")
-  gradebook_id Int
-  course       course    @relation(fields: [course_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "course_students_course_id_fk")
-  gradebook    gradebook @relation(fields: [gradebook_id], references: [gradebook_id], onDelete: NoAction, onUpdate: NoAction, map: "course_students_gradebook_gradebook_id_fk")
+model printouts {
+  id          Int     @id(map: "printouts_pk") @default(autoincrement())
+  url         String? @db.VarChar
+  description String? @db.VarChar
 }

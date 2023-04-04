@@ -55,7 +55,6 @@ const fetchUserProfile = async () => {
   return response.json();
 };
 const changeUserAvatar = async (avatar_url: string) => {
-  //using put method
   const response = await fetch('/api/v1/users/profile/avatar', {
     method: 'PUT',
     headers: {
@@ -70,6 +69,7 @@ const changeUserAvatar = async (avatar_url: string) => {
     throw new Error('Internal Server Error', { cause: 'SERVER_ERROR' });
   }
 };
+
 const addNewPerson = async (params: { userProfile: {} }) => {
   const response = await fetch(`/api/v1/users`, {
     method: 'POST',

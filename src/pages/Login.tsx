@@ -75,7 +75,6 @@ export default function Login() {
       refetchProfile().then((response) => {
         userStore.setUser(response.data);
       });
-      //loading screen
       navigate('/', { replace: true });
     },
     onError: (error) => {
@@ -84,22 +83,22 @@ export default function Login() {
 
   });
 
-  const selectSampleAccount = (selection: string) => {
-    switch (selection) {
-      case 'admin':
-        setUsername('baltazaradministrator3');
-        setPassword('123321321');
-        break;
-      case 'teacher':
-        setUsername('adamteacher2');
-        setPassword('321321321');
-        break;
-      case 'student':
-        setUsername('student10001');
-        setPassword('123123123');
-        break;
-    }
-  };
+  // const selectSampleAccount = (selection: string) => {
+  //   switch (selection) {
+  //     case 'admin':
+  //       setUsername('baltazaradministrator3');
+  //       setPassword('123321321');
+  //       break;
+  //     case 'teacher':
+  //       setUsername('adamteacher2');
+  //       setPassword('321321321');
+  //       break;
+  //     case 'student':
+  //       setUsername('student10001');
+  //       setPassword('123123123');
+  //       break;
+  //   }
+  // };
 
 
   const userStore = useUserStore((state) => state);
@@ -110,7 +109,7 @@ export default function Login() {
         navigate('/');
       }
     });
-  }, [userAuth.auth]);
+  }, [navigate, refetchAuth, userAuth.auth]);
 
   const handleLogin = () => {
     if (username === '' || password === '') {

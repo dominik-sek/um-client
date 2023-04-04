@@ -32,7 +32,6 @@ import { AddIcon, ChevronDownIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons
 import React from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { addGrade, deleteGrade, fetchAllGradesByTeacher, updateGrade } from '../api/grades';
-import { useUserStore } from '../../store';
 import DangerModal from '../components/shared/danger-modal';
 import { fetchStudentsCourses } from '../api/courses';
 import { grade } from '@prisma/client';
@@ -50,8 +49,8 @@ type GradeWithIndex = {
   grade_Id: number;
 } & grade;
 
-function GradeMenu(props: { gradebookId: any, courseId: any, handleDelete: () => void, handleEdit: () => void, isEdited: boolean, handleSave: () => void }) {
-  const { t, i18n } = useTranslation();
+function GradeMenu(props: { gradebookId: number, courseId: number, handleDelete: () => void, handleEdit: () => void, isEdited: boolean, handleSave: () => void }) {
+  const { t } = useTranslation();
   return (
     <Box gap={2} display={'flex'}>
       {props.isEdited ? (
@@ -85,7 +84,7 @@ const Grades = () => {
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
   const [deletedGrade, setDeletedGrade] = React.useState<any>(null);
   const [editedGrade, setEditedGrade] = React.useState<any>({});
-  const [isEdited, setIsEdited] = React.useState<any>();
+  const [isEdited, setIsEdited] = React.useState<number>(-1);
   const [pickedCourse, setPickedCourse] = React.useState<any>();
   const [pickedUser, setPickedUser] = React.useState<any>();
   const gradeRef = React.useRef<any>(null);
@@ -162,7 +161,7 @@ const Grades = () => {
       });
       refetchGrades();
       setEditedGrade({});
-      setIsEdited(false);
+      setIsEdited(-1);
 
     },
     onError: () => {
@@ -298,8 +297,11 @@ const Grades = () => {
       </Modal>
     );
   };
+
   return (
-    <Box>
+    <Box
+
+    >
       <DangerModal
         handleConfirm={handleConfirmDelete}
         isOpen={isDeleteOpen}
@@ -315,6 +317,7 @@ const Grades = () => {
                   {t('addGrade')}
                 </Button>}>
         {(gradesLoading || userLoading) ? <Spinner /> : (
+            <Box overflowX={'auto'}>
           <Table>
             <Thead>
               <Tr>
@@ -330,15 +333,15 @@ const Grades = () => {
                 grades.map((grade: CourseGrades) =>
                   grade.grade.map((innerGrade: GradeWithIndex) => {
                     return (
-                      <Tr key={innerGrade.entry_time.toString()}>
-                        <Td>{grade.name} - {grade.type}</Td>
+                      <Tr key={innerGrade.grade_Id}>
+                        <Td>{grade.name} - {t(grade.type)}</Td>
                         <Td>{innerGrade.gradebook_id}</Td>
                         <Td>{new Date(innerGrade.entry_time).toLocaleDateString()}</Td>
                         <Td>
                           <NumberInput maxW={'fit-content'}
                                        defaultValue={innerGrade.grade}
                                        precision={1}
-                                       disabled={isEdited !== innerGrade.grade_Id}
+                                       isDisabled={isEdited !== innerGrade.grade_Id}
                                        min={2.0}
                                        max={5.0}
                                        onChange={(value) => {
@@ -375,6 +378,8 @@ const Grades = () => {
             </Tbody>
 
           </Table>
+            </Box>
+
         )}
       </DataCard>
     </Box>

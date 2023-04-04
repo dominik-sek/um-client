@@ -34,7 +34,7 @@ import { useTranslation } from 'react-i18next';
 const StudentPanel = () => {
 
   const user = useUserStore(state => state.user);
-
+  console.log(user)
   const { gradebook } = user;
 
   const {
@@ -52,7 +52,7 @@ const StudentPanel = () => {
   } = useQuery('fetchCourseByGradebook', () => fetchCourseByGradebook(gradebook?.gradebook_id), {
     refetchOnWindowFocus: false,
   });
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   if (isLoading || coursesLoading) {
     return (
@@ -110,7 +110,7 @@ const StudentPanel = () => {
                         {courses?.map((course: { course: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; type: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; semester: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; ects: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; }; }) => (
                           <Tr key={course?.course.id}>
                             <Td>{course?.course.name}</Td>
-                            <Td>{course?.course.type}</Td>
+                            <Td>{t(course?.course.type)}</Td>
                             <Td>{course?.course.semester}</Td>
                             <Td>{course?.course.ects}</Td>
                           </Tr>

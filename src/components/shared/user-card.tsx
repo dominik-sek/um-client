@@ -2,19 +2,10 @@ import { Avatar, Box, Button, Checkbox, Flex, Stack, Text, useColorModeValue, Wr
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserRole } from '../../enums/user-role';
-
-interface UserProps {
-  id: number;
-  account: any;
-  avatar: string;
-  first_name: string;
-  last_name: string;
-  role: string;
-  email: string;
-}
+import {UserData} from "../../types/User";
 
 interface UserCardProps {
-  user: UserProps;
+  user: UserData;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onEditClick: (userId: number) => void;
 }
@@ -61,7 +52,7 @@ function UserCard(props: UserCardProps) {
 
           <Stack direction={'row'} justify={'center'} spacing={6}>
             <Stack spacing={0} align={'center'}>
-              <Text fontWeight={600}>{user.email}</Text>
+              <Text fontWeight={600}>{user.contact.email}</Text>
             </Stack>
 
           </Stack>

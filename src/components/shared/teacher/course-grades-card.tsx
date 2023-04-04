@@ -28,6 +28,8 @@ type courseGrades = {
 }
 
 export const CourseGradesCard = () => {
+  const MAX_VISIBLE = 3;
+
   const cardBg = useColorModeValue('white', 'gray.800');
   const role = useAuthStore(state => state.role);
   const {
@@ -36,7 +38,8 @@ export const CourseGradesCard = () => {
   } = useQuery('fetchAllGradesByTeacher', fetchAllGradesByTeacher, {
     refetchOnWindowFocus: false,
   });
-  const { t, i18n } = useTranslation();
+
+  const { t } = useTranslation();
   return (
     <Card w={'100%'}
           bg={cardBg}
@@ -49,7 +52,9 @@ export const CourseGradesCard = () => {
         display={'flex'}
         justifyContent={'center'}
         gap={4}>
-        <FormControl>
+        <FormControl
+            overflowX={'scroll'}
+        >
           {gradesLoading ? <Spinner /> : (
             <Table>
               <Thead>
@@ -67,8 +72,8 @@ export const CourseGradesCard = () => {
                   grades.slice(-3).map((course: courseGrades) =>
                     course.grade.map((innerGrade: grade) => {
                       return (
-                        <Tr key={innerGrade.entry_time.toString()}>
-                          <Td>{course.name} - {course.type}</Td>
+                        <Tr key={innerGrade.grade_Id}>
+                          <Td>{course.name} - {t(course.type)}</Td>
                           <Td>{innerGrade.gradebook_id}</Td>
                           <Td>{new Date(innerGrade.entry_time).toLocaleDateString()}</Td>
                           <Td>{innerGrade.grade}</Td>

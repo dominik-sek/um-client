@@ -14,35 +14,26 @@ import {
   Tabs, Text, useToast,
 } from '@chakra-ui/react';
 import React from 'react';
-import { account, address, contact, course, faculty, person, personal } from '@prisma/client';
 import { useMutation } from 'react-query';
 import { Address, Contact, Personal } from './tab-panels';
 import { updateUserProfile } from '../../../../../api/users';
 import { useTranslation } from 'react-i18next';
+import {UserData} from "../../../../../types/User";
 
 interface UserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  user: personCoalesced;
+  user: UserData;
   refetch: () => void;
-}
-
-type personCoalesced = person & {
-  account: account;
-  address: address;
-  contact: contact;
-  course: course;
-  faculty: faculty;
-  personal: personal;
 }
 
 const EditUserModal = (props: UserModalProps) => {
   const { user } = props;
-  const { account, address, contact, course, faculty, personal } = props.user;
+  const { address, contact } = props.user;
   const toast = useToast();
-  const [editedPerson, setEditedPerson] = React.useState<personCoalesced>(user);
+  const [editedPerson, setEditedPerson] = React.useState<UserData>(user);
   const { t } = useTranslation();
-  const { mutate, isLoading, error } = useMutation(updateUserProfile, {
+  const { mutate, isLoading } = useMutation(updateUserProfile, {
     onSuccess: () => {
       toast({
         title: t('success'),

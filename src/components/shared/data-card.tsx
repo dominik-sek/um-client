@@ -20,7 +20,8 @@ export const DataCard = (props: DataCardProps) => {
       <CardBody
         display={'flex'}
         justifyContent={'center'}
-        gap={4}>
+        gap={4}
+      >
         <FormControl>
           {props.children}
         </FormControl>

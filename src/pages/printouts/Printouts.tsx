@@ -21,10 +21,9 @@ export const Printouts = () => {
       {
         (auth.role === 'admin' || auth.role === 'teacher') &&
         <Box>
-          <SectionHeader addText={t('uploadNewPrintout')} deleteButton={false} onAddClick={onOpen} />
+          <SectionHeader addText={t('uploadNewPrintout')!} deleteButton={false} onAddClick={onOpen} />
           <AddPrintoutModal isOpen={isOpen} onClose={onClose} refetch={refetchPrintouts} />
         </Box>
-
       }
       <PrintoutTable userRole={auth.role} />
     </Flex>

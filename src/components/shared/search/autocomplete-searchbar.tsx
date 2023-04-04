@@ -4,14 +4,16 @@ import SearchBar from './search-bar';
 import { motion } from 'framer-motion';
 
 type AutocompleteSearchbarProps = {
-  suggestions: any[],
-  onSuggestionSelected: (suggestion: any) => void
+  suggestions: string[],
+  onSuggestionSelected: (suggestion: string) => void
 } & React.ComponentProps<typeof SearchBar>;
+type AutocompleteSearchbarPropsOmit = Omit<AutocompleteSearchbarProps, "onChange">
 
-const AutocompleteSearchbar = ({ suggestions, onSuggestionSelected, ...rest }: AutocompleteSearchbarProps) => {
-  const [filteredSuggestions, setFilteredSuggestions] = useState<any>([]);
+const AutocompleteSearchbar = ({ suggestions, onSuggestionSelected, ...rest }: AutocompleteSearchbarPropsOmit) => {
+
+  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
-  const [selectedSuggestion, setSelectedSuggestion] = useState();
+  const [selectedSuggestion, setSelectedSuggestion] = useState<string>();
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,8 +64,13 @@ const AutocompleteSearchbar = ({ suggestions, onSuggestionSelected, ...rest }: A
   const ref = React.useRef<HTMLInputElement>(document.createElement('input'));
   const hoverColor = useColorModeValue('gray.200', 'gray.700');
   const suggestionBg = useColorModeValue('white', 'gray.800');
+
   return (
-    <SearchBar onKeyDownInput={handleKeyPress} inputRef={ref} value={selectedSuggestion} position={'relative'} {...rest}
+    <SearchBar onKeyDownInput={handleKeyPress}
+               inputRef={ref}
+               value={selectedSuggestion}
+               position={'relative'}
+               {...rest}
                onBlur={handleLostFocus}
                onChange={(e) => handleOnChange(e)}>
       <Box position={'absolute'} top={'100%'} height={'100%'} left={0} right={0}

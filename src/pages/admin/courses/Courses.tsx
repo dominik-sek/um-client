@@ -89,7 +89,7 @@ const Courses = () => {
             {
               filteredData.map((course: any) => (
                 <Tr key={course.id}>
-                  <Td>{course.name} {course.type}</Td>
+                  <Td>{course.name} {t(course.type)}</Td>
                   <Td>{course.department_course.name}</Td>
                   <Td>{course.person.first_name} {course.person.last_name}</Td>
                   <Td>{course.semester}</Td>

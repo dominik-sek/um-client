@@ -1,43 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-
-import { account_images, address, contact, course, faculty, library_access, person, personal } from '@prisma/client';
-
-type UserData =
-  person
-  & {
-  account: {
-    account_images: account_images;
-  }
-} & {
-  contact: contact;
-} & {
-  address: address;
-} & {
-  personal: personal;
-} & {
-  library_access: library_access;
-} & {
-  faculty: faculty;
-} & {
-  gradebook: {
-    gradebook_id: number;
-    course: course,
-    semester: string;
-    department_students: {
-      department: {
-        department_id: number;
-        study_type: string;
-        name: string;
-        degree: string;
-        faculty: faculty;
-      };
-    };
-  }
-} & {
-  course: course[];
-}
-
+import {UserData} from "./src/types/User";
 
 export interface IAuthStore {
   auth: boolean;
@@ -78,5 +41,5 @@ const userStore = (set: any, get: any): IUserStore => ({
     set(initialUserState);
   },
 });
-export const useUserStore = create<IUserStore>()(devtools(persist(userStore, { name: 'user' })));
+export const useUserStore = create<IUserStore>()(persist(userStore, { name: 'user' }));
 export const useAuthStore = create<IAuthStore>()(persist(authStore, { name: 'auth' }));

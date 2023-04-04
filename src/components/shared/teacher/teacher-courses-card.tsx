@@ -4,7 +4,7 @@ import {
   CardHeader,
   FormControl,
   Heading,
-  IconButton, Spinner,
+  Spinner,
   Table,
   Tbody,
   Td,
@@ -12,7 +12,6 @@ import {
   Thead,
   Tr, useColorModeValue,
 } from '@chakra-ui/react';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { fetchUserProfile } from '../../../api/users';
@@ -20,13 +19,17 @@ import { useTranslation } from 'react-i18next';
 
 export const TeacherCoursesCard = () => {
   const cardBg = useColorModeValue('white', 'gray.800');
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const MAX_VISIBLE = 3;
+
   const { data: user, isLoading } = useQuery('profile', () => fetchUserProfile(), {
     refetchOnWindowFocus: false,
   });
   return (
     <Card w={'100%'}
           bg={cardBg}
+
+
     >
       <CardHeader w={'100%'} display={'flex'} justifyContent={'space-between'}>
         <Heading size={'md'}>{t('yourCourses')}</Heading>
@@ -35,7 +38,7 @@ export const TeacherCoursesCard = () => {
         display={'flex'}
         justifyContent={'center'}
         gap={4}>
-        <FormControl>
+        <FormControl overflowX={'scroll'}>
           {isLoading ? <Spinner /> : (
             <Table>
               <Thead>
@@ -52,7 +55,7 @@ export const TeacherCoursesCard = () => {
                     return (
                       <Tr key={course.id}>
                         <Td>{course.name}</Td>
-                        <Td>{course.type}</Td>
+                        <Td>{t(course.type)}</Td>
                         <Td>{course.semester}</Td>
                       </Tr>
                     );

@@ -20,12 +20,14 @@ const fileTypes = ['csv', 'xls', 'xlsx'];
 export const AddMultipleModal = (props: { isOpen: boolean, onClose: () => void }) => {
   const { t } = useTranslation();
 
-  const [userFile, setUserFile] = useState<any>();
-  const [fileName, setFileName] = useState<any>();
+  const [userFile, setUserFile] = useState<unknown[]>([]);
+  const [fileName, setFileName] = useState<string>();
   const [uploading, setUploading] = useState(false);
   const toast = useToast();
   const useUploadUsers = useMutation(addNewPerson, {});
-  const handleFileUpload = (file: any) => {
+
+
+  const handleFileUpload = (file: File) => {
     setFileName(file.name);
     Papa.parse(file, {
       header: true,
@@ -34,12 +36,15 @@ export const AddMultipleModal = (props: { isOpen: boolean, onClose: () => void }
       },
     });
   };
+
   const closeAndReset = () => {
-    setUserFile(undefined);
+    setUserFile([]);
     props.onClose();
   };
+
   const validateAndUpload = () => {
     setUploading(true);
+    // using any because i cba to type the whole user object
     userFile.forEach((user: any) => {
       useUploadUsers.mutate(
         { userProfile: user },
@@ -87,7 +92,7 @@ export const AddMultipleModal = (props: { isOpen: boolean, onClose: () => void }
                 <FileUploader handleChange={handleFileUpload} name='file' types={fileTypes} label={t('fileUpload')} />
                 <HStack display={'flex'} justifyContent={'space-between'}>
                   {userFile && <Text>{fileName} - {t('found')} {userFile.length} {t('userOrUsers')}</Text>}
-                  {userFile && <CloseButton color={'red'} onClick={() => setUserFile(undefined)} />}
+                  {userFile && <CloseButton color={'red'} onClick={() => setUserFile([])} />}
                 </HStack>
               </Wrap>
             )

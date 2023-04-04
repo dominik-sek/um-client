@@ -66,6 +66,7 @@ const StudentGrades = () => {
 
       <Card w={'100%'}
             bg={useColorModeValue('white', 'gray.800')}
+
       >
         <CardHeader display={'flex'}>
           <VStack alignItems={'flex-start'} width={'100%'} gap={2}>
@@ -95,10 +96,12 @@ const StudentGrades = () => {
         <CardBody
           display={'flex'}
           justifyContent={'center'}
-          gap={4}>
+          gap={4}
+
+        >
           {
             isLoading ? <Spinner /> : (
-              <Table w={'100%'}>
+              <Table w={'100%'}  >
                 <Thead>
                   <Tr>
                     <Th>{t('courseName')}</Th>
@@ -112,7 +115,7 @@ const StudentGrades = () => {
                       return (
                         <Tr key={grade.grade_Id}>
                           <Td>{grade.course.name}</Td>
-                          <Td>{grade.course.type}</Td>
+                          <Td>{t(grade.course.type)}</Td>
                           <Td><Text color={
                             //@ts-ignore
                             GradeColors[grade.grade]}>{grade.grade}</Text></Td>

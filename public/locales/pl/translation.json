@@ -181,5 +181,15 @@
   "descriptionRequired": "Opis jest wymagany",
   "printoutUpload": "Prześlij wydruk",
   "upload": "Prześlij",
-  "selectFaculty": "Wybierz wydział"
+  "selectFaculty": "Wybierz wydział",
+  "postal_code": "Kod pocztowy",
+  "phone_number": "Numer telefonu",
+  "first_name": "Imię",
+  "last_name": "Nazwisko",
+  "birth_date": "Data Urodzenia",
+  "pesel": "PESEL",
+  "validateAndUpload": "Sprawdź i prześlij",
+  "lecture": "Wykłady",
+  "exercise": "Ćwiczenia",
+  "laboratory": "Laboratoria"
 }
