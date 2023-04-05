@@ -78,9 +78,9 @@ const passwordChangeSchema = yup.object().shape({
 });
 
 const addDepartmentSchema = yup.object().shape({
-    name: yup.string().min(3, 'Department name must be at least 3 characters long').required(),
-    length: yup.number().min(1).max(10).required(),
-    studyType: yup.string().required(),
+    name: yup.string().required(),
+    length: yup.number().min(1).max(12).required(),
+    study_type: yup.string().required(),
     degree: yup.string().required(),
     faculty: yup.string().required(),
 })
@@ -88,11 +88,20 @@ const addFacultySchema = yup.object().shape({
     name: yup.string().required(),
     person: yup.string().required(),
 })
+const addCourseSchema = yup.object().shape({
+    name: yup.string().required(),
+    type: yup.string().required(),
+    ects: yup.number().min(1).max(12).required(),
+    semester: yup.number().min(1).max(12).required(),
+    person: yup.string().required(),
+    department: yup.string().required(),
+});
 
 export {
   personalSchema,
   addressContactSchema,
   passwordChangeSchema,
   addDepartmentSchema,
-  addFacultySchema
+  addFacultySchema,
+  addCourseSchema
 };

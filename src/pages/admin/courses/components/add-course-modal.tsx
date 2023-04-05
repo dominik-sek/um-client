@@ -17,6 +17,8 @@ import { useTranslation } from 'react-i18next';
 
 export const AddCourseModal = (props: { isOpen: boolean, onClose: () => void, refetch: () => void }) => {
   const [formValues, setFormValues] = React.useState({});
+  const [isFormValid, setIsFormValid] = React.useState(false);
+
   const toast = useToast();
   const { mutate } = useMutation(addCourse, {
     onSuccess: () => {
@@ -53,10 +55,10 @@ export const AddCourseModal = (props: { isOpen: boolean, onClose: () => void, re
         <ModalHeader>{t('addCourse')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <AddCourseForm formValues={formValues} setFormValues={setFormValues} />
+          <AddCourseForm formValues={formValues} setFormValues={setFormValues} setIsFormValid={setIsFormValid} />
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme={'blue'} mr={3} onClick={handleAdd}>
+          <Button colorScheme={'blue'} mr={3} onClick={handleAdd} disabled={!isFormValid}>
             {t('add')}
           </Button>
         </ModalFooter>

@@ -1,17 +1,16 @@
-import { Flex, FormControl, FormLabel, Input, Select } from '@chakra-ui/react';
+import {Flex, FormControl, FormErrorMessage, FormLabel, Input, Select} from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
-import { addressContactSchema as schema } from '../../../../../forms/yup-schemas';
+import {addCourseSchema, addCourseSchema as schema} from '../../../../../forms/yup-schemas';
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import onFormValueChange from '../../../../functions/onFormValueChange';
 import { useQuery } from 'react-query';
 import { fetchAllUsers } from '../../../../api/users';
 import { person } from '@prisma/client';
-import { getAllFaculties } from '../../../../api/faculties';
 import { getAllDepartments } from '../../../../api/departments';
 import { useTranslation } from 'react-i18next';
 
-export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<SetStateAction<any>> }) => {
+export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<SetStateAction<any>>, setIsFormValid: Dispatch<SetStateAction<boolean>> }) => {
   const { setFormValues, formValues } = props;
   const { register, handleSubmit, watch, formState: { errors, isValid }, control } = useForm({
     mode: 'all',
@@ -31,26 +30,36 @@ export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<
   const { data: departments, isLoading: departmentsLoading } = useQuery('getAllDepartments', getAllDepartments, {
     refetchOnWindowFocus: false,
   });
+
   const { data: users, isLoading: usersLoading } = useQuery('fetchAllUsers', fetchAllUsers, {
     refetchOnWindowFocus: false,
   });
+
   useEffect(() => {
     if (users) {
       setTeachers(users.filter((user: { role: string; }) => user.role === 'teacher' || user.role === 'admin'));
     }
   }, [users]);
-  const { t } = useTranslation();
+
+    const { t } = useTranslation();
+
+    useEffect(()=>{
+        props.setIsFormValid(isValid);
+    },[isValid, props])
+
   return (
     <form>
       <Flex flexDir={'column'}>
-        <FormControl>
+        <FormControl isRequired isInvalid={!!errors?.name?.message}>
+          <FormErrorMessage>{t('nameRequired')}</FormErrorMessage>
           <FormLabel>{t('name')}</FormLabel>
           <Input {...register('name', {
             onChange: e => handleFormValuesChange(e, 'name'),
           })} />
         </FormControl>
 
-        <FormControl>
+        <FormControl isRequired isInvalid={!!errors?.type?.message}>
+          <FormErrorMessage>{t('courseTypeRequired')}</FormErrorMessage>
           <FormLabel>{t('courseType')}</FormLabel>
           <Select {...register('type', {
             onChange: e => handleFormValuesChange(e, 'type'),
@@ -61,21 +70,24 @@ export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<
           </Select>
         </FormControl>
 
-        <FormControl>
+        <FormControl isRequired isInvalid={!!errors?.ects?.message}>
+          <FormErrorMessage>{t('ectsLength')}</FormErrorMessage>
           <FormLabel>{t('courseCredits')}</FormLabel>
           <Input {...register('ects', {
             onChange: e => handleFormValuesChange(e, 'ects'),
           })} />
         </FormControl>
 
-        <FormControl>
+        <FormControl isRequired isInvalid={!!errors?.semester?.message}>
+          <FormErrorMessage>{t('semesterRequired')}</FormErrorMessage>
           <FormLabel>{t('semester')}</FormLabel>
           <Input {...register('semester', {
             onChange: e => handleFormValuesChange(e, 'semester'),
           })} />
         </FormControl>
 
-        <FormControl>
+        <FormControl isRequired isInvalid={!!errors?.person?.message}>
+          <FormErrorMessage>{t('teacherRequired')}</FormErrorMessage>
           <FormLabel>{t('courseTeacher')}</FormLabel>
           <Select  {...register('person', {
             onChange: e => handleFormValuesChange(e, 'person_id'),
@@ -88,7 +100,8 @@ export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<
           </Select>
         </FormControl>
 
-        <FormControl>
+        <FormControl isRequired isInvalid={!!errors?.department?.message}>
+          <FormErrorMessage>{t('departmentRequired')}</FormErrorMessage>
           <FormLabel>{t('deptName')}</FormLabel>
           <Select  {...register('department', {
             onChange: e => handleFormValuesChange(e, 'department_id'),

@@ -28,11 +28,11 @@ export const AddDepartmentForm = (props: { formValues: any, setFormValues: Dispa
   });
 
   const { t } = useTranslation();
+
   useEffect(()=>{
-    if(Object.keys(formValues).length !== 0 && Object.keys(errors).length === 0){
-        props.setIsFormValid(true);
-    }
-  },[formValues, errors, props])
+    console.log(errors)
+    props.setIsFormValid(isValid);
+  },[isValid, props])
 
   return (
     <form>
@@ -53,7 +53,7 @@ export const AddDepartmentForm = (props: { formValues: any, setFormValues: Dispa
           })} />
         </FormControl>
 
-        <FormControl isRequired isInvalid={!!errors?.studyType?.message}>
+        <FormControl isRequired isInvalid={!!errors?.study_type?.message}>
           <FormErrorMessage>{t('studyTypeRequired')}</FormErrorMessage>
           <FormLabel>{t('studyType')}</FormLabel>
           <Select {...register('study_type', {
