@@ -233,7 +233,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const [user, setUser] = useState(useUserStore.getState().user);
 
   useEffect(() => {
-    console.log('useEffect in sidebar');
     const unsubscribe = useUserStore.subscribe(
         (newState) => {
           setUser(newState.user);
@@ -261,7 +260,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         routeNames.push(t(route.key));
       }
     });
-    console.log(routeNames)
     return routeNames;
   };
 

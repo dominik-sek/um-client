@@ -113,6 +113,8 @@
   "personal": "Personal information",
   "contact": "Contact information",
   "address": "Address",
+  "userOrUsers": "user/s",
+  "found": "found",
   "userUpdated": "User updated successfully",
   "userNotUpdated": "Error occurred while updating user",
   "userAdded": "User added successfully",

@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Checkbox, Flex, Stack, Text, useColorModeValue, Wrap } from '@chakra-ui/react';
-import React from 'react';
+import React, {useCallback} from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserRole } from '../../enums/user-role';
 import {UserData} from "../../types/User";
@@ -13,6 +13,14 @@ interface UserCardProps {
 function UserCard(props: UserCardProps) {
   const { user } = props;
   const { t } = useTranslation();
+
+  const handleOnChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    props.onChange(e);
+  }, [props.onChange]);
+
+  const handleOnEditClick = useCallback((userId: number) => {
+    props.onEditClick(userId);
+  }, [props.onEditClick]);
   return (
 
     <Wrap py={2}>
@@ -26,8 +34,9 @@ function UserCard(props: UserCardProps) {
         overflow={'hidden'}>
 
         <Wrap w={'100%'} display={'flex'} justifyContent={'flex-end'} pr={4} pt={4}>
-          <Checkbox size={'lg'} value={user.id} onChange={props.onChange} />
+          <Checkbox size={'lg'} value={user.id} onChange={handleOnChange} />
         </Wrap>
+
         <Flex justify={'center'} mt={12}>
           <Avatar
             size={'xl'}
@@ -66,8 +75,7 @@ function UserCard(props: UserCardProps) {
               transform: 'translateY(-2px)',
               boxShadow: 'lg',
             }}
-            onClick={() => props.onEditClick(user.id)}>
-
+            onClick={() => handleOnEditClick(user.id)}>
             {t('edit')}
           </Button>
         </Box>

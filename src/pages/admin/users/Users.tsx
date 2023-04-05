@@ -60,20 +60,25 @@ const Users = (): JSX.Element => {
     console.log('error', error);
   }
   const [checkedItems, setCheckedItems] = React.useState<string[]>([]); //plain array
+
   const handleChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
+    console.log(e)
     if (checked) {
       setCheckedItems([...checkedItems, value]);
     } else {
       setCheckedItems(checkedItems.filter(item => item !== value));
     }
   };
+
   const [editUser, setEditUser] = React.useState<UserData>({} as UserData);
+
   const handleEditClick = (userId: number) => {
     const user = data?.find((user: UserData) => user.id === userId);
     setEditUser(user);
     onEditOpen();
   };
+
   const { t } = useTranslation();
   const [isLargerThanMedium] = useMediaQuery('(min-width: 768px)');
 
