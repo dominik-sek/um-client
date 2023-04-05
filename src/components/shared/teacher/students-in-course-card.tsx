@@ -55,7 +55,7 @@ export const StudentsInCourseCard = () => {
                 }}
           >
             {
-              data.map((course: { id: React.Key | null | undefined; course_students: string | any[]; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; type: any; }) => {
+              data.map((course: { id: React.Key | null | undefined; course_students: any[]; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; type: any; }) => {
                 const courseStudents = expand.isExpanded && expand.courseId === course.id
                     ? course.course_students
                     : course.course_students.slice(0, MAX_VISIBLE);

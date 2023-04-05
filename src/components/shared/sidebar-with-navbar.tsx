@@ -40,7 +40,6 @@ import { GB, PL } from 'country-flag-icons/react/3x2';
 import { useTranslation } from 'react-i18next';
 import AutocompleteSearchbar from './search/autocomplete-searchbar';
 import { UserRole } from '../../enums/user-role';
-import {useQuery} from "react-query";
 
 export default function SidebarWithNavbar({ children }: { children: ReactNode; }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -258,10 +257,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           }
         });
       }
-      if (route.permission.includes('*' as UserRole) || route.permission.includes(user.role as UserRole)) {
+      if ((route.permission.includes('*' as UserRole) || route.permission.includes(user.role as UserRole)) && !route.subRoutes ) {
         routeNames.push(t(route.key));
       }
     });
+    console.log(routeNames)
     return routeNames;
   };
 
@@ -325,7 +325,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         <AutocompleteSearchbar w={'100%'}
                                suggestions={generateRouteSuggestions()}
                                onSuggestionSelected={(suggestion) => {handleSuggestionSelect(suggestion);}}
-                               searchPlaceholder={t('searchApp')}
+                               searchPlaceholder={t('searchApp') as string}
         />
       </Flex>
 

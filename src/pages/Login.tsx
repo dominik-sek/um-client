@@ -82,23 +82,23 @@ export default function Login() {
     },
 
   });
+  const selectSampleAccount = (selection: string) => {
+    switch (selection) {
+      case 'admin':
 
-  // const selectSampleAccount = (selection: string) => {
-  //   switch (selection) {
-  //     case 'admin':
-  //       setUsername('baltazaradministrator3');
-  //       setPassword('123321321');
-  //       break;
-  //     case 'teacher':
-  //       setUsername('adamteacher2');
-  //       setPassword('321321321');
-  //       break;
-  //     case 'student':
-  //       setUsername('student10001');
-  //       setPassword('123123123');
-  //       break;
-  //   }
-  // };
+        setUsername('abbotoneal372');
+        setPassword('32840473032');
+        break;
+      case 'teacher':
+        setUsername('lylegregory371');
+        setPassword('20282483098');
+        break;
+      case 'student':
+        setUsername('haley10381');
+        setPassword('49110485529');
+        break;
+    }
+  };
 
 
   const userStore = useUserStore((state) => state);
@@ -136,21 +136,21 @@ export default function Login() {
           boxShadow={'lg'}
           p={8}
         >
-          {/*<VStack>*/}
-          {/*  <Stack*/}
-          {/*    flexDir={'column'}*/}
-          {/*    spacing={4}*/}
-          {/*  >*/}
-          {/*    <Text>sample accounts:</Text>*/}
-          {/*    <Code cursor={'pointer'} onClick={() => selectSampleAccount('student')}>student*/}
-          {/*      account</Code>*/}
-          {/*    <Code cursor={'pointer'} onClick={() => selectSampleAccount('teacher')}>teacher*/}
-          {/*      account</Code>*/}
-          {/*    <Code cursor={'pointer'} onClick={() => selectSampleAccount('admin')}>admin*/}
-          {/*      account</Code>*/}
+          <VStack>
+            <Stack
+              flexDir={'column'}
+              spacing={4}
+            >
+              <Text>sample accounts:</Text>
+              <Code cursor={'pointer'} onClick={() => selectSampleAccount('student')}>student
+                account</Code>
+              <Code cursor={'pointer'} onClick={() => selectSampleAccount('teacher')}>teacher
+                account</Code>
+              <Code cursor={'pointer'} onClick={() => selectSampleAccount('admin')}>admin
+                account</Code>
 
-          {/*  </Stack>*/}
-          {/*</VStack>*/}
+            </Stack>
+          </VStack>
           <Stack spacing={10}>
             <HStack display={'flex'} justifyContent={'space-between'}>
               <Wrap>
