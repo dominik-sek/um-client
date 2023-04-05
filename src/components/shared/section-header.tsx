@@ -26,7 +26,10 @@ export const SectionHeader = (props: SectionHeaderProps) => {
       justifyContent={{ base: 'center', md: 'space-between' }}
       alignItems={{ base: 'center', md: 'flex-start' }}
     >
-      <Box w={'40%'}>
+      <Box w={{
+        base: '80%',
+        md: '40%',
+      }}>
         {props.onChange && !props.search && <SearchBar searchPlaceholder={props.searchPlaceholder} onChange={props.onChange} />}
       </Box>
       {props.children ? (

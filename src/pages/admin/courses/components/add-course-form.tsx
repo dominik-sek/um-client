@@ -71,7 +71,7 @@ export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<
         </FormControl>
 
         <FormControl isRequired isInvalid={!!errors?.ects?.message}>
-          <FormErrorMessage>{t('ectsLength')}</FormErrorMessage>
+          <FormErrorMessage>{t('ectsCredits')}</FormErrorMessage>
           <FormLabel>{t('courseCredits')}</FormLabel>
           <Input {...register('ects', {
             onChange: e => handleFormValuesChange(e, 'ects'),

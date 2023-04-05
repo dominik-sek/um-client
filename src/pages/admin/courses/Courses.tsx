@@ -1,26 +1,21 @@
 import { useMutation, useQuery } from 'react-query';
-import { getAllDepartments } from '../../../api/departments';
 import {
-  Accordion, AccordionButton, AccordionItem, AccordionPanel,
   Box,
-  Button,
   Flex,
   HStack, IconButton,
   Spinner,
   Table,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr, useDisclosure,
-  Wrap,
 } from '@chakra-ui/react';
 
 import React, { useEffect } from 'react';
 import { SectionHeader } from '../../../components/shared/section-header';
 import { DeleteIcon } from '@chakra-ui/icons';
-import { addCourse, deleteCourse, fetchAllCourses } from '../../../api/courses';
+import { deleteCourse, fetchAllCourses } from '../../../api/courses';
 import { AddCourseModal } from './components/add-course-modal';
 import { useTranslation } from 'react-i18next';
 
@@ -71,10 +66,13 @@ const Courses = () => {
       <AddCourseModal isOpen={isOpen} onClose={onClose} refetch={refetch} />
       <SectionHeader deleteButton={false} onChange={handleSearch} onAddClick={onOpen}
                      searchPlaceholder={t('searchCourses') as string}
-                     addText={t('addNewCourse')} />
+                     addText={t('addNewCourse') as string} />
       {isLoading ? (
         <Spinner />
       ) : (
+          <Box
+            overflowX={'auto'}
+          >
         <Table>
           <Thead>
             <Tr>
@@ -111,6 +109,7 @@ const Courses = () => {
 
           </Tbody>
         </Table>
+          </Box>
       )}
     </Flex>
   );

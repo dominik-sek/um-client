@@ -200,5 +200,15 @@
   "searchFaculties": "Wyszukaj wydziały",
   "searchDepartments": "Wyszukaj kierunki",
   "searchApp": "Wyszukaj w aplikacji",
-  "cannotLetYouDoThat": "Nie mogę pozwolić na wykonanie tej akcji"
+  "cannotLetYouDoThat": "Nie mogę pozwolić na wykonanie tej akcji",
+  "personRequired": "Wybierz osobę",
+  "lengthOfStudiesRequired": "Czas trwania studiów jest wymagany (w semestrach 1-12)",
+  "studyTypeRequired": "Typ studiów jest wymagany",
+  "selectStudyType": "Wybierz typ studiów",
+  "degreeRequired": "Stopień jest wymagany",
+  "facultyRequired": "Wydział jest wymagany",
+  "courseTypeRequired": "Typ przedmiotu jest wymagany",
+  "ectsCredits": "Liczba punktów ECTS jest wymagana (1-20)",
+  "semesterRequired": "Semestr jest wymagany (1-12)",
+  "departmentRequired": "Kierunek jest wymagany"
 }

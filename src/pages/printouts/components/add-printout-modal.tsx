@@ -1,12 +1,12 @@
 import {
-  Button, CloseButton, FormControl, FormErrorMessage, HStack, Input,
+  Button, CloseButton, Flex, FormControl, FormErrorMessage, Input,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay, Spinner, Text, useToast, Wrap,
+  ModalOverlay, Spinner, useToast,
 } from '@chakra-ui/react';
 import { FileUploader } from 'react-drag-drop-files';
 import {  useState } from 'react';
@@ -69,18 +69,20 @@ export const AddPrintoutModal = (props: { isOpen: boolean, onClose: () => void, 
             uploading ? (
               <Spinner size={'xl'} />
             ) : (
-              <Wrap>
+              <Flex flexDir={'column'} gap={4}>
                 <FormControl isInvalid={!fileDescription} gap={2} display={'flex'} flexDir={'column'}>
                   <FormErrorMessage>{t('descriptionRequired')}</FormErrorMessage>
                   <Input required placeholder={t('description')}
                          onChange={e => setFileDescription(e.target.value)} />
                 </FormControl>
-                <FileUploader
-                  handleChange={handleFileUpload} name='file' types={fileTypes}
-                  label={t('printoutUpload')} />
-                {userFile && <CloseButton color={'red'} onClick={() => setUserFile(undefined)} />}
 
-              </Wrap>
+                <Flex position={'relative'}>
+                  <FileUploader
+                      handleChange={handleFileUpload} name='file' types={fileTypes}
+                      label={t('printoutUpload')} />
+                  {userFile && <CloseButton color={'red'} position={'absolute'} top={'0'} right={'0'} onClick={() => setUserFile(undefined)} />}
+                </Flex>
+              </Flex>
             )
           }
         </ModalBody>

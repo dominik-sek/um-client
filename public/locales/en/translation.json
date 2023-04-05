@@ -197,5 +197,15 @@
   "searchApp": "Search the app",
   "cannotLetYouDoThat": "Sorry, I can't let you do that",
   "state": "Voivodeship/State",
-  "street": "Street"
+  "street": "Street",
+  "personRequired": "Person is required",
+  "lengthOfStudiesRequired": "Length of studies is required (between 1 and 12 semesters)",
+  "studyTypeRequired": "Study type is required",
+  "selectStudyType": "Select study type",
+  "degreeRequired": "Degree is required",
+  "facultyRequired": "Faculty is required",
+  "courseTypeRequired": "Course type is required",
+  "ectsCredits": "ECTS credits are required (between 1 and 20)",
+  "semesterRequired": "Semester is required (1-12)",
+  "departmentRequired": "Department is required"
 }

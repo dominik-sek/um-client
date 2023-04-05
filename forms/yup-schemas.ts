@@ -91,7 +91,7 @@ const addFacultySchema = yup.object().shape({
 const addCourseSchema = yup.object().shape({
     name: yup.string().required(),
     type: yup.string().required(),
-    ects: yup.number().min(1).max(12).required(),
+    ects: yup.number().min(1).max(20).required(),
     semester: yup.number().min(1).max(12).required(),
     person: yup.string().required(),
     department: yup.string().required(),

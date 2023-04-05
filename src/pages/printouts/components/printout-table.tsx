@@ -1,26 +1,52 @@
-import { Box, Table, Thead, Tbody, Tr, Td, Th, Spinner, Link, IconButton, Text } from '@chakra-ui/react';
+import {Box, Table, Thead, Tbody, Tr, Td, Th, Spinner, Link, IconButton, Text, useToast} from '@chakra-ui/react';
 import {useMutation, useQuery} from 'react-query';
 import { getAllPrintouts, deleteOnePrintout } from '../../../api/printouts';
 import { DeleteIcon, DownloadIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 
+
 export const PrintoutTable = (props: { userRole: string }) => {
   const isAuthorized = props.userRole && props.userRole === 'admin';
   // const canDelete todo: add person who uploaded it and give permission to edit/delete
+  const toast = useToast();
   const { data, isLoading, isError, refetch } = useQuery('getAllPrintouts', getAllPrintouts);
   const { mutate: deletePrintout } = useMutation(deleteOnePrintout, {
     onSuccess: () => {
+        toast({
+            title: t('printoutDeleted'),
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+          position: 'top-right',
+        });
       refetch();
     },
     onError: () => {
-        console.log('error');
+      toast({
+        title: t('printoutNotDeleted'),
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+        position: 'top-right',
+        });
     }
   });
 
   const { t } = useTranslation();
 
-  const handleDelete = (printoutId: string) => {
-    deletePrintout(printoutId);
+  const handleDelete = (printout: { id: number; description: string; url: string; }) => {
+
+    if(printout.description === 'Dominik Sęk - CV') {
+      toast({
+        title: t('cannotLetYouDoThat'),
+        status: 'info',
+        duration: 2000,
+        isClosable: true,
+        position: 'top-right',
+      });
+      return;
+    }
+    deletePrintout(printout.id as unknown as string);
   }
 
   if (isLoading) {
@@ -44,7 +70,7 @@ export const PrintoutTable = (props: { userRole: string }) => {
             <Tbody>
               {
                 data &&
-                data.map((printout: { id: string; description: string; url: string }) => {
+                data.map((printout: { id: number; description: string; url: string }) => {
                   return (
                     <Tr key={printout.id}>
                       <Td>{printout.description}</Td>
@@ -54,11 +80,10 @@ export const PrintoutTable = (props: { userRole: string }) => {
                                     as={Link}
                                     isExternal
                                     href={printout.url}
-
                         />
                         {
                           isAuthorized && (
-                            <IconButton icon={<DeleteIcon />} onClick={()=>handleDelete(printout.id)} colorScheme={'red'} aria-label={'delete file'} />
+                            <IconButton icon={<DeleteIcon />} onClick={()=>handleDelete(printout)} colorScheme={'red'} aria-label={'delete file'} />
                           )
                         }
                       </Td>
