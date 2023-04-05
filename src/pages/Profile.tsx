@@ -26,7 +26,6 @@ import {
   useColorModeValue,
   useDisclosure, useToast,
   VStack,
-  Wrap,
 } from '@chakra-ui/react';
 import { useUserStore } from '../../store';
 import { EditIcon, WarningTwoIcon } from '@chakra-ui/icons';
@@ -304,7 +303,7 @@ const Profile = () => {
               <VStack display={'flex'} w={'100%'} flexDir={'column'}>
                 <Box display={'flex'} w={'100%'} justifyContent={'space-between'}>
                   <Heading size={'md'}>{t('addressAndContact')}</Heading>
-                  <EditIcon cursor={'pointer'} boxSize={6} onClick={() => setEditBasicInfo(!editBasicInfo)} />
+                  {/*<EditIcon cursor={'pointer'} boxSize={6} onClick={() => setEditBasicInfo(!editBasicInfo)} />*/}
                 </Box>
                 <Divider />
               </VStack>
@@ -403,8 +402,9 @@ const Profile = () => {
               p={4}
             >
               <Button leftIcon={<FiSave />} minW={'25%'} colorScheme={'blue'}
-                      disabled={!hasChanged} onClick={onOpen}>{t('save')}</Button>
+                      disabled onClick={onOpen}>{t('save')}</Button>
               <Button leftIcon={<FiDelete />} minW={'25%'} colorScheme={'red'}
+                      disabled
                       onClick={handleDiscard}>{t('discard')}</Button>
             </ButtonGroup>
           </Card>
