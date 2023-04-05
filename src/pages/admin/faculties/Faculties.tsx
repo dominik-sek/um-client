@@ -75,7 +75,7 @@ const Faculties = () => {
             <Tr>
               <Th>{t('dean')}</Th>
               <Th>{t('facultyName')}</Th>
-              <Th></Th>
+              <Th>{t('action')}</Th>
             </Tr>
           </Thead>
           <Tbody>

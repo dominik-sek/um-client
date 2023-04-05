@@ -81,7 +81,7 @@ const Departments = () => {
               <Th>{t('facultyName')}</Th>
               <Th>{t('lengthOfStudies')}</Th>
               <Th>{t('studyType')}</Th>
-              <Th></Th>
+              <Th>{t('action')}</Th>
             </Tr>
           </Thead>
           <Tbody>

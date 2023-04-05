@@ -81,7 +81,7 @@ const Courses = () => {
               <Th>{t('courseTeacher')}</Th>
               <Th>{t('semester')}</Th>
               <Th>{t('courseCredits')}</Th>
-              <Th></Th>
+              <Th>{t('action')}</Th>
             </Tr>
           </Thead>
           <Tbody>

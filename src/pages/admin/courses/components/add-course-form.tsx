@@ -1,7 +1,7 @@
 import {Flex, FormControl, FormErrorMessage, FormLabel, Input, Select} from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
-import {addCourseSchema, addCourseSchema as schema} from '../../../../../forms/yup-schemas';
+import { addCourseSchema as schema} from '../../../../../forms/yup-schemas';
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import onFormValueChange from '../../../../functions/onFormValueChange';
 import { useQuery } from 'react-query';
@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<SetStateAction<any>>, setIsFormValid: Dispatch<SetStateAction<boolean>> }) => {
   const { setFormValues, formValues } = props;
-  const { register, handleSubmit, watch, formState: { errors, isValid }, control } = useForm({
+  const { register, formState: { errors, isValid } } = useForm({
     mode: 'all',
     resolver: yupResolver(schema),
     defaultValues: formValues,
@@ -27,11 +27,11 @@ export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<
 
   const [teachers, setTeachers] = useState([]);
 
-  const { data: departments, isLoading: departmentsLoading } = useQuery('getAllDepartments', getAllDepartments, {
+  const { data: departments } = useQuery('getAllDepartments', getAllDepartments, {
     refetchOnWindowFocus: false,
   });
 
-  const { data: users, isLoading: usersLoading } = useQuery('fetchAllUsers', fetchAllUsers, {
+  const { data: users } = useQuery('fetchAllUsers', fetchAllUsers, {
     refetchOnWindowFocus: false,
   });
 
