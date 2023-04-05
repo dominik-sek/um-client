@@ -1,7 +1,7 @@
 import {
   Card,
   CardBody,
-  CardHeader,
+  CardHeader, Flex,
   FormControl,
   Heading,
   IconButton, Spinner,
@@ -58,7 +58,11 @@ export const CourseGradesCard = () => {
               md: 'hidden',
             }}
         >
-          {gradesLoading ? <Spinner /> : (
+          {gradesLoading ? (
+              <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                <Spinner />
+              </Flex>
+              ) : (
             <Table>
               <Thead>
                 <Tr>

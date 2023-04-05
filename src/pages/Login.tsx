@@ -53,9 +53,7 @@ export default function Login() {
     setFormError(false);
     setPassword(event.target.value);
   };
-  const toast = useToast();
   const navigate = useNavigate();
-  const { isOpen, onToggle, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
 
   const { refetch: refetchProfile } = useQuery('fetchUserProfile', () => fetchUserProfile(), {
@@ -72,10 +70,11 @@ export default function Login() {
     onSuccess: (data) => {
       userAuth.setAuth(true);
       userAuth.setRole(data.role);
+      userStore.setUser(data);
       refetchProfile().then((response) => {
         userStore.setUser(response.data);
-      });
-      navigate('/', { replace: true });
+        navigate('/', { replace: true });
+      })
     },
     onError: (error) => {
       setFormError(true);
@@ -85,7 +84,6 @@ export default function Login() {
   const selectSampleAccount = (selection: string) => {
     switch (selection) {
       case 'admin':
-
         setUsername('abbotoneal372');
         setPassword('32840473032');
         break;

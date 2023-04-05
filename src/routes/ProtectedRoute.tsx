@@ -11,6 +11,7 @@ export const ProtectedRoute = ({ allowed }: ProtectedRouteProps): JSX.Element =>
   const { data, isLoading, isError, error } = useQuery('checkAuth', checkAuth, {
     refetchOnWindowFocus: true,
   });
+
   if (isLoading) {
     return <LoadingScreen />;
   }

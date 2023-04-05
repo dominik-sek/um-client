@@ -68,7 +68,11 @@ const Faculties = () => {
       <AddFacultyModal isOpen={isOpen} onClose={onClose} refetch={refetch} />
       <SectionHeader addText={t('addNewFaculty') as string} deleteButton={false} onChange={handleSearch} onAddClick={onOpen} searchPlaceholder={t('searchFaculties') as string} />
       {isLoading ? (
-        <Spinner />
+          (
+              <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                <Spinner />
+              </Flex>
+          )
       ) : (
         <Table>
           <Thead>

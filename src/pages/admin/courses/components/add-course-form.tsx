@@ -43,9 +43,9 @@ export const AddCourseForm = (props: { formValues: any, setFormValues: Dispatch<
 
     const { t } = useTranslation();
 
-    useEffect(()=>{
-        props.setIsFormValid(isValid);
-    },[isValid, props])
+  useEffect(()=>{
+      props.setIsFormValid(isValid);
+  },[isValid, props])
 
   return (
     <form>

@@ -15,6 +15,7 @@ import {
   Th,
   Thead,
   Tr,
+    Flex,
   useColorModeValue,
   VStack,
   Wrap,
@@ -32,34 +33,30 @@ import { useTranslation } from 'react-i18next';
 
 
 const StudentPanel = () => {
-
-  const user = useUserStore(state => state.user);
-  console.log(user)
+  const user = useUserStore((state) => state.user);
   const { gradebook } = user;
-
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-  } = useQuery('fetchStudentsCourses', () => fetchAllGradesByStudent(gradebook?.gradebook_id), {
-    refetchOnWindowFocus: false,
-  });
   const cardBg = useColorModeValue('white', 'gray.800');
-  const {
-    data: courses,
-    isLoading: coursesLoading,
-  } = useQuery('fetchCourseByGradebook', () => fetchCourseByGradebook(gradebook?.gradebook_id), {
-    refetchOnWindowFocus: false,
-  });
   const { t } = useTranslation();
 
-  if (isLoading || coursesLoading) {
-    return (
-      <LoadingScreen />
-    );
-  } else {
+  const fetchStudentsCourses = React.useCallback(() => fetchAllGradesByStudent(gradebook?.gradebook_id), [gradebook?.gradebook_id]);
+  const { data, isLoading:gradesLoading, isError, error } = useQuery('fetchStudentsCourses', fetchStudentsCourses, {
+    enabled: !!gradebook,
+    refetchOnWindowFocus: false,
+  });
 
+  const fetchCourse = React.useCallback(() => fetchCourseByGradebook(gradebook?.gradebook_id), [gradebook?.gradebook_id]);
+  const { data: courses, isLoading: coursesLoading } = useQuery('fetchCourseByGradebook', fetchCourse, {
+    enabled: !!gradebook,
+    refetchOnWindowFocus: false,
+  });
+
+  if (!user) {
+    return (
+        <Flex w={'100%'} h={'100%'} justifyContent={'center'} alignItems={'center'}>
+          <Spinner />
+        </Flex>
+    )
+  }
     return (
       <Wrap
         flexDir={'column'}
@@ -70,15 +67,14 @@ const StudentPanel = () => {
         >
           <CardHeader>
             {
-              user && (
-                <VStack alignItems={'flex-start'}>
-                  <Heading size={'sm'}>{user.first_name} {user.last_name}</Heading>
-                  <Heading size={'sm'}>{t('gradebookID')}: {gradebook.gradebook_id}</Heading>
-                  <Heading size={'sm'}>{t('semester')}: {gradebook.semester}</Heading>
-                </VStack>
 
+              (user && gradebook) && (
+                    <VStack alignItems={'flex-start'}>
+                      <Heading size={'sm'}>{user.first_name} {user.last_name}</Heading>
+                      <Heading size={'sm'}>{t('gradebookID')}: {gradebook?.gradebook_id}</Heading>
+                      <Heading size={'sm'}>{t('semester')}: {gradebook?.semester}</Heading>
+                    </VStack>
               )
-
             }
           </CardHeader>
           <Divider />
@@ -93,7 +89,9 @@ const StudentPanel = () => {
                 gap={4}
               >
                 {coursesLoading ? (
-                  <Spinner />
+                    <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                      <Spinner />
+                    </Flex>
                 ) : (
                   <Wrap>
                     <Heading size={'md'}>{t('coursesEnrolled')}</Heading>
@@ -140,7 +138,11 @@ const StudentPanel = () => {
             justifyContent={'center'}
             gap={4}>
             {
-              isLoading ? <Spinner /> : (
+              gradesLoading ? (
+                  <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                    <Spinner />
+                  </Flex>
+                  ) : (
                 <Table w={'100%'}>
                   <Thead>
                     <Tr>
@@ -172,6 +174,6 @@ const StudentPanel = () => {
         </Card>
       </Wrap>
     );
-  }
+
 };
 export default StudentPanel;

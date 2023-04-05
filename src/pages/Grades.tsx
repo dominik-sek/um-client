@@ -1,6 +1,6 @@
 import {
   Box,
-  Button,
+  Button, Flex,
   FormControl,
   IconButton,
   Menu,
@@ -221,7 +221,11 @@ const Grades = () => {
         <MenuButton width={'100%'} as={Button} rightIcon={<ChevronDownIcon />}>
           {pickedCourse ? `${pickedCourse.name} - ${pickedCourse.type}` : t('pickCourse')}
         </MenuButton>
-        {userLoading ? <Spinner /> : (
+        {userLoading ? (
+            <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+              <Spinner />
+            </Flex>
+            ) : (
           <MenuList>
             {
               user.course.map((course: course) => (
@@ -241,7 +245,11 @@ const Grades = () => {
           {pickedUser ? `${pickedUser.gradebook.person.last_name} - ${pickedUser.gradebook.gradebook_id}` : t('pickUser')}
         </MenuButton>
         {
-          courseStudentsLoading ? <Spinner /> : (
+          courseStudentsLoading ? (
+              <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                <Spinner />
+              </Flex>
+              ) : (
             <MenuList overflowY={'scroll'} maxH={'300px'}>
               {
                 courseStudents.map((course: { course_students: any[]; id: any; }) => (
@@ -320,7 +328,11 @@ const Grades = () => {
                 button={<Button colorScheme={'blue'} leftIcon={<AddIcon />} onClick={handleAddGrade}>
                   {t('addGrade')}
                 </Button>}>
-        {(gradesLoading || userLoading) ? <Spinner /> : (
+        {(gradesLoading || userLoading) ? (
+            <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+              <Spinner />
+            </Flex>
+            ) : (
             <Box overflowX={'auto'}>
           <Table>
             <Thead>

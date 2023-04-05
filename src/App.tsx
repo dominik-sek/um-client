@@ -44,7 +44,6 @@ function App() {
                 <Route path={'/'} element={<Home />} />
                 <Route path={'/profile'} element={<Profile />} />
               </Route>
-
               <Route element={<ProtectedRoute allowed={'admin'} />}>
                 <Route path={'/admin/'} element={<AdminPanel />} />
                 <Route path={'/admin/grades'} element={<Grades />} />
@@ -55,7 +54,6 @@ function App() {
                 <Route path={'/admin/courses/manage/'} element={<Courses />} />
                 <Route path={'/admin/documents/manage/'} element={<Documents />} />
                 <Route path={'/admin/printouts/manage/'} element={<Printouts />} />
-
               </Route>
               <Route element={<ProtectedRoute allowed={'student'} />}>
                 <Route path={'/student/'} element={<StudentPanel />} />

@@ -1,7 +1,7 @@
 import {
   Card,
   CardBody,
-  CardHeader,
+  CardHeader, Flex,
   FormControl,
   Heading,
   Spinner,
@@ -40,7 +40,11 @@ export const TeacherCoursesCard = () => {
             base: 'auto',
             md: 'hidden',
         }}>
-          {isLoading ? <Spinner /> : (
+          {isLoading ? (
+              <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                <Spinner />
+              </Flex>
+              ) : (
             <Table>
               <Thead>
                 <Tr>

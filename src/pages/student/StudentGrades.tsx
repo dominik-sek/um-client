@@ -2,7 +2,7 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Divider,
+  Divider, Flex,
   Heading,
   HStack,
   IconButton,
@@ -100,7 +100,11 @@ const StudentGrades = () => {
 
         >
           {
-            isLoading ? <Spinner /> : (
+            isLoading ? (
+                <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                  <Spinner />
+                </Flex>
+                ) : (
               <Table w={'100%'}  >
                 <Thead>
                   <Tr>

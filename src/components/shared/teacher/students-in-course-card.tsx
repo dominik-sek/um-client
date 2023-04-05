@@ -47,7 +47,11 @@ export const StudentsInCourseCard = () => {
         <Heading size={'md'}>{t('yourStudents')}</Heading>
       </CardHeader>
       <CardBody>
-        {isLoading ? <Spinner /> : (
+        {isLoading ? (
+            <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+              <Spinner />
+            </Flex>
+            ) : (
           <Wrap spacing={12} w={'100%'}
                 overflowX={{
                   base: 'auto',

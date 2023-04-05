@@ -9,7 +9,7 @@ import {
   Td,
   Th,
   Thead,
-  Tr, useDisclosure,
+  Tr, useDisclosure, useToast,
 } from '@chakra-ui/react';
 
 import React, { useEffect } from 'react';
@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 
 const Courses = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const toast = useToast();
   const { data, isLoading, isError, refetch } = useQuery('fetchAllCourses', fetchAllCourses, {
     refetchOnWindowFocus: false,
   });
@@ -57,7 +57,15 @@ const Courses = () => {
     },
   });
   const handleDelete = (courseId: number) => {
-    mutate(courseId);
+      toast({
+            title: t('cannotLetYouDoThat'),
+            // description: 'Course has been deleted',
+            status: 'info',
+            duration: 2000,
+            isClosable: true,
+            position: 'top-right',
+      })
+    // mutate(courseId);
   };
 
   const { t } = useTranslation();
@@ -68,7 +76,11 @@ const Courses = () => {
                      searchPlaceholder={t('searchCourses') as string}
                      addText={t('addNewCourse') as string} />
       {isLoading ? (
-        <Spinner />
+          (
+              <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                <Spinner />
+              </Flex>
+          )
       ) : (
           <Box
             overflowX={'auto'}
@@ -106,7 +118,6 @@ const Courses = () => {
                 </Tr>
               ))
             }
-
           </Tbody>
         </Table>
           </Box>

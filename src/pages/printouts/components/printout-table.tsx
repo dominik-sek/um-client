@@ -1,8 +1,9 @@
-import {Box, Table, Thead, Tbody, Tr, Td, Th, Spinner, Link, IconButton, Text, useToast} from '@chakra-ui/react';
+import {Box, Table, Thead, Tbody, Tr, Td, Th, Spinner, Link, IconButton, Text, useToast, Flex} from '@chakra-ui/react';
 import {useMutation, useQuery} from 'react-query';
 import { getAllPrintouts, deleteOnePrintout } from '../../../api/printouts';
 import { DeleteIcon, DownloadIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
+import React from "react";
 
 
 export const PrintoutTable = (props: { userRole: string }) => {
@@ -50,7 +51,11 @@ export const PrintoutTable = (props: { userRole: string }) => {
   }
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+        <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+          <Spinner />
+        </Flex>
+    )
   }
   return (
     <Box overflowX={'auto'} display={'flex'} justifyContent={'center'}>

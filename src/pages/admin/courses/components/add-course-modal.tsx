@@ -9,9 +9,8 @@ import {
   ModalOverlay, useToast,
 } from '@chakra-ui/react';
 import { AddCourseForm } from './add-course-form';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { useMutation } from 'react-query';
-import { createDepartment } from '../../../../api/departments';
 import { addCourse } from '../../../../api/courses';
 import { useTranslation } from 'react-i18next';
 

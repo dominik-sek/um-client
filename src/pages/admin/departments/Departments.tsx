@@ -72,7 +72,11 @@ const Departments = () => {
       <AddDepartmentModal isOpen={isOpen} onClose={onClose} refetch={refetch} />
       <SectionHeader addText={t('addNewDepartment')} deleteButton={false} onChange={handleSearch} onAddClick={onOpen} searchPlaceholder={t('searchDepartments') as string} />
       {isLoading ? (
-        <Spinner />
+          (
+              <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                <Spinner />
+              </Flex>
+          )
       ) : (
         <Table>
           <Thead>

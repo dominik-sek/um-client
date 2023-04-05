@@ -21,6 +21,7 @@ const addCourse = async (course: {}) => {
     .then(data => data)
     .catch(err => console.log(err));
 };
+
 const deleteCourse = async (courseId: number) => {
   const response = await fetch(`/api/v1/courses/${courseId}`, {
     method: 'DELETE',
