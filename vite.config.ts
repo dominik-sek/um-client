@@ -6,7 +6,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			'/api/v1': {
-				target: 'http://localhost:5678',
+				target: 'https://um-server.onrender.com',
 				changeOrigin: true,
 			},
 		},
