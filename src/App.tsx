@@ -23,60 +23,132 @@ import Documents from './pages/admin/documents/Documents';
 import Printouts from './pages/printouts/Printouts';
 
 function App() {
+	return (
+		<Flex>
+			{
+				<Routes>
+					{/* /reset-password/:token */}
+					<Route
+						path={'/reset-password/:token'}
+						element={<ResetPassword />}
+					/>
 
-  return (
-    <Flex>
-      {
-        <Routes>
-          {/* /reset-password/:token */}
-          <Route path={'/reset-password/:token'} element={<ResetPassword />} />
+					<Route path={'/login'} element={<Login />} />
+					<Route
+						path={'/forgot-password'}
+						element={<ForgotPassword />}
+					/>
 
-          <Route path={'/login'} element={<Login />} />
-          <Route path={'/forgot-password'} element={<ForgotPassword />} />
+					<Route element={<ProtectedRoute allowed={['*']} />}>
+						<Route path={'/logout'} element={<Logout />} />
 
-          <Route element={<ProtectedRoute allowed={['*']} />}>
-            <Route path={'/logout'} element={<Logout />} />
+						<Route element={<NavigationLayout />}>
+							<Route path={'*'} element={<NotFound />} />
 
-            <Route element={<NavigationLayout />}>
-              <Route path={'*'} element={<NotFound />} />
-
-              <Route element={<ProtectedRoute allowed={['*']} />}>
-                <Route path={'/'} element={<Home />} />
-                <Route path={'/profile'} element={<Profile />} />
-              </Route>
-              <Route element={<ProtectedRoute allowed={'admin'} />}>
-                <Route path={'/admin/'} element={<AdminPanel />} />
-                <Route path={'/admin/grades'} element={<Grades />} />
-                <Route path={'/admin/users/manage/'} element={<Users />} />
-                <Route path={'/admin/faculties/manage/'} element={<Faculties />} />
-                <Route path={'/admin/departments/manage/'} element={<Departments />} />
-                <Route path={'/admin/departments/timetables/manage/'} element={<Timetables />} />
-                <Route path={'/admin/courses/manage/'} element={<Courses />} />
-                <Route path={'/admin/documents/manage/'} element={<Documents />} />
-                <Route path={'/admin/printouts/manage/'} element={<Printouts />} />
-              </Route>
-              <Route element={<ProtectedRoute allowed={'student'} />}>
-                <Route path={'/student/'} element={<StudentPanel />} />
-                <Route path={'/student/grades'} element={<StudentGrades />} />
-                <Route path={'/student/printouts'} element={<Printouts />} />
-                <Route path={'/student/documents'} element={<Documents />} />
-                <Route path={'/student/payments'} element={<Documents />} />
-              </Route>
-              <Route element={<ProtectedRoute allowed={'teacher'} />}>
-                <Route path={'/teacher/'} element={<TeacherPanel />} />
-                <Route path={'/teacher/grades'} element={<Grades />} />
-                <Route path={'/teacher/documents/printouts/manage'} element={<Printouts />} />
-                <Route path={'/teacher/printouts'} element={<Printouts />} />
-                <Route path={'/teacher/documents'} element={<Documents />} />
-              </Route>
-            </Route>
-          </Route>
-        </Routes>
-      }
-
-    </Flex>
-  );
-
+							<Route element={<ProtectedRoute allowed={['*']} />}>
+								<Route path={'/'} element={<Home />} />
+								<Route
+									path={'/profile'}
+									element={<Profile />}
+								/>
+							</Route>
+							<Route
+								element={<ProtectedRoute allowed={'admin'} />}>
+								<Route
+									path={'/admin/'}
+									element={<AdminPanel />}
+								/>
+								<Route
+									path={'/admin/grades'}
+									element={<Grades />}
+								/>
+								<Route
+									path={'/admin/users/manage/'}
+									element={<Users />}
+								/>
+								<Route
+									path={'/admin/faculties/manage/'}
+									element={<Faculties />}
+								/>
+								<Route
+									path={'/admin/departments/manage/'}
+									element={<Departments />}
+								/>
+								<Route
+									path={
+										'/admin/departments/timetables/manage/'
+									}
+									element={<Timetables />}
+								/>
+								<Route
+									path={'/admin/courses/manage/'}
+									element={<Courses />}
+								/>
+								<Route
+									path={'/admin/documents/manage/'}
+									element={<Documents />}
+								/>
+								<Route
+									path={'/admin/printouts/manage/'}
+									element={<Printouts />}
+								/>
+							</Route>
+							<Route
+								element={
+									<ProtectedRoute allowed={'student'} />
+								}>
+								<Route
+									path={'/student/'}
+									element={<StudentPanel />}
+								/>
+								<Route
+									path={'/student/grades'}
+									element={<StudentGrades />}
+								/>
+								<Route
+									path={'/student/printouts'}
+									element={<Printouts />}
+								/>
+								<Route
+									path={'/student/documents'}
+									element={<Documents />}
+								/>
+								<Route
+									path={'/student/payments'}
+									element={<Documents />}
+								/>
+							</Route>
+							<Route
+								element={
+									<ProtectedRoute allowed={'teacher'} />
+								}>
+								<Route
+									path={'/teacher/'}
+									element={<TeacherPanel />}
+								/>
+								<Route
+									path={'/teacher/grades'}
+									element={<Grades />}
+								/>
+								<Route
+									path={'/teacher/documents/printouts/manage'}
+									element={<Printouts />}
+								/>
+								<Route
+									path={'/teacher/printouts'}
+									element={<Printouts />}
+								/>
+								<Route
+									path={'/teacher/documents'}
+									element={<Documents />}
+								/>
+							</Route>
+						</Route>
+					</Route>
+				</Routes>
+			}
+		</Flex>
+	);
 }
 
 export default App;

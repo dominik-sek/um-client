@@ -1,8 +1,4 @@
 const FloatingButton = () => {
-    return (
-        <>
-            {}
-        </>
-    )
-}
+	return <>{}</>;
+};
 export default FloatingButton;
