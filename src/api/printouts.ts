@@ -1,5 +1,5 @@
 const getAllPrintouts = async () => {
-	const response = await fetch('/api/v1/printouts', {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/printouts`, {
 		method: 'GET',
 		credentials: 'include',
 	});
@@ -9,7 +9,7 @@ const addOnePrintout = async (printout: {
 	description: string;
 	url: string;
 }) => {
-	const response = await fetch('/api/v1/printouts', {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/printouts`, {
 		method: 'POST',
 		credentials: 'include',
 		headers: {
@@ -20,7 +20,7 @@ const addOnePrintout = async (printout: {
 	return response.json();
 };
 const deleteOnePrintout = async (id: string) => {
-	const response = await fetch(`/api/v1/printouts/${id}`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/printouts/${id}`, {
 		method: 'DELETE',
 		credentials: 'include',
 	});

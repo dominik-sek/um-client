@@ -1,5 +1,5 @@
 const fetchAllGrades = async () => {
-	const response = await fetch(`/api/v1/grades`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/grades`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -14,7 +14,7 @@ const fetchAllGrades = async () => {
 	return response.json();
 };
 const fetchAllGradesByCourse = async (courseId: number) => {
-	const response = await fetch(`/api/v1/grades/course/${courseId}`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/grades/course/${courseId}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ const fetchAllGradesByCourse = async (courseId: number) => {
 	return response.json();
 };
 const fetchAllGradesByStudent = async (gradebookId: number) => {
-	const response = await fetch(`/api/v1/grades/student/${gradebookId}`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/grades/student/${gradebookId}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const fetchAllGradesByStudent = async (gradebookId: number) => {
 	return response.json();
 };
 const fetchAllGradesByTeacher = async () => {
-	const response = await fetch(`/api/v1/grades/teacher`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/grades/teacher`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const fetchAllGradesByStudentAndCourse = async (
 	courseId: number,
 ) => {
 	const response = await fetch(
-		`/api/v1/grades/student/${gradebookId}/course/${courseId}`,
+		`${import.meta.env.VITE_API_URL}/api/v1/grades/student/${gradebookId}/course/${courseId}`,
 		{
 			method: 'GET',
 			headers: {
@@ -80,7 +80,7 @@ const fetchAllGradesByStudentAndCourse = async (
 	return response.json();
 };
 const deleteGrade = async (gradeId: number) => {
-	const response = await fetch(`/api/v1/grades/student/${gradeId}`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/grades/student/${gradeId}`, {
 		method: 'DELETE',
 		headers: {
 			'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const addGrade = async (params: {
 	courseId: number;
 	grade: number;
 }) => {
-	const response = await fetch(`/api/v1/grades`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/grades`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ const addGrade = async (params: {
 	return response.json();
 };
 const updateGrade = async (params: { gradeId: number; grade: number }) => {
-	const response = await fetch(`/api/v1/grades/${params.gradeId}`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/grades/${params.gradeId}`, {
 		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ const updateGrade = async (params: { gradeId: number; grade: number }) => {
 	return response.json();
 };
 const generatePdfByGradebook = async (gradebookId: number) => {
-	const res = await fetch(`/api/v1/grades/pdf/${gradebookId}`, {
+	const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/grades/pdf/${gradebookId}`, {
 		method: 'GET',
 		//get the pdf file
 		headers: {

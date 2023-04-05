@@ -1,5 +1,5 @@
 const forgotPassword = async (email: string) => {
-	const response = await fetch(`/api/v1/forgot-password`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/forgot-password`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ const resetPassword = async (params: {
 	token: string | undefined;
 	password: string;
 }) => {
-	const response = await fetch(`/api/v1/reset-password`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/reset-password`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

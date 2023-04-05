@@ -1,5 +1,5 @@
 const fetchCourseByGradebook = async (gradebookId: number) => {
-	const response = await fetch(`/api/v1/courses/student/${gradebookId}`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/courses/student/${gradebookId}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -9,7 +9,7 @@ const fetchCourseByGradebook = async (gradebookId: number) => {
 	return response.json();
 };
 const addCourse = async (course: {}) => {
-	return await fetch('/api/v1/courses', {
+	return await fetch(`${import.meta.env.VITE_API_URL}/api/v1/courses`, {
 		method: 'POST',
 		credentials: 'include',
 		headers: {
@@ -23,7 +23,7 @@ const addCourse = async (course: {}) => {
 };
 
 const deleteCourse = async (courseId: number) => {
-	const response = await fetch(`/api/v1/courses/${courseId}`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/courses/${courseId}`, {
 		method: 'DELETE',
 		credentials: 'include',
 	});
@@ -33,7 +33,7 @@ const deleteCourse = async (courseId: number) => {
 	return response.json();
 };
 const fetchAllCourses = async () => {
-	return await fetch('/api/v1/courses', {
+	return await fetch(`${import.meta.env.VITE_API_URL}/api/v1/courses`, {
 		credentials: 'include',
 	})
 		.then((res) => res.json())
@@ -41,7 +41,7 @@ const fetchAllCourses = async () => {
 		.catch((err) => console.log(err));
 };
 const fetchStudentsCourses = async () => {
-	const response = await fetch(`/api/v1/courses/students`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/courses/students`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ const fetchStudentsCourses = async () => {
 	return response.json();
 };
 const fetchStudentsInCourse = async (courseId: number) => {
-	const response = await fetch(`/api/v1/courses/${courseId}/students`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/courses/${courseId}/students`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const fetchStudentsInCourse = async (courseId: number) => {
 	return response.json();
 };
 const updateOneCourse = async (person: {}, courseId: number) => {
-	return await fetch(`/api/v1/courses/teacher/${courseId}`, {
+	return await fetch(`${import.meta.env.VITE_API_URL}/api/v1/courses/teacher/${courseId}`, {
 		method: 'PUT',
 		credentials: 'include',
 		headers: {

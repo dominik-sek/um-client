@@ -1,5 +1,5 @@
 export const checkAuth = async () => {
-	return await fetch('/api/v1/check-auth', {
+	return await fetch(`${import.meta.env.VITE_API_URL}/api/v1/check-auth`, {
 		credentials: 'include',
 	})
 		.then((res) => res.json())

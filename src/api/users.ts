@@ -1,5 +1,5 @@
 const fetchAllUsers = async () => {
-	return await fetch('/api/v1/users/', {
+	return await fetch(`${import.meta.env.VITE_API_URL}/api/v1/users/`, {
 		credentials: 'include',
 	})
 		.then((res) => res.json())
@@ -10,7 +10,7 @@ const updateUserProfile = async (params: {
 	userProfile: {};
 	userId: number;
 }) => {
-	const response = await fetch(`/api/v1/users/${params.userId}`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/users/${params.userId}`, {
 		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ const updateUserProfile = async (params: {
 	throw new Error('Something went wrong');
 };
 const removePerson = async (params: { userId: number }) => {
-	const response = await fetch(`/api/v1/users/${params.userId}`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/users/${params.userId}`, {
 		method: 'DELETE',
 		headers: {
 			'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ const removePerson = async (params: { userId: number }) => {
 	}
 };
 const fetchUserProfile = async () => {
-	const response = await fetch('/api/v1/users/profile', {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/users/profile`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const fetchUserProfile = async () => {
 	return response.json();
 };
 const changeUserAvatar = async (avatar_url: string) => {
-	const response = await fetch('/api/v1/users/profile/avatar', {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/users/profile/avatar`, {
 		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const changeUserAvatar = async (avatar_url: string) => {
 };
 
 const addNewPerson = async (params: { userProfile: {} }) => {
-	const response = await fetch(`/api/v1/users`, {
+	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/users`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
