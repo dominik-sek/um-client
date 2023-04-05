@@ -1,20 +1,15 @@
 import { useMutation, useQuery } from 'react-query';
 import { deleteDepartment, getAllDepartments } from '../../../api/departments';
 import {
-  Accordion, AccordionButton, AccordionItem, AccordionPanel,
-  Box,
-  Button,
   Flex,
-  HStack, IconButton,
+  IconButton,
   Spinner,
   Table,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr, useDisclosure, useToast,
-  Wrap,
 } from '@chakra-ui/react';
 
 import React, { useEffect } from 'react';
@@ -22,7 +17,6 @@ import { SectionHeader } from '../../../components/shared/section-header';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { AddDepartmentModal } from './components/add-department-modal';
 import { useTranslation } from 'react-i18next';
-import {useActionNotAllowed} from "../../../hooks/useActionNotAllowed";
 
 const Departments = () => {
   const { onOpen, isOpen, onClose } = useDisclosure();

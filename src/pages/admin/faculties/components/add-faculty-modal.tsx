@@ -9,13 +9,15 @@ import {
   ModalOverlay, useToast,
 } from '@chakra-ui/react';
 import { AddFacultyForm } from './add-faculty-form';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { useMutation } from 'react-query';
 import { createFaculty } from '../../../../api/faculties';
 import { useTranslation } from 'react-i18next';
 
 export const AddFacultyModal = (props: { isOpen: boolean, onClose: () => void, refetch: () => void }) => {
   const [formValues, setFormValues] = React.useState({});
+  const [isFormValid, setIsFormValid] = React.useState(false);
+
   const toast = useToast();
   const { mutate } = useMutation(createFaculty, {
     onSuccess: () => {
@@ -44,6 +46,7 @@ export const AddFacultyModal = (props: { isOpen: boolean, onClose: () => void, r
   const handleAdd = () => {
     mutate(formValues);
   };
+
   const { t } = useTranslation();
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}
@@ -53,10 +56,10 @@ export const AddFacultyModal = (props: { isOpen: boolean, onClose: () => void, r
         <ModalHeader>{t('addFaculty')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <AddFacultyForm formValues={formValues} setFormValues={setFormValues} />
+          <AddFacultyForm formValues={formValues} setFormValues={setFormValues} setIsFormValid={setIsFormValid} />
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme={'blue'} mr={3} onClick={handleAdd}>
+          <Button colorScheme={'blue'} width={'20%'} onClick={handleAdd} disabled={!isFormValid} >
             {t('add')}
           </Button>
         </ModalFooter>

@@ -1,8 +1,10 @@
 import { Avatar, Box, Button, Checkbox, Flex, Stack, Text, useColorModeValue, Wrap } from '@chakra-ui/react';
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserRole } from '../../enums/user-role';
 import {UserData} from "../../types/User";
+import {useInView} from "framer-motion";
+import {use} from "i18next";
 
 interface UserCardProps {
   user: UserData;
@@ -21,8 +23,10 @@ function UserCard(props: UserCardProps) {
   const handleOnEditClick = useCallback((userId: number) => {
     props.onEditClick(userId);
   }, [props.onEditClick]);
-  return (
 
+
+
+  return (
     <Wrap py={2}>
       <Box
         w={'full'}
@@ -31,11 +35,12 @@ function UserCard(props: UserCardProps) {
         bg={useColorModeValue('white', 'gray.800')}
         boxShadow={'2xl'}
         rounded={'md'}
-        overflow={'hidden'}>
+        overflow={'hidden'}
 
-        <Wrap w={'100%'} display={'flex'} justifyContent={'flex-end'} pr={4} pt={4}>
-          <Checkbox size={'lg'} value={user.id} onChange={handleOnChange} />
-        </Wrap>
+      >
+            <Wrap w={'100%'} display={'flex'} justifyContent={'flex-end'} pr={4} pt={4}>
+              <Checkbox size={'lg'} value={user.id} onChange={handleOnChange} />
+            </Wrap>
 
         <Flex justify={'center'} mt={12}>
           <Avatar

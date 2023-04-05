@@ -1,22 +1,21 @@
-import { Flex, FormControl, FormLabel, Input, Select } from '@chakra-ui/react';
+import {Flex, FormControl, FormErrorMessage, FormLabel, Input, Select} from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
-import { addressContactSchema as schema } from '../../../../../forms/yup-schemas';
+import { addDepartmentSchema as schema } from '../../../../../forms/yup-schemas';
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import onFormValueChange from '../../../../functions/onFormValueChange';
 import { useQuery } from 'react-query';
-import { fetchAllUsers } from '../../../../api/users';
-import { person } from '@prisma/client';
 import { getAllFaculties } from '../../../../api/faculties';
 import { useTranslation } from 'react-i18next';
 
-export const AddDepartmentForm = (props: { formValues: any, setFormValues: Dispatch<SetStateAction<any>> }) => {
+export const AddDepartmentForm = (props: { formValues: any, setFormValues: Dispatch<SetStateAction<any>>, setIsFormValid: Dispatch<SetStateAction<boolean>> }) => {
   const { setFormValues, formValues } = props;
   const { register, handleSubmit, watch, formState: { errors, isValid }, control } = useForm({
     mode: 'all',
     resolver: yupResolver(schema),
     defaultValues: formValues,
   });
+
   const handleFormValuesChange = useCallback((
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     fieldName: string,
@@ -27,46 +26,60 @@ export const AddDepartmentForm = (props: { formValues: any, setFormValues: Dispa
   const { data: faculties, isLoading } = useQuery('getAllFaculties', getAllFaculties, {
     refetchOnWindowFocus: false,
   });
+
   const { t } = useTranslation();
-  console.log(formValues);
+  useEffect(()=>{
+    if(Object.keys(formValues).length !== 0 && Object.keys(errors).length === 0){
+        props.setIsFormValid(true);
+    }
+  },[formValues, errors, props])
+
   return (
     <form>
       <Flex flexDir={'column'}>
-        <FormControl>
+        <FormControl isRequired isInvalid={!!errors?.name?.message}>
+          <FormErrorMessage>{t('nameRequired')}</FormErrorMessage>
           <FormLabel>{t('name')}</FormLabel>
           <Input {...register('name', {
             onChange: e => handleFormValuesChange(e, 'name'),
           })} />
         </FormControl>
 
-        <FormControl>
+        <FormControl isRequired isInvalid={!!errors?.length?.message}>
+          <FormErrorMessage>{t('lengthOfStudiesRequired')}</FormErrorMessage>
           <FormLabel>{t('lengthOfStudies')}</FormLabel>
           <Input {...register('length', {
             onChange: e => handleFormValuesChange(e, 'length'),
           })} />
         </FormControl>
-        <FormControl>
+
+        <FormControl isRequired isInvalid={!!errors?.studyType?.message}>
+          <FormErrorMessage>{t('studyTypeRequired')}</FormErrorMessage>
           <FormLabel>{t('studyType')}</FormLabel>
           <Select {...register('study_type', {
             onChange: e => handleFormValuesChange(e, 'study_type'),
           })} >
+            <option value={''}>{t('selectStudyType')}</option>
             <option value='full-time'>{t('fullTime')}</option>
             <option value='part-time'>{t('partTime')}</option>
           </Select>
         </FormControl>
 
-        <FormControl>
+        <FormControl isRequired isInvalid={!!errors?.degree?.message}>
+          <FormErrorMessage>{t('degreeRequired')}</FormErrorMessage>
           <FormLabel>{t('degree')}</FormLabel>
           <Input {...register('degree', {
             onChange: e => handleFormValuesChange(e, 'degree'),
           })} />
         </FormControl>
 
-        <FormControl>
+        <FormControl isRequired isInvalid={!!errors?.faculty?.message}>
+          <FormErrorMessage >{t('facultyRequired')}</FormErrorMessage>
           <FormLabel>{t('facultyName')}</FormLabel>
           <Select  {...register('faculty', {
             onChange: e => handleFormValuesChange(e, 'faculty_id'),
           })}>
+
             <option value={null}>{t('selectFaculty')}</option>
             {
               faculties?.map((faculty: any) => {

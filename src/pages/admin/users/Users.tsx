@@ -14,8 +14,8 @@ import {
   Wrap,
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
-import { motion } from 'framer-motion';
-import React, { useEffect } from 'react';
+import {motion, useInView} from 'framer-motion';
+import React, {Suspense, useCallback, useEffect, useRef} from 'react';
 import { useUserStore } from '../../../../store';
 import AddUserModal from './components/add-user-modal/add-user-modal';
 import SearchBar from '../../../components/shared/search/search-bar';
@@ -25,6 +25,7 @@ import { AddMultipleModal } from './components/add-multiple-modal/add-multiple-m
 import { FaUpload } from 'react-icons/all';
 import { useTranslation } from 'react-i18next';
 import {UserData} from "../../../types/User";
+const LazyUserCard = React.lazy(() => import('../../../components/shared/user-card'));
 
 const Users = (): JSX.Element => {
   const userStore = useUserStore();
@@ -39,14 +40,17 @@ const Users = (): JSX.Element => {
 
   const [searchTerm, setSearchTerm] = React.useState('');
   const [filteredUsers, setFilteredUsers] = React.useState<UserData[]>([]);
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-  };
+  },[]);
+
   useEffect(() => {
     if (data) {
       setFilteredUsers(data);
     }
   }, [data]);
+
   useEffect(() => {
     if (data) {
       const results = data.filter((user: UserData) =>
@@ -56,20 +60,21 @@ const Users = (): JSX.Element => {
       setFilteredUsers(results);
     }
   }, [searchTerm]);
+
   if (isError) {
     console.log('error', error);
   }
+
   const [checkedItems, setCheckedItems] = React.useState<string[]>([]); //plain array
 
-  const handleChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChecked = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
-    console.log(e)
     if (checked) {
       setCheckedItems([...checkedItems, value]);
     } else {
       setCheckedItems(checkedItems.filter(item => item !== value));
     }
-  };
+  }, [checkedItems]);
 
   const [editUser, setEditUser] = React.useState<UserData>({} as UserData);
 
@@ -170,21 +175,26 @@ const Users = (): JSX.Element => {
           <Spinner size={'lg'} />
         </Flex>
       ) : (
+
         <Wrap spacing={8} pt={10} w={'100%'} h={'100%'} align={'center'} justify={'space-around'}>
           {
             filteredUsers.map((user: UserData) => {
               if (userStore.user.id === user.id) {
                 return null;
               }
+
               return (
                 <motion.div
                   whileInView={{ opacity: 1 }}
                   initial={{ opacity: 0 }}
                   key={user.id}
                 >
-                  <UserCard user={user} key={user.id} onChange={(e) => handleChecked(e)}
-                            onEditClick={(userId) => handleEditClick(userId)} />
+                  {
 
+                          <UserCard  user={user} key={user.id} onChange={(e) => handleChecked(e)}
+                                     onEditClick={(userId) => handleEditClick(userId)} />
+
+                  }
                 </motion.div>
               );
             })

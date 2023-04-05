@@ -77,8 +77,22 @@ const passwordChangeSchema = yup.object().shape({
   }),
 });
 
+const addDepartmentSchema = yup.object().shape({
+    name: yup.string().min(3, 'Department name must be at least 3 characters long').required(),
+    length: yup.number().min(1).max(10).required(),
+    studyType: yup.string().required(),
+    degree: yup.string().required(),
+    faculty: yup.string().required(),
+})
+const addFacultySchema = yup.object().shape({
+    name: yup.string().required(),
+    person: yup.string().required(),
+})
+
 export {
   personalSchema,
   addressContactSchema,
   passwordChangeSchema,
+  addDepartmentSchema,
+  addFacultySchema
 };

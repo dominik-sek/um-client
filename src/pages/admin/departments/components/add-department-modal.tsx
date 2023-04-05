@@ -9,13 +9,15 @@ import {
   ModalOverlay, useToast,
 } from '@chakra-ui/react';
 import { AddDepartmentForm } from './add-department-form';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { useMutation } from 'react-query';
 import { createDepartment } from '../../../../api/departments';
 import { useTranslation } from 'react-i18next';
 
 export const AddDepartmentModal = (props: { isOpen: boolean, onClose: () => void, refetch: () => void }) => {
   const [formValues, setFormValues] = React.useState({});
+  const [isFormValid, setIsFormValid] = React.useState(false)
+
   const toast = useToast();
   const { t } = useTranslation();
   const { mutate } = useMutation(createDepartment, {
@@ -42,7 +44,7 @@ export const AddDepartmentModal = (props: { isOpen: boolean, onClose: () => void
     },
   });
   const handleAdd = () => {
-    mutate(formValues);
+    isFormValid && mutate(formValues);
   };
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}
@@ -52,10 +54,10 @@ export const AddDepartmentModal = (props: { isOpen: boolean, onClose: () => void
         <ModalHeader>{t('addDepartment')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <AddDepartmentForm formValues={formValues} setFormValues={setFormValues} />
+          <AddDepartmentForm formValues={formValues} setFormValues={setFormValues} setIsFormValid={setIsFormValid} />
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme={'blue'} mr={3} onClick={handleAdd}>
+          <Button colorScheme={'blue'} mr={3} onClick={handleAdd} width={'20%'} disabled={!isFormValid}>
             {t('add')}
           </Button>
         </ModalFooter>
