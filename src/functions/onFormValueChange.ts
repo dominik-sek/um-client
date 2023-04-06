@@ -7,7 +7,7 @@ function onFormValueChange<T extends HTMLInputElement | HTMLSelectElement>(
 	setFormValues: React.Dispatch<React.SetStateAction<any>>,
 	propertyName: string | null = null,
 ): void {
-	const newField = { [fieldName]: event.target.value };
+	const newField = { [fieldName]: event.target.value.trim() };
 	if (propertyName) {
 		const updatedFormValues = {
 			...formValues,
