@@ -4,6 +4,7 @@ export const logoutUser = async () => {
 		headers: {
 			'Content-Type': 'application/json',
 		},
+		credentials: 'include',
 	});
 	return response.json();
 };
