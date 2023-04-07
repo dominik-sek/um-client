@@ -24,7 +24,7 @@ export const AddCourseModal = (props: {
 	const [isFormValid, setIsFormValid] = React.useState(false);
 
 	const toast = useToast();
-	const { mutate } = useMutation(addCourse, {
+	const { mutate, isLoading } = useMutation(addCourse, {
 		onSuccess: () => {
 			toast({
 				title: t('courseAdded'),
@@ -72,6 +72,7 @@ export const AddCourseModal = (props: {
 						colorScheme={'blue'}
 						mr={3}
 						onClick={handleAdd}
+						isLoading={isLoading}
 						disabled={!isFormValid}>
 						{t('add')}
 					</Button>

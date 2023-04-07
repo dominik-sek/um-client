@@ -40,7 +40,7 @@ export default function Login() {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [formError, setFormError] = useState(false);
-
+	const [isEverythingLoading, setIsEverythingLoading] = useState(false);
 	const changeLanguage = (lng: string) => {
 		i18n.changeLanguage(lng);
 	};
@@ -60,7 +60,7 @@ export default function Login() {
 	const navigate = useNavigate();
 	const { colorMode, toggleColorMode } = useColorMode();
 
-	const { refetch: refetchProfile } = useQuery(
+	const { refetch: refetchProfile, isLoading:refetchLoading } = useQuery(
 		'fetchUserProfile',
 		() => fetchUserProfile(),
 		{
@@ -69,7 +69,7 @@ export default function Login() {
 		},
 	);
 
-	const { data: authData, refetch: refetchAuth } = useQuery(
+	const { data: authData, refetch: refetchAuth, isLoading: refetchAuthLoading } = useQuery(
 		'checkAuth',
 		() => checkAuth(),
 		{
@@ -78,13 +78,15 @@ export default function Login() {
 		},
 	);
 
-	const { mutate: LoginMutation, isLoading } = useMutation(loginUser, {
+	const { mutate: LoginMutation, isLoading, status } = useMutation(loginUser, {
 		onSuccess: (data) => {
 			userAuth.setAuth(true);
 			userAuth.setRole(data.role);
 			userStore.setUser(data);
 			refetchProfile().then((response) => {
 				userStore.setUser(response.data);
+				console.log('redirecting after successful login...');
+				setIsEverythingLoading((refetchAuthLoading && refetchLoading) && isLoading);
 				navigate('/', { replace: true });
 			});
 		},
@@ -92,6 +94,7 @@ export default function Login() {
 			setFormError(true);
 		},
 	});
+
 	const selectSampleAccount = (selection: string) => {
 		switch (selection) {
 			case 'admin':
@@ -111,6 +114,7 @@ export default function Login() {
 
 	const userStore = useUserStore((state) => state);
 	const userAuth = useAuthStore();
+
 	useEffect(() => {
 		refetchAuth().then((res) => {
 			if (res.data.auth) {
@@ -124,9 +128,12 @@ export default function Login() {
 			setFormError(true);
 			return;
 		}
+		setIsEverythingLoading(true);
 		LoginMutation({ username, password });
 	};
-
+	useEffect(()=>{
+		console.log();
+	},[isLoading, refetchLoading])
 	return (
 		<Flex
 			minH={'100vh'}
@@ -261,7 +268,7 @@ export default function Login() {
 									t('login-screen.sign-in-btn-loading') ??
 									'Loading...'
 								}
-								isLoading={isLoading}
+								isLoading={isEverythingLoading}
 								size="lg"
 								bg={'blue.400'}
 								color={'white'}

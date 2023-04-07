@@ -25,7 +25,7 @@ export const AddDepartmentModal = (props: {
 
 	const toast = useToast();
 	const { t } = useTranslation();
-	const { mutate } = useMutation(createDepartment, {
+	const { mutate, isLoading } = useMutation(createDepartment, {
 		onSuccess: () => {
 			toast({
 				title: t('deptAdded'),
@@ -73,6 +73,7 @@ export const AddDepartmentModal = (props: {
 						mr={3}
 						onClick={handleAdd}
 						width={'20%'}
+						isLoading={isLoading}
 						disabled={!isFormValid}>
 						{t('add')}
 					</Button>

@@ -20,6 +20,7 @@ import Papa from 'papaparse';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { addNewPerson } from '../../../../../api/users';
+import {allowedCSVHeaders} from "../../../../../constants/allowedCsvHeaders";
 
 const fileTypes = ['csv', 'xls', 'xlsx'];
 
@@ -39,6 +40,25 @@ export const AddMultipleModal = (props: {
 		setFileName(file.name);
 		Papa.parse(file, {
 			header: true,
+			step: (row,parser)=>{
+				parser.pause();
+				// @ts-ignore
+				const headers = row.data[0];
+				//if headers are undefined or not the same as the allowed headers
+				if(!headers || !allowedCSVHeaders.every(header=>headers[header])){
+					toast({
+						title: t('invalidCSV'),
+						status: 'error',
+						duration: 4000,
+						isClosable: true,
+						position: 'top-right',
+					});
+					setUserFile([]);
+					setFileName('');
+					parser.abort();
+				}
+				parser.resume();
+			},
 			complete: (results) => {
 				setUserFile(results.data);
 			},
@@ -52,7 +72,6 @@ export const AddMultipleModal = (props: {
 
 	const validateAndUpload = () => {
 		setUploading(true);
-		// using any because i cba to type the whole user object
 		userFile.forEach((user: any) => {
 			useUploadUsers.mutate(
 				{ userProfile: user },

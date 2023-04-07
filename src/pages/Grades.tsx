@@ -68,12 +68,19 @@ function GradeMenu(props: {
 	handleEdit: () => void;
 	isEdited: boolean;
 	handleSave: () => void;
+	isSaveLoading: boolean;
+	isDeleteLoading: boolean;
 }) {
 	const { t } = useTranslation();
 	return (
 		<Box gap={2} display={'flex'}>
 			{props.isEdited ? (
-				<Button colorScheme={'green'} onClick={props.handleSave}>
+				<Button colorScheme={'green'}
+						onClick={props.handleSave}
+						loadingText={''}
+						isLoading={props.isSaveLoading}
+						disabled={props.isSaveLoading}
+				>
 					{t('save')}
 				</Button>
 			) : (
@@ -85,10 +92,14 @@ function GradeMenu(props: {
 				/>
 			)}
 			<IconButton
+				as={Button}
 				aria-label={'Delete grade'}
 				colorScheme={'red'}
 				icon={<DeleteIcon />}
 				onClick={props.handleDelete}
+				loadingText={''}
+				isLoading={props.isDeleteLoading}
+				disabled={props.isDeleteLoading}
 			/>
 		</Box>
 	);
@@ -129,7 +140,7 @@ const Grades = () => {
 
 	const [isEdited, setIsEdited] = React.useState<number>(-1);
 	const [pickedCourse, setPickedCourse] = React.useState<course>(
-		{} as course,
+		null as unknown as course,
 	);
 	const [pickedUser, setPickedUser] = React.useState<any>();
 	const gradeRef = React.useRef<any>(null);
@@ -147,7 +158,7 @@ const Grades = () => {
 		onDeleteOpen();
 	};
 	const toast = useToast();
-	const { mutate: deleteGradeMutation } = useMutation(deleteGrade, {
+	const { mutate: deleteGradeMutation, isLoading:deleteGradeLoading } = useMutation(deleteGrade, {
 		onSuccess: () => {
 			toast({
 				title: 'Grade deleted',
@@ -171,7 +182,7 @@ const Grades = () => {
 			});
 		},
 	});
-	const { mutate: addGradeMutation } = useMutation(addGrade, {
+	const { mutate: addGradeMutation, isLoading:addGradeLoading } = useMutation(addGrade, {
 		onSuccess: () => {
 			toast({
 				title: 'Grade added',
@@ -195,7 +206,7 @@ const Grades = () => {
 			});
 		},
 	});
-	const { mutate: editGradeMutation } = useMutation(updateGrade, {
+	const { mutate: editGradeMutation, isLoading:editGradeLoading } = useMutation(updateGrade, {
 		onSuccess: () => {
 			toast({
 				title: 'Grade edited',
@@ -368,8 +379,13 @@ const Grades = () => {
 						</Button>
 
 						<Button
-							disabled={!pickedCourse || !pickedUser}
+							disabled={!pickedCourse || !pickedUser || addGradeLoading}
 							colorScheme={'green'}
+							loadingText={
+								t('login-screen.sign-in-btn-loading') ??
+								'Loading...'
+							}
+							isLoading={addGradeLoading}
 							onClick={handleSaveGrade}>
 							{t('save')}
 						</Button>
@@ -497,6 +513,8 @@ const Grades = () => {
 																handleSave={() =>
 																	handleEditMutation()
 																}
+																isSaveLoading={editGradeLoading}
+																isDeleteLoading={deleteGradeLoading}
 															/>
 														</Td>
 													)}

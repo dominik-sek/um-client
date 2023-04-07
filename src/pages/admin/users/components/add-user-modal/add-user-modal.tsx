@@ -51,6 +51,7 @@ const AddUserModal = (props: UserModalProps) => {
 				isClosable: true,
 				position: 'top-right',
 			});
+			setFormValues({});
 			props.refetch();
 			props.onClose();
 			reset();
