@@ -27,7 +27,7 @@ const AdminPanel = (): JSX.Element => {
 
 	return (
 		<Flex flexDir={'column'} gap={4}>
-			<CalendarComponent />
+			{/*<CalendarComponent />*/}
 			{data.course && data.course.length > 0 ? (
 				<Wrap>
 					<CourseGradesCard />
