@@ -35,7 +35,7 @@ export const AddPrintoutModal = (props: {
 	const [fileDescription, setFileDescription] = useState<any>();
 	const [uploading, setUploading] = useState(false);
 
-	const { mutate: addPrintout } = useMutation(addOnePrintout);
+	const { mutate: addPrintout, isLoading } = useMutation(addOnePrintout);
 
 	const toast = useToast();
 	const handleFileUpload = (file: any) => {
@@ -122,9 +122,10 @@ export const AddPrintoutModal = (props: {
 				</ModalBody>
 				<ModalFooter>
 					<Button
-						disabled={!userFile || !fileDescription}
+						disabled={!userFile || !fileDescription || uploading}
 						colorScheme="green"
 						mr={3}
+						isLoading={isLoading || uploading}
 						onClick={validateAndUpload}>
 						{t('upload')}
 					</Button>

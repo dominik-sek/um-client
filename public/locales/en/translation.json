@@ -208,5 +208,6 @@
 	"ectsCredits": "ECTS credits are required (between 1 and 20)",
 	"semesterRequired": "Semester is required (1-12)",
 	"departmentRequired": "Department is required",
-	"invalidCSV": "Invalid CSV file"
+	"invalidCSV": "Invalid CSV file",
+	"printoutDeleted": "Printout deleted successfully"
 }
