@@ -97,11 +97,10 @@ export const StudentsInCourseCard = () => {
 								const courseStudents =
 									expand.isExpanded &&
 									expand.courseId === course.id
-										? course.course_students
-										: course.course_students.slice(
+										? course?.course_students
+										: course?.course_students.slice(
 												0,
-												MAX_VISIBLE,
-										  );
+												MAX_VISIBLE);
 
 								return (
 									<Flex
