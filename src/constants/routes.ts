@@ -165,6 +165,14 @@ export const routes: Route[] = [
 		permission: [UserRole.ADMIN, UserRole.TEACHER, UserRole.STUDENT],
 		icon: FaPrint,
 		key: 'routes.printouts',
-		subRoutes: []
+		subRoutes: [
+		 	{
+		 		path: '/printouts/manage',
+		 		name: 'Manage printouts',
+		 		permission: [UserRole.ADMIN, UserRole.TEACHER, UserRole.STUDENT],
+		 		icon: FaPrint,
+		 		key: 'routes.manage-printouts',
+		 	},
+		 ],
 	},
 ];
