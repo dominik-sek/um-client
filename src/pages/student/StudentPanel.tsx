@@ -27,7 +27,6 @@ import { Link } from 'react-router-dom';
 import { fetchAllGradesByStudent } from '../../api/grades';
 import { useQuery } from 'react-query';
 import { fetchCourseByGradebook } from '../../api/courses';
-import LoadingScreen from '../../components/shared/loading-screen';
 import { GradeColors } from '../../constants/grade-colors';
 import { useTranslation } from 'react-i18next';
 
