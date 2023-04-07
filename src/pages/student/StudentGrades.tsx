@@ -1,4 +1,5 @@
 import {
+	Button,
 	Card,
 	CardBody,
 	CardHeader,
@@ -41,7 +42,7 @@ const StudentGrades = () => {
 		},
 	);
 
-	const { mutate: generatePDF } = useMutation(
+	const { mutate: generatePDF, isLoading:generatePDFLoading } = useMutation(
 		() => generatePdfByGradebook(gradebook.gradebook_id),
 		{
 			onSuccess: () => {
@@ -74,13 +75,19 @@ const StudentGrades = () => {
 							<Heading size={'md'}>{t('yourGrades')}</Heading>
 							<HStack>
 								<IconButton
+									as={Button}
 									aria-label={'Generate report'}
 									onClick={() => {
 										generateGradeReport();
 									}}
+									isLoading={generatePDFLoading}
+									disabled={generatePDFLoading}
 									icon={<FiDownload />}
 								/>
 								<IconButton
+									as={Button}
+									isLoading={isLoading}
+									disabled={isLoading}
 									aria-label={'Refresh grades'}
 									onClick={() => {
 										refetch();
