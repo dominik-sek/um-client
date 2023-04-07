@@ -102,7 +102,12 @@ export const Personal = (props: {
 						onChange: (e) =>
 							handleFormValuesChange(e, 'birth_date'),
 					})}
-					defaultValue={birth_date}
+					defaultValue={new Date(birth_date).toLocaleDateString()}
+				// 	key === 'birth_date'
+				// ? new Date(
+				// value,
+				// ).toLocaleDateString()
+				// : value
 				/>
 				<FormErrorMessage>
 					{errors?.birth_date?.message?.toString()}

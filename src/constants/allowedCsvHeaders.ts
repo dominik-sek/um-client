@@ -1,0 +1,17 @@
+export const allowedCSVHeaders = [
+    'first_name',
+    'last_name',
+    'birth_date',
+    'pesel',
+    'gender',
+    'role',
+    'disabled',
+    'married',
+    'city',
+    'country',
+    'postal_code',
+    'street',
+    'state',
+    'email',
+    'phone_number',
+]

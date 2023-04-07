@@ -210,5 +210,6 @@
 	"courseTypeRequired": "Typ przedmiotu jest wymagany",
 	"ectsCredits": "Liczba punktów ECTS jest wymagana (1-20)",
 	"semesterRequired": "Semestr jest wymagany (1-12)",
-	"departmentRequired": "Kierunek jest wymagany"
+	"departmentRequired": "Kierunek jest wymagany",
+	"invalidCSV": "Nieprawidłowy plik CSV"
 }
