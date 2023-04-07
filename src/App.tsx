@@ -131,7 +131,7 @@ function App() {
 									element={<Grades />}
 								/>
 								<Route
-									path={'/teacher/documents/printouts/manage'}
+									path={'/teacher/printouts/manage'}
 									element={<Printouts />}
 								/>
 								<Route
