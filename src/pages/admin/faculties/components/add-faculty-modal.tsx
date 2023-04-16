@@ -75,7 +75,7 @@ export const AddFacultyModal = (props: {
 						width={'20%'}
 						onClick={handleAdd}
 						isLoading={isLoading}
-						disabled={!isFormValid}>
+						disabled={!isFormValid || isLoading}>
 						{t('add')}
 					</Button>
 				</ModalFooter>
