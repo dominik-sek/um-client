@@ -5,7 +5,7 @@ import {
 	AccordionIcon,
 	AccordionItem,
 	AccordionPanel,
-	Avatar,
+	Avatar, Badge,
 	Box,
 	BoxProps,
 	CloseButton,
@@ -41,6 +41,7 @@ import { GB, PL } from 'country-flag-icons/react/3x2';
 import { useTranslation } from 'react-i18next';
 import AutocompleteSearchbar from './search/autocomplete-searchbar';
 import { UserRole } from '../../enums/user-role';
+import {MessageItem} from "./messageItem";
 
 export default function SidebarWithNavbar({
 	children,
@@ -360,10 +361,31 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 			</Flex>
 
 			<HStack spacing={{ base: '2', md: '4' }}>
-				<IconButton
-					aria-label={'Open Messages'}
-					icon={<BiMessageAlt />}
-				/>
+				<Menu>
+					<Flex position={'relative'}>
+						<MenuButton
+							as={IconButton}
+							aria-label={'Open Messages'}
+							icon={<BiMessageAlt />}
+						/>
+						<Badge
+							colorScheme="red"
+							bgColor={'red.500'}
+							position="absolute"
+							top="-10%"
+							right="-20%">
+							3
+						</Badge>
+					</Flex>
+					<MenuList>
+						{/*<Flex justify={'center'}>*/}
+						{/*	No new messages*/}
+						{/*</Flex>*/}
+						<MessageItem latestMessage={'this is a really long message that should be collapsed '} />
+						<MessageItem latestMessage={'this is a really long message that should be collapsed '} />
+						<MessageItem latestMessage={'this is a really long message that should be collapsed '} />
+					</MenuList>
+				</Menu>
 
 				<Menu>
 					<MenuButton

@@ -20,13 +20,14 @@ import Timetables from './pages/admin/departments/Timetables';
 import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword } from './pages/ResetPassword';
 import Printouts from './pages/printouts/Printouts';
+import Messages from "./pages/Messages/Messages";
+import {Chatroom} from "./pages/Messages/Chatroom";
 
 function App() {
 	return (
 		<Flex>
 			{
 				<Routes>
-					{/* /reset-password/:token */}
 					<Route
 						path={'/reset-password/:token'}
 						element={<ResetPassword />}
@@ -40,16 +41,23 @@ function App() {
 
 					<Route element={<ProtectedRoute allowed={['*']} />}>
 						<Route path={'/logout'} element={<Logout />} />
-
 						<Route element={<NavigationLayout />}>
 							<Route path={'*'} element={<NotFound />} />
-
 							<Route element={<ProtectedRoute allowed={['*']} />}>
 								<Route path={'/'} element={<Home />} />
 								<Route
 									path={'/profile'}
 									element={<Profile />}
 								/>
+								<Route
+									path={'/messages'}
+									element={<Messages/>}
+								>
+									<Route
+										path={'/messages/:id'}
+										element={<Chatroom/>}
+									/>
+								</Route>
 							</Route>
 							<Route
 								element={<ProtectedRoute allowed={'admin'} />}>

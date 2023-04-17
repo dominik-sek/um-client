@@ -15,6 +15,17 @@ export interface IUserStore {
 	setUser: (user: UserData) => void;
 	clearUser: () => void;
 }
+export interface IMessageStore {
+	messages: Message[];
+	addMessage: (message: Message) => void;
+}
+export interface Message {
+	id: number;
+	sender_id: number;
+	content: string;
+	sent_at: Date;
+	status: "sent" | "received";
+}
 
 const initialAuthState = {
 	auth: false,
@@ -41,9 +52,18 @@ const userStore = (set: any, get: any): IUserStore => ({
 		set(initialUserState);
 	},
 });
+
+const messageStore = (set:any, get:any): IMessageStore => ({
+	messages: [],
+	addMessage: (message) => set({messages: [message,...get().messages]})
+});
+
 export const useUserStore = create<IUserStore>()(
 	persist(userStore, { name: 'user' }),
 );
 export const useAuthStore = create<IAuthStore>()(
 	persist(authStore, { name: 'auth' }),
+);
+export const useMessageStore = create<IMessageStore>()(
+	persist(messageStore, { name: 'message' }),
 );
