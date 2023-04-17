@@ -391,6 +391,7 @@ const Grades = () => {
 						</Button>
 					</ModalFooter>
 				</ModalContent>
+
 			</Modal>
 		);
 	};

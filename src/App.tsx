@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 import { Route, Routes } from 'react-router-dom';
-import { ProtectedRoute } from './routes/ProtectedRoute';
+import { ProtectedRoute } from './middleware/ProtectedRoute';
 import Login from './pages/Login';
 import NavigationLayout from './layout/NavigationLayout';
 import NotFound from './pages/NotFound';
@@ -19,7 +19,6 @@ import Courses from './pages/admin/courses/Courses';
 import Timetables from './pages/admin/departments/Timetables';
 import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword } from './pages/ResetPassword';
-import Documents from './pages/admin/documents/Documents';
 import Printouts from './pages/printouts/Printouts';
 
 function App() {
@@ -85,10 +84,6 @@ function App() {
 									element={<Courses />}
 								/>
 								<Route
-									path={'/admin/documents/manage/'}
-									element={<Documents />}
-								/>
-								<Route
 									path={'/admin/printouts/manage/'}
 									element={<Printouts />}
 								/>
@@ -109,14 +104,7 @@ function App() {
 									path={'/student/printouts'}
 									element={<Printouts />}
 								/>
-								<Route
-									path={'/student/documents'}
-									element={<Documents />}
-								/>
-								<Route
-									path={'/student/payments'}
-									element={<Documents />}
-								/>
+
 							</Route>
 							<Route
 								element={
@@ -138,10 +126,7 @@ function App() {
 									path={'/teacher/printouts'}
 									element={<Printouts />}
 								/>
-								<Route
-									path={'/teacher/documents'}
-									element={<Documents />}
-								/>
+
 							</Route>
 						</Route>
 					</Route>

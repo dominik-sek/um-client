@@ -1,12 +1,5 @@
 import {
-	Card,
-	CardBody,
-	CardHeader,
 	Flex,
-	Grid,
-	Heading,
-	SimpleGrid,
-	Spinner,
 	Wrap,
 } from '@chakra-ui/react';
 import { fetchUserProfile } from '../../api/users';
@@ -15,7 +8,7 @@ import LoadingScreen from '../../components/shared/loading-screen';
 import { CourseGradesCard } from '../../components/shared/teacher/course-grades-card';
 import { StudentsInCourseCard } from '../../components/shared/teacher/students-in-course-card';
 import { TeacherCoursesCard } from '../../components/shared/teacher/teacher-courses-card';
-import CalendarComponent from '../../components/shared/CalendarComponent';
+import {io} from "socket.io-client";
 
 const AdminPanel = (): JSX.Element => {
 	const { data, isLoading } = useQuery('profile', () => fetchUserProfile(), {
@@ -33,6 +26,7 @@ const AdminPanel = (): JSX.Element => {
 					<CourseGradesCard />
 					<StudentsInCourseCard />
 					<TeacherCoursesCard />
+
 				</Wrap>
 			) : (
 				<></>
