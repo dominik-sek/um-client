@@ -21,10 +21,8 @@ import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword } from './pages/ResetPassword';
 import Printouts from './pages/printouts/Printouts';
 import Messages from "./pages/Messages/Messages";
-import useSocket from "./hooks/useSocket";
 
 function App() {
-	// useSocket();
 	return (
 		<Flex>
 			{

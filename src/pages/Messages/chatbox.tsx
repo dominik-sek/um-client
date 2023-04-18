@@ -3,18 +3,20 @@ import socket from "../../socket";
 import {FiSend} from "react-icons/all";
 import {useForm} from "react-hook-form";
 import {Message, useUserStore} from "../../../store";
-import {v4} from "uuid";
-
-export const Chatbox = () =>{
+interface ChatboxProps {
+    chatroom_id: number
+}
+export const Chatbox = (props: ChatboxProps) =>{
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
     const userStore = useUserStore();
 
     const onSubmit = (data: any) =>{
         const message = {
-            id: v4(),
             content: data.message,
+            chatroom_id: props.chatroom_id,
             sender_id: userStore.user.id,
-            sent_at: new Date()
+            sent_at: new Date(),
+            status: 'unread'
         } as Message
         socket.emit('send-message', message);
         reset();

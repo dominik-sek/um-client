@@ -31,7 +31,7 @@ import {
 } from '@chakra-ui/react';
 import { FiChevronDown, FiGlobe, FiMenu } from 'react-icons/fi';
 import { IconType } from 'react-icons';
-import { useUserStore } from '../../../store';
+import {useMessageStore, useUserStore} from '../../../store';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { routes } from '../../constants/routes';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
@@ -255,6 +255,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 	const { colorMode, toggleColorMode } = useColorMode();
 	const [user, setUser] = useState(useUserStore.getState().user);
 
+	const unreadCount = 1;
+
+
 	useEffect(() => {
 		const unsubscribe = useUserStore.subscribe((newState) => {
 			setUser(newState.user);
@@ -367,14 +370,18 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 							icon={<BiMessageAlt />}
 							onClick={() => navigate('/messages')}
 						/>
-						<Badge
-							colorScheme="red"
-							bgColor={'red.500'}
-							position="absolute"
-							top="-10%"
-							right="-20%">
-							3
-						</Badge>
+						{
+							unreadCount > 0 && (
+								<Badge
+									colorScheme="red"
+									bgColor={'red.500'}
+									position="absolute"
+									top="-10%"
+									right="-20%">
+									{unreadCount}
+								</Badge>
+							)
+						}
 					</Flex>
 				</Menu>
 

@@ -132,7 +132,11 @@ const AutocompleteSearchbar = ({
 										if (typeof suggestion === 'string') {
 											onSuggestionSelected(suggestion);
 										} else {
-											onSuggestionSelected(`${suggestion.first_name} ${suggestion.last_name}`);
+											onSuggestionSelected({
+												id: suggestion.id,
+												first_name: suggestion.first_name,
+												last_name: suggestion.last_name,
+											});
 										}
 										ref.current.value = suggestionText;
 										setSelectedSuggestion(suggestionText);

@@ -17,7 +17,8 @@ import useSocket from "../../hooks/useSocket";
 import AutocompleteSearchbar from "../../components/shared/search/autocomplete-searchbar";
 import {useQuery} from "react-query";
 import {fetchAllUsers} from "../../api/users";
-import {useUserStore} from "../../../store";
+import {useChatroomStore, useUserStore} from "../../../store";
+import socket from "../../socket";
 
 export const Messages = () =>{
     useSocket();
@@ -27,24 +28,29 @@ export const Messages = () =>{
     });
     const currentUser = useUserStore((state) => state.user);
     const [isLargerThanMedium] = useMediaQuery('(min-width: 768px)');
-    const [chatrooms, setChatrooms] = useState([]);
     const [showSearchbar, setShowSearchbar] = useState(false);
 
+    const chatrooms = useChatroomStore((state) => state.chatrooms);
+    //watch for new chatrooms
     const generateUserSuggestions = () =>{
-        return userList?.map((user) => {
-            return {
-                id: user.id,
-                first_name: user.first_name,
-                last_name: user.last_name,
-            }
-        });
+        //filter out current user and users that are already in chatrooms
+        return userList?.filter((user: any) => user.id !== currentUser.id && !chatrooms.find((chatroom: any) => chatroom.recipient === user.id));
     }
     const toggleSearchbar = () =>{
         setShowSearchbar(!showSearchbar);
     }
-    const handleCreateChatroom = (suggestion: string) => {
-
+    const handleCreateChatroom = (suggestion: string | {id: number, first_name: string, last_name: string}) => {
+        if (typeof suggestion === 'string') return;
+        const chatroom = {
+            created_by: currentUser.id,
+            recipient: suggestion.id,
+            created_at: new Date(),
+            lastActivity: new Date()
+        }
+        socket.emit('create-chatroom', chatroom);
+        setShowSearchbar(false);
     }
+
 
     return (
 
@@ -54,7 +60,7 @@ export const Messages = () =>{
                 <VStack h={'100%'} minW={'35%'} w={!isLargerThanMedium && '100%'}>
                     {
                         chatrooms.map((chatroom) => {
-                            return <MessageOverview key={chatroom.id} />
+                            return <MessageOverview key={chatroom.id} chatroom={chatroom} />
                         })
                     }
                     {
@@ -66,11 +72,17 @@ export const Messages = () =>{
                             <AutocompleteSearchbar
                                 suggestions={generateUserSuggestions()}
                                 onSuggestionSelected={(suggestion)=>handleCreateChatroom(suggestion)}
-                                onBlur={toggleSearchbar}
+                                // onBlur={toggleSearchbar}
                                 w={'100%'}
                                 searchPlaceholder={'Search for users'}
                             >
-
+                                <InputRightElement>
+                                    <IconButton
+                                        aria-label={'cancel search'}
+                                        icon={<ArrowBackIcon />}
+                                        onClick={toggleSearchbar}
+                                    />
+                                </InputRightElement>
                             </AutocompleteSearchbar>
                         </Flex>
                     ) : (
@@ -87,10 +99,9 @@ export const Messages = () =>{
                 <Divider orientation={'vertical'} display={isLargerThanMedium ? 'block' : 'none'} />
                 <VStack display={isLargerThanMedium ? 'block' : 'none'} w={'100%'} flex={'1'} h={'100%'}>
                     <TabPanels h={'100%'}>
-
                         {
                             chatrooms.map((chatroom) => {
-                                return <Chatroom key={chatroom.id} />
+                                return <Chatroom key={chatroom.id} chatroom={chatroom} />
                             })
                         }
 

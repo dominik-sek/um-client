@@ -10,12 +10,20 @@ import {
 } from "@chakra-ui/react";
 import {useParams} from "react-router-dom";
 import {Chatbox} from "./chatbox";
-import {Message, useMessageStore, useUserStore} from "../../../store";
+import {IChatroom, Message, useUserStore} from "../../../store";
+import socket from "../../socket";
 
-export const Chatroom = () =>{
+
+interface ChatroomProps {
+    chatroom: IChatroom
+}
+export const Chatroom = (props: ChatroomProps) =>{
     const {id} = useParams<{id:string}>();
     const userId = useUserStore((state) => state.user.id);
-    const messages = useMessageStore((state) => state.messages);
+    const chatroomUsers = props.chatroom.chatroom_user;
+    const chatroomId = props.chatroom.id;
+    const messages = props.chatroom.message;
+
 
     return(
         <TabPanel
@@ -30,8 +38,10 @@ export const Chatroom = () =>{
         >
 
             <Flex width={'100%'} p={'2'} alignItems={'center'} gap={'4'}>
-                <Avatar> </Avatar>
-                <Heading size={'md'}>Name surname</Heading>
+                <Avatar size={'md'} src={chatroomUsers[0].account.account_images?.avatar_url || ''} />
+                <Heading size={'md'}>
+                    {chatroomUsers[0].account.person.first_name} {chatroomUsers[0].account.person.last_name}
+                </Heading>
             </Flex>
 
             <Divider />
@@ -51,9 +61,10 @@ export const Chatroom = () =>{
                         const date = new Date(message.sent_at).toLocaleDateString()
 
                         return (
-                            <Flex key={message.id}
+                            <Flex key={message.content.slice(0, 5) + message.sent_at}
                                   alignItems={isSender ? 'flex-end' : 'flex-start'}
                                   flexDir={'column'}
+                                  onClick={()=>{console.log('clicked on chatroom')}}
                             >
                                 <Box bgColor={isSender ? 'blue.700' : 'green.700'}
                                      px={'4'} py={'2'}
@@ -69,7 +80,7 @@ export const Chatroom = () =>{
                 }
             </Flex>
 
-            <Chatbox />
+            <Chatbox chatroom_id={chatroomId} />
 
 
         </TabPanel>

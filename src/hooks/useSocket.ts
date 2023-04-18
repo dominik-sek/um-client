@@ -1,34 +1,44 @@
 import {useEffect} from "react";
 import socket from "../socket";
-import {Message, useMessageStore} from "../../store";
+import {Message, useChatroomStore} from "../../store";
 
 export const useSocket = () =>{
-    const messageStore = useMessageStore();
-    
+    const chatroomStore = useChatroomStore();
     useEffect(()=>{
         socket.connect();
         socket.on("connect",()=>{
-            console.log("connected to socket");
+            // console.log(chatroomStore.chatrooms)
+            // chatroomStore.chatrooms.forEach((chatroom)=>{
+            //     console.log('joining chatroom: ', chatroom.id)
+            //     socket.emit("join-chatroom", chatroom.id);
+            // });
         })
         socket.on("connect_error", (err:any)=>{
             console.log(`connect_error due to ${err.message}`);
         });
-        socket.on("messages", (messages)=>{
-            messageStore.setMessages(messages);
-        })
         socket.on("send-message", (message:Message)=>{
-            messageStore.addMessage(message);
+            console.log(message)
+            chatroomStore.addMessage(message);
         })
         socket.on("create-chatroom", (chatroom)=>{
-            console.log(chatroom);
+            chatroomStore.addChatroom(chatroom);
         });
+
+        socket.on("chatrooms", (chatrooms)=>{
+            chatroomStore.setChatrooms(chatrooms);
+        });
+
 
         return ()=>{
             socket.off("connect_error")
             socket.off("connect")
-            socket.off("messages")
+            socket.off("send-message")
+            socket.off("create-chatroom")
+            socket.off("chatrooms")
+            socket.off("join-chatroom")
         }
-    },[messageStore])
+    },[chatroomStore])
+
 }
 
 export default useSocket;
