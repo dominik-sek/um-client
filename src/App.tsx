@@ -21,9 +21,10 @@ import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword } from './pages/ResetPassword';
 import Printouts from './pages/printouts/Printouts';
 import Messages from "./pages/Messages/Messages";
-import {Chatroom} from "./pages/Messages/Chatroom";
+import useSocket from "./hooks/useSocket";
 
 function App() {
+	// useSocket();
 	return (
 		<Flex>
 			{
@@ -52,12 +53,7 @@ function App() {
 								<Route
 									path={'/messages'}
 									element={<Messages/>}
-								>
-									<Route
-										path={'/messages/:id'}
-										element={<Chatroom/>}
-									/>
-								</Route>
+								/>
 							</Route>
 							<Route
 								element={<ProtectedRoute allowed={'admin'} />}>

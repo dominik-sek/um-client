@@ -41,8 +41,6 @@ import { GB, PL } from 'country-flag-icons/react/3x2';
 import { useTranslation } from 'react-i18next';
 import AutocompleteSearchbar from './search/autocomplete-searchbar';
 import { UserRole } from '../../enums/user-role';
-import {MessageItem} from "./messageItem";
-
 export default function SidebarWithNavbar({
 	children,
 }: {
@@ -367,6 +365,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 							as={IconButton}
 							aria-label={'Open Messages'}
 							icon={<BiMessageAlt />}
+							onClick={() => navigate('/messages')}
 						/>
 						<Badge
 							colorScheme="red"
@@ -377,14 +376,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 							3
 						</Badge>
 					</Flex>
-					<MenuList>
-						{/*<Flex justify={'center'}>*/}
-						{/*	No new messages*/}
-						{/*</Flex>*/}
-						<MessageItem latestMessage={'this is a really long message that should be collapsed '} />
-						<MessageItem latestMessage={'this is a really long message that should be collapsed '} />
-						<MessageItem latestMessage={'this is a really long message that should be collapsed '} />
-					</MenuList>
 				</Menu>
 
 				<Menu>

@@ -2,12 +2,11 @@ import {HStack, IconButton, Input, InputGroup, InputRightElement} from "@chakra-
 import socket from "../../socket";
 import {FiSend} from "react-icons/all";
 import {useForm} from "react-hook-form";
-import {Message, useMessageStore, useUserStore} from "../../../store";
+import {Message, useUserStore} from "../../../store";
 import {v4} from "uuid";
 
 export const Chatbox = () =>{
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
-    const messageStore = useMessageStore();
     const userStore = useUserStore();
 
     const onSubmit = (data: any) =>{
@@ -17,8 +16,7 @@ export const Chatbox = () =>{
             sender_id: userStore.user.id,
             sent_at: new Date()
         } as Message
-        messageStore.addMessage(message);
-        socket.emit('message', message);
+        socket.emit('send-message', message);
         reset();
     }
     return(

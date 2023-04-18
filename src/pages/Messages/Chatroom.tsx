@@ -57,6 +57,8 @@ export const Chatroom = () =>{
                             >
                                 <Box bgColor={isSender ? 'blue.700' : 'green.700'}
                                      px={'4'} py={'2'}
+                                     width={{base: '100% !important', md: '50% !important'}}
+
                                      rounded={'xl'} display={'flex'} flexDir={'column'} gap={'2'} {...borderRadiusStyle}>
                                     <Text fontSize={'md'}>{message.content}</Text>
                                     <Text fontSize={'xs'}>{time} {date}</Text>

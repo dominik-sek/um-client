@@ -17,6 +17,7 @@ export interface IUserStore {
 }
 export interface IMessageStore {
 	messages: Message[];
+	setMessages: (messages: Message[]) => void;
 	addMessage: (message: Message) => void;
 }
 export interface Message {
@@ -55,7 +56,8 @@ const userStore = (set: any, get: any): IUserStore => ({
 
 const messageStore = (set:any, get:any): IMessageStore => ({
 	messages: [],
-	addMessage: (message) => set({messages: [message,...get().messages]})
+	addMessage: (message) => set({messages: [message,...get().messages]}),
+	setMessages: (messages) => set({messages: messages})
 });
 
 export const useUserStore = create<IUserStore>()(

@@ -32,15 +32,16 @@ import { fetchUserProfile } from '../api/users';
 import { useTranslation } from 'react-i18next';
 import { GB, PL } from 'country-flag-icons/react/3x2';
 import { Link } from 'react-router-dom';
+import socket from "../socket";
 
 export default function Login() {
 	const { t, i18n } = useTranslation();
-
 	const [showPassword, setShowPassword] = useState(false);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [formError, setFormError] = useState(false);
 	const [isEverythingLoading, setIsEverythingLoading] = useState(false);
+
 	const changeLanguage = (lng: string) => {
 		i18n.changeLanguage(lng);
 	};
@@ -80,6 +81,7 @@ export default function Login() {
 
 	const { mutate: LoginMutation, isLoading, status } = useMutation(loginUser, {
 		onSuccess: (data) => {
+
 			userAuth.setAuth(true);
 			userAuth.setRole(data.role);
 			userStore.setUser(data);
