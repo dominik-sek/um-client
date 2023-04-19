@@ -7,25 +7,36 @@ export const useSocket = () =>{
     useEffect(()=>{
         socket.connect();
         socket.on("connect",()=>{
-            // console.log(chatroomStore.chatrooms)
-            // chatroomStore.chatrooms.forEach((chatroom)=>{
-            //     console.log('joining chatroom: ', chatroom.id)
-            //     socket.emit("join-chatroom", chatroom.id);
-            // });
+            console.log("connected to socket")
         })
         socket.on("connect_error", (err:any)=>{
             console.log(`connect_error due to ${err.message}`);
         });
         socket.on("send-message", (message:Message)=>{
-            console.log(message)
+            console.log("sending message")
             chatroomStore.addMessage(message);
         })
         socket.on("create-chatroom", (chatroom)=>{
+            console.log('joining chatroom: ', chatroom.id);
+            chatroomStore.addChatroom(chatroom);
+        });
+
+        socket.on("new-message",(chatroomId)=>{
+            console.log('Received new message in chatroom: ', chatroomId);
+            socket.emit("join-chatroom", chatroomId);
+        })
+        socket.on("join-chatroom", (chatroom)=>{
+            console.log(chatroom);
             chatroomStore.addChatroom(chatroom);
         });
 
         socket.on("chatrooms", (chatrooms)=>{
+            console.log("populating chatrooms")
             chatroomStore.setChatrooms(chatrooms);
+        });
+
+        socket.on("seen-messages", ()=>{
+            console.log("seen-messages")
         });
 
 
@@ -36,6 +47,8 @@ export const useSocket = () =>{
             socket.off("create-chatroom")
             socket.off("chatrooms")
             socket.off("join-chatroom")
+            socket.off("seen-message")
+            socket.off("new-message")
         }
     },[chatroomStore])
 

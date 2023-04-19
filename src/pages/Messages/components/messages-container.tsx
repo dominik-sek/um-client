@@ -1,7 +1,12 @@
 import {HTMLAttributes} from "react";
 import {Flex, TabList, TabPanels, Tabs} from "@chakra-ui/react";
+import React from "react";
 
-interface MessagesContainerProps extends HTMLAttributes<HTMLDivElement>{}
+type MessagesContainerProps = {}
+& HTMLAttributes<HTMLDivElement>
+& React.ComponentProps<typeof Tabs>
+
+
 export const MessagesContainer = (props: MessagesContainerProps) =>{
     return(
         <Tabs
@@ -10,6 +15,8 @@ export const MessagesContainer = (props: MessagesContainerProps) =>{
             h={'100%'}
             flex={'1'}
             gap={'6'}
+            variant={'enclosed'}
+            onChange={props.onChange}
         >
             {props.children}
         </Tabs>

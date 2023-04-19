@@ -26,6 +26,7 @@ export interface IChatroomStore{
 	setChatrooms: (chatrooms: IChatroom[]) => void;
 	addChatroom: (chatroom: IChatroom) => void;
 	addMessage: (message: Message) => void;
+	logout: () => void;
 }
 
 export interface Message {
@@ -65,6 +66,9 @@ const initialAuthState = {
 const initialUserState = {
 	user: {} as UserData,
 };
+const initialChatroomState = {
+	chatrooms:[]
+}
 
 const authStore = (set: any): IAuthStore => ({
 	auth: false,
@@ -84,11 +88,6 @@ const userStore = (set: any, get: any): IUserStore => ({
 	},
 });
 
-// const messageStore = (set:any, get:any): IMessageStore => ({
-// 	messages: [],
-// 	addMessage: (message) => set({messages: [message,...get().messages]}),
-// 	setMessages: (messages) => set({messages: messages})
-// });
 
 const chatroomStore = (set:any, get:any): IChatroomStore => ({
 	chatrooms: [],
@@ -102,6 +101,9 @@ const chatroomStore = (set:any, get:any): IChatroomStore => ({
 			chatroom.message = [message, ...chatroom.message];
 		}
 		set({chatrooms: chatrooms});
+	},
+	logout: ()=>{
+		set(initialChatroomState);
 	}
 });
 

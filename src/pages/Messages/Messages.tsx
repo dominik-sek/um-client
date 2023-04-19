@@ -6,19 +6,20 @@ import {
     VStack,
     Text,
     Button,
-    Divider, InputRightElement, Icon
+    Divider, InputRightElement
 } from "@chakra-ui/react";
 import {MessageOverview} from "./components/message-overview";
 import {AddIcon, ArrowBackIcon} from "@chakra-ui/icons";
 import {MessagesContainer} from "./components/messages-container";
-import {useState} from "react";
+import {LegacyRef, useRef, useState} from "react";
 import {Chatroom} from "./Chatroom";
 import useSocket from "../../hooks/useSocket";
 import AutocompleteSearchbar from "../../components/shared/search/autocomplete-searchbar";
 import {useQuery} from "react-query";
 import {fetchAllUsers} from "../../api/users";
-import {useChatroomStore, useUserStore} from "../../../store";
+import {IChatroom, useChatroomStore, useUserStore} from "../../../store";
 import socket from "../../socket";
+import React from "react";
 
 export const Messages = () =>{
     useSocket();
@@ -29,11 +30,9 @@ export const Messages = () =>{
     const currentUser = useUserStore((state) => state.user);
     const [isLargerThanMedium] = useMediaQuery('(min-width: 768px)');
     const [showSearchbar, setShowSearchbar] = useState(false);
-
     const chatrooms = useChatroomStore((state) => state.chatrooms);
-    //watch for new chatrooms
+
     const generateUserSuggestions = () =>{
-        //filter out current user and users that are already in chatrooms
         return userList?.filter((user: any) => user.id !== currentUser.id && !chatrooms.find((chatroom: any) => chatroom.recipient === user.id));
     }
     const toggleSearchbar = () =>{
@@ -47,11 +46,21 @@ export const Messages = () =>{
             created_at: new Date(),
             lastActivity: new Date()
         }
+
         socket.emit('create-chatroom', chatroom);
         setShowSearchbar(false);
     }
-
-
+    const handleMessagesUpdate = (chatroomId: number) =>{
+        //TODO: better implmentation
+        // console.log('trying to update status of messages in chatroom ', chatroomId)
+        // //send the whole chatroom object to the server
+        // const chatroom = chatrooms.find((chatroom: any) => chatroom.id === chatroomId);
+        // console.log(chatroom)
+        // socket.emit('seen-messages', chatroom);
+    }
+    const shiftFocusToInput = (chatroomId: number) =>{
+        console.log('shift focus to input', chatroomId);
+    }
     return (
 
         <Flex gap={'6'} h={'calc(100vh - 115px)'} >
@@ -60,7 +69,11 @@ export const Messages = () =>{
                 <VStack h={'100%'} minW={'35%'} w={!isLargerThanMedium && '100%'}>
                     {
                         chatrooms.map((chatroom) => {
-                            return <MessageOverview key={chatroom.id} chatroom={chatroom} />
+                            return <MessageOverview key={chatroom.id}
+                                                    chatroom={chatroom}
+                                                    value={chatroom.id}
+                                                    onLoad={()=>{handleMessagesUpdate(chatroom.id)}}
+                                                    onClick={()=>{shiftFocusToInput(chatroom.id)}}/>
                         })
                     }
                     {
@@ -91,7 +104,7 @@ export const Messages = () =>{
                             w={'100%'}
                             leftIcon={<AddIcon />}
                         >
-                            Compose a message
+                            New message
                         </Button>
                     )}
 
@@ -101,7 +114,7 @@ export const Messages = () =>{
                     <TabPanels h={'100%'}>
                         {
                             chatrooms.map((chatroom) => {
-                                return <Chatroom key={chatroom.id} chatroom={chatroom} />
+                                return <Chatroom onClick={()=>{handleMessagesUpdate(chatroom.id)}} key={chatroom.id} chatroom={chatroom} />
                             })
                         }
 

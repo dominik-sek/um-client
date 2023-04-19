@@ -8,22 +8,20 @@ import {
     InputRightElement, TabPanel, TabPanels,
     Text
 } from "@chakra-ui/react";
-import {useParams} from "react-router-dom";
 import {Chatbox} from "./chatbox";
 import {IChatroom, Message, useUserStore} from "../../../store";
-import socket from "../../socket";
+import {UserTyping} from "./components/user-typing";
 
+interface ChatroomProps extends React.ComponentProps<typeof TabPanel> {
+    chatroom: IChatroom;
+};
 
-interface ChatroomProps {
-    chatroom: IChatroom
-}
-export const Chatroom = (props: ChatroomProps) =>{
-    const {id} = useParams<{id:string}>();
+export const Chatroom = (props: ChatroomProps, {...rest}) =>{
+
     const userId = useUserStore((state) => state.user.id);
     const chatroomUsers = props.chatroom.chatroom_user;
     const chatroomId = props.chatroom.id;
     const messages = props.chatroom.message;
-
 
     return(
         <TabPanel
@@ -35,6 +33,8 @@ export const Chatroom = (props: ChatroomProps) =>{
             h={'100%'}
             minW={'100%'}
             overflowY={'auto'}
+            onClick={props.onClick}
+            {...rest}
         >
 
             <Flex width={'100%'} p={'2'} alignItems={'center'} gap={'4'}>
@@ -59,12 +59,10 @@ export const Chatroom = (props: ChatroomProps) =>{
                         const borderRadiusStyle = {[border]: '0'};
                         const time = new Date(message.sent_at).toLocaleTimeString()
                         const date = new Date(message.sent_at).toLocaleDateString()
-
                         return (
                             <Flex key={message.content.slice(0, 5) + message.sent_at}
                                   alignItems={isSender ? 'flex-end' : 'flex-start'}
                                   flexDir={'column'}
-                                  onClick={()=>{console.log('clicked on chatroom')}}
                             >
                                 <Box bgColor={isSender ? 'blue.700' : 'green.700'}
                                      px={'4'} py={'2'}
@@ -78,9 +76,10 @@ export const Chatroom = (props: ChatroomProps) =>{
                         )
                     })
                 }
-            </Flex>
 
-            <Chatbox chatroom_id={chatroomId} />
+            </Flex>
+                <UserTyping isTyping={false} />
+            <Chatbox chatroomId={chatroomId} />
 
 
         </TabPanel>
