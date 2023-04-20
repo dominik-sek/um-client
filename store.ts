@@ -15,11 +15,6 @@ export interface IUserStore {
 	setUser: (user: UserData) => void;
 	clearUser: () => void;
 }
-// export interface IMessageStore {
-// 	messages: Message[];
-// 	setMessages: (messages: Message[]) => void;
-// 	addMessage: (message: Message) => void;
-// }
 
 export interface IChatroomStore{
 	chatrooms: IChatroom[];
@@ -27,6 +22,7 @@ export interface IChatroomStore{
 	addChatroom: (chatroom: IChatroom) => void;
 	addMessage: (message: Message) => void;
 	logout: () => void;
+	updateMessageState: (chatroom: IChatroom) => void;
 }
 
 export interface Message {
@@ -34,7 +30,7 @@ export interface Message {
 	chatroom_id: number;
 	content: string;
 	sent_at: Date;
-	status: "read" | "unread";
+	status: "sent" | "unread" | "read" ;
 }
 export interface IChatroom {
 	id: number;
@@ -67,7 +63,7 @@ const initialUserState = {
 	user: {} as UserData,
 };
 const initialChatroomState = {
-	chatrooms:[]
+	chatrooms:[],
 }
 
 const authStore = (set: any): IAuthStore => ({
@@ -99,6 +95,14 @@ const chatroomStore = (set:any, get:any): IChatroomStore => ({
 		const chatroom = chatrooms.find((chatroom)=> chatroom.id === message.chatroom_id);
 		if(chatroom){
 			chatroom.message = [message, ...chatroom.message];
+		}
+		set({chatrooms: chatrooms});
+	},
+	updateMessageState: (chatroomToUpdate) => {
+		const chatrooms = get().chatrooms;
+		const chatroom = chatrooms.find((chatroom)=> chatroom.id === chatroomToUpdate.id);
+		if(chatroom){
+			chatroom.message = chatroomToUpdate.message;
 		}
 		set({chatrooms: chatrooms});
 	},

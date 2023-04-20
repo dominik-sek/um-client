@@ -6,13 +6,13 @@ const animationKeyframes = keyframes`
         transform: scale(1) translateY(0);
     }
     50% {
-        transform: scale(1) translateY(-5px);
+        transform: scale(1) translateY(-7px);
     }
     100% {
         transform: scale(1) translateY(0);
     }
 `
-const animation = `${animationKeyframes} 1.3s ease-in-out infinite`
+const animation = `${animationKeyframes} 1s ease-in-out infinite`
 const COUNT = 3;
 export const UserTyping = (props:{isTyping: boolean}) =>{
     return(

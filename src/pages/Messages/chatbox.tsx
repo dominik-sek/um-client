@@ -16,7 +16,7 @@ export const Chatbox = (props: ChatboxProps) =>{
             chatroom_id: props.chatroomId,
             sender_id: userStore.user.id,
             sent_at: new Date(),
-            status: 'unread'
+            status: 'sent'
         } as Message
         socket.emit('send-message', message);
         reset();

@@ -6,18 +6,18 @@ import {
     VStack,
     Text,
     Button,
-    Divider, InputRightElement
+    Divider, InputRightElement, Badge
 } from "@chakra-ui/react";
 import {MessageOverview} from "./components/message-overview";
 import {AddIcon, ArrowBackIcon} from "@chakra-ui/icons";
 import {MessagesContainer} from "./components/messages-container";
-import {LegacyRef, useRef, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Chatroom} from "./Chatroom";
 import useSocket from "../../hooks/useSocket";
 import AutocompleteSearchbar from "../../components/shared/search/autocomplete-searchbar";
 import {useQuery} from "react-query";
 import {fetchAllUsers} from "../../api/users";
-import {IChatroom, useChatroomStore, useUserStore} from "../../../store";
+import {useChatroomStore, useUserStore} from "../../../store";
 import socket from "../../socket";
 import React from "react";
 
@@ -30,11 +30,22 @@ export const Messages = () =>{
     const currentUser = useUserStore((state) => state.user);
     const [isLargerThanMedium] = useMediaQuery('(min-width: 768px)');
     const [showSearchbar, setShowSearchbar] = useState(false);
-    const chatrooms = useChatroomStore((state) => state.chatrooms);
+    const [chatrooms, setChatrooms] = useState(useChatroomStore((state) => state.chatrooms));
+    // const chatrooms = useChatroomStore((state) => state.chatrooms);
+    useEffect(() => {
+
+        const unsubscribe = useChatroomStore.subscribe((newState) => {
+            setChatrooms(newState.chatrooms);
+        });
+        return () => {
+            unsubscribe();
+        };
+    }, []);
 
     const generateUserSuggestions = () =>{
         return userList?.filter((user: any) => user.id !== currentUser.id && !chatrooms.find((chatroom: any) => chatroom.recipient === user.id));
     }
+
     const toggleSearchbar = () =>{
         setShowSearchbar(!showSearchbar);
     }
@@ -50,14 +61,16 @@ export const Messages = () =>{
         socket.emit('create-chatroom', chatroom);
         setShowSearchbar(false);
     }
-    const handleMessagesUpdate = (chatroomId: number) =>{
-        //TODO: better implmentation
-        // console.log('trying to update status of messages in chatroom ', chatroomId)
-        // //send the whole chatroom object to the server
-        // const chatroom = chatrooms.find((chatroom: any) => chatroom.id === chatroomId);
-        // console.log(chatroom)
-        // socket.emit('seen-messages', chatroom);
-    }
+    const handleMessagesUpdate = useMemo(()=>{
+        return (chatroomId: number)=>{
+            const chatroom = chatrooms.find((chatroom: any) => chatroom.id === chatroomId);
+            socket.emit('seen-messages', chatroom);
+        }
+    },[chatrooms])
+
+    // const handleMessagesUpdate = (chatroomId: number) =>{
+    //
+    // }
     const shiftFocusToInput = (chatroomId: number) =>{
         console.log('shift focus to input', chatroomId);
     }
@@ -66,6 +79,7 @@ export const Messages = () =>{
         <Flex gap={'6'} h={'calc(100vh - 115px)'} >
             {/*tabs*/}
             <MessagesContainer>
+
                 <VStack h={'100%'} minW={'35%'} w={!isLargerThanMedium && '100%'}>
                     {
                         chatrooms.map((chatroom) => {
@@ -111,7 +125,7 @@ export const Messages = () =>{
                 </VStack>
                 <Divider orientation={'vertical'} display={isLargerThanMedium ? 'block' : 'none'} />
                 <VStack display={isLargerThanMedium ? 'block' : 'none'} w={'100%'} flex={'1'} h={'100%'}>
-                    <TabPanels h={'100%'}>
+                    <TabPanels h={'100%'} >
                         {
                             chatrooms.map((chatroom) => {
                                 return <Chatroom onClick={()=>{handleMessagesUpdate(chatroom.id)}} key={chatroom.id} chatroom={chatroom} />

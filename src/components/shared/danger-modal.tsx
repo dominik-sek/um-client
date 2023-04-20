@@ -12,6 +12,16 @@ import {
 import { WarningTwoIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import socket from "../../socket";
+const message = {
+	content:"dupa",
+}
+const user = {
+	id: 1
+}
+const handleButtonPress = () => {
+	socket.emit("send_global_message", {message: message, userId: user.id});
+}
 
 function DangerModal(props: {
 	footerText?: JSX.Element;

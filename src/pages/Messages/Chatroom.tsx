@@ -2,15 +2,16 @@ import {
     Avatar, Box,
     Divider,
     Flex,
-    Heading, IconButton,
+    Heading, Icon, IconButton,
     Input,
     InputGroup,
     InputRightElement, TabPanel, TabPanels,
-    Text
+    Text, Tooltip
 } from "@chakra-ui/react";
 import {Chatbox} from "./chatbox";
 import {IChatroom, Message, useUserStore} from "../../../store";
 import {UserTyping} from "./components/user-typing";
+import {CheckIcon} from "@chakra-ui/icons";
 
 interface ChatroomProps extends React.ComponentProps<typeof TabPanel> {
     chatroom: IChatroom;
@@ -22,6 +23,7 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
     const chatroomUsers = props.chatroom.chatroom_user;
     const chatroomId = props.chatroom.id;
     const messages = props.chatroom.message;
+    const latestMessage = messages[messages.length - 1];
 
     return(
         <TabPanel
@@ -49,8 +51,9 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
             <Flex flex={'1'}
                   flexDir={'column-reverse'}
                   p={'6'}
-                  gap={'4'}
+                  gap={'1'}
                   overflowY={'scroll'}
+                  position={'relative'}
             >
                 {
                     messages && messages.reverse().map((message:Message) => {
@@ -59,19 +62,45 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                         const borderRadiusStyle = {[border]: '0'};
                         const time = new Date(message.sent_at).toLocaleTimeString()
                         const date = new Date(message.sent_at).toLocaleDateString()
+                        const messageStatus = message.status;
+                        const recipient = chatroomUsers.find((user) => user.user_id !== userId);
+                        console.log(latestMessage.id)
                         return (
-                            <Flex key={message.content.slice(0, 5) + message.sent_at}
+                            <Flex key={message.id}
                                   alignItems={isSender ? 'flex-end' : 'flex-start'}
-                                  flexDir={'column'}
-                            >
-                                <Box bgColor={isSender ? 'blue.700' : 'green.700'}
-                                     px={'4'} py={'2'}
-                                     width={{base: '100% !important', md: '50% !important'}}
+                                  justifyContent={isSender ? 'flex-end' : 'flex-start'}
+                                  gap={'2'}
 
-                                     rounded={'xl'} display={'flex'} flexDir={'column'} gap={'2'} {...borderRadiusStyle}>
-                                    <Text fontSize={'md'}>{message.content}</Text>
-                                    <Text fontSize={'xs'}>{time} {date}</Text>
-                                </Box>
+                            >
+                            <Tooltip label={messageStatus + message.id + ' ' + latestMessage.id} >
+                                    <Box bgColor={isSender ? 'blue.700' : 'green.700'}
+                                         border={latestMessage.id === message.id ? '1px solid red' : 'none'}
+                                         px={'4'} py={'2'}
+                                         maxWidth={{base: '100% !important', md: '50% !important'}}
+
+                                         rounded={'xl'} display={'flex'} flexDir={'column'} gap={'2'} {...borderRadiusStyle}>
+                                        <Text fontSize={'md'}>{message.content}</Text>
+                                        <Text fontSize={'xs'}>{time} {date}</Text>
+                                    </Box>
+                            </Tooltip>
+                                    <Flex display={'block'}>
+
+                                        {
+                                            isSender && messageStatus === 'sent' &&
+                                            <Tooltip label={'Message sent'} hasArrow placement={'bottom-end'} aria-label={'Message sent'}>
+                                                <Avatar as={CheckIcon} size={'2xs'} bgColor={'transparent'} color={'green.500'} />
+                                            </Tooltip>
+
+                                        }
+                                        {
+                                            isSender && messageStatus === 'read' && message.id === latestMessage.id &&
+                                            <Tooltip label={`${recipient?.account.person.first_name} ${recipient?.account.person.last_name}`} hasArrow placement={'bottom-end'} aria-label={'Message sent'}>
+                                                <Avatar size={'2xs'} src={recipient?.account.account_images?.avatar_url || ''} />
+                                            </Tooltip>
+
+                                        }
+
+                                    </Flex>
                             </Flex>
                         )
                     })
