@@ -4,6 +4,7 @@ import React from "react";
 
 interface MessageOverviewProps extends React.ComponentProps<typeof Tab>{
     chatroom: IChatroom;
+    unread: number;
 }
 
 export const MessageOverview = (props: MessageOverviewProps) => {
@@ -25,7 +26,8 @@ export const MessageOverview = (props: MessageOverviewProps) => {
                 <Text fontSize={'xs'} color={'gray.400'} >
                     {latestMessageShort}
                 </Text>
-                {props.chatroom.unreadCount}
+
+
             </Flex>
         </Tab>
     )

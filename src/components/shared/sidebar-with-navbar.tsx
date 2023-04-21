@@ -254,14 +254,19 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 	const { colorMode, toggleColorMode } = useColorMode();
 	const [user, setUser] = useState(useUserStore.getState().user);
-	const unreadCount = 0;
+	const [totalUnreadCount, setTotalUnreadCount] = useState(useNotifStore.getState().totalUnreadCount);
+	// const totalUnreadCount = 0;
 	useEffect(() => {
 		const unsubUser = useUserStore.subscribe((newState) => {
 			setUser(newState.user);
 		});
+		const unsubNotif = useNotifStore.subscribe((newState) => {
+			setTotalUnreadCount(newState.totalUnreadCount);
+		});
 
 		return () => {
 			unsubUser();
+			unsubNotif();
 		};
 	}, []);
 
@@ -369,14 +374,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 							onClick={() => navigate('/messages')}
 						/>
 						{
-							unreadCount > 0 && (
+							totalUnreadCount > 0 && (
 								<Badge
 									colorScheme="red"
 									bgColor={'red.500'}
 									position="absolute"
 									top="-10%"
 									right="-20%">
-									{unreadCount}
+									{totalUnreadCount}
 								</Badge>
 							)
 						}

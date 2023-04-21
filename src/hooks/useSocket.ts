@@ -17,7 +17,6 @@ export const useSocket = () =>{
 
         socket.on("send-message", (message:Message)=>{
             console.log("SOCKET: sending message")
-            console.log(message)
             chatroomStore.addMessage(message);
         })
         socket.on("create-chatroom", (chatroom)=>{
@@ -48,12 +47,14 @@ export const useSocket = () =>{
             
         });
         socket.on("unread-messages",(unreadMessages)=>{
-            //count how many objects in unreadMessages[]
             const totalUnreadCount = unreadMessages.reduce((acc: never, curr: { unread_count: number; })=> acc + curr.unread_count, 0);
+            console.log(unreadMessages);
             notifStore.updateTotalUnreadCount(totalUnreadCount);
             console.log("SOCKET: updating unread messages...", totalUnreadCount);
             unreadMessages.forEach((unreadMessage: { chatroom_id: number; unread_count: number; })=>{
-                notifStore.updateUnreadCount(unreadMessage.chatroom_id, unreadMessage.unread_count);
+                if(unreadMessage.unread_count > 0){
+                    notifStore.updateUnreadCount(unreadMessage.chatroom_id, unreadMessage.unread_count);
+                }
             });
         })
 

@@ -25,7 +25,10 @@ export interface IChatroomStore {
 	updateMessageState: (chatroom: IChatroom) => void;
 }
 export interface INotifStore{
-	unreadCount: {[key: number]: number};
+	unreadCount: {
+		chatroomId: number;
+		count: number;
+	}
 	totalUnreadCount: number;
 	updateUnreadCount: (chatroomId: number, count: number) => void;
 	updateTotalUnreadCount: (count: number) => void;
@@ -108,31 +111,44 @@ const chatroomStore = (set:any, get:any): IChatroomStore => ({
 	setChatrooms: (chatrooms) => set({chatrooms: chatrooms}),
 	addMessage: (message) => {
 		const chatrooms = get().chatrooms;
-		const chatroom = chatrooms.find((chatroom)=> chatroom.id === message.chatroom_id);
-		if(chatroom){
-			chatroom.message = [message, ...chatroom.message];
-		}
-		set({chatrooms: chatrooms});
+		const updatedChatrooms = chatrooms.map((chatroom) => {
+			if (chatroom.id === message.chatroom_id) {
+				return {
+					...chatroom,
+					message: [message, ...chatroom.message],
+				};
+			}
+			return chatroom;
+		});
+
+		set({ chatrooms: updatedChatrooms });
 	},
 	updateMessageState: (chatroomToUpdate) => {
 		const chatrooms = get().chatrooms;
-		const chatroom = chatrooms.find((chatroom)=> chatroom.id === chatroomToUpdate.id);
-		if(chatroom){
-			chatroom.message = chatroomToUpdate.message;
-		}
-		set({chatrooms: chatrooms});
+		const updatedChatrooms = chatrooms.map((chatroom) => {
+			if (chatroom.id === chatroomToUpdate.id) {
+				return {
+					...chatroom,
+					message: chatroomToUpdate.message,
+				};
+			}
+			return chatroom;
+		});
+		set({ chatrooms: updatedChatrooms });
 	},
 	logout: ()=>{
 		set(initialChatroomState);
 	}
 });
+
 const notifStore = (set:any, get:any): INotifStore => ({
-	unreadCount: {},
+	unreadCount: {
+		chatroomId: 0,
+		count: 0,
+	},
 	totalUnreadCount: 0,
 	updateUnreadCount: (chatroomId, count) => {
-		const unreadCount = get().unreadCount;
-		unreadCount[chatroomId] = count;
-		set({unreadCount: unreadCount});
+		set({unreadCount: {chatroomId: chatroomId, count: count}});
 	},
 	updateTotalUnreadCount: (count) => {
 		set({totalUnreadCount: count});

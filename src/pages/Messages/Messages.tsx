@@ -11,13 +11,13 @@ import {
 import {MessageOverview} from "./components/message-overview";
 import {AddIcon, ArrowBackIcon} from "@chakra-ui/icons";
 import {MessagesContainer} from "./components/messages-container";
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useLayoutEffect, useMemo, useState} from "react";
 import {Chatroom} from "./Chatroom";
 import useSocket from "../../hooks/useSocket";
 import AutocompleteSearchbar from "../../components/shared/search/autocomplete-searchbar";
 import {useQuery} from "react-query";
 import {fetchAllUsers} from "../../api/users";
-import {useChatroomStore, useUserStore} from "../../../store";
+import {useChatroomStore, useNotifStore, useUserStore} from "../../../store";
 import socket from "../../socket";
 import React from "react";
 
@@ -36,17 +36,17 @@ export const Messages = () =>{
         senderId: -1,
         isTyping: false
     });
-    console.log('messages.tsx rendered')
-    useSocket();
 
     useEffect(() => {
         const unsubscribe = useChatroomStore.subscribe((newState) => {
             setChatrooms(newState.chatrooms);
         });
+
+
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, [chatrooms]);
 
     useMemo(()=>{
         socket.on("user-typing",({chatroomId, senderId, isTyping})=>{
@@ -60,6 +60,7 @@ export const Messages = () =>{
             return userList?.filter((user: any) => user.id !== currentUser.id && !chatrooms.find((chatroom: any) => chatroom.recipient === user.id));
         }
     },[chatrooms, currentUser.id, userList])
+
     const toggleSearchbar = useMemo(()=>{
         return () =>{
             setShowSearchbar(!showSearchbar);

@@ -5,6 +5,7 @@ import useSocket from "../hooks/useSocket";
 import socket from "../socket";
 
 const NavigationLayout = () => {
+	useSocket();
 	return (
 		<Flex w={'100%'} h={'100%'} direction={'column'}>
 			<SidebarWithNavbar>
