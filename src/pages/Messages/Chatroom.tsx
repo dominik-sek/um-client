@@ -2,10 +2,8 @@ import {
     Avatar, Box,
     Divider,
     Flex,
-    Heading, Icon, IconButton,
-    Input,
-    InputGroup,
-    InputRightElement, TabPanel, TabPanels,
+    Heading,
+    TabPanel,
     Text, Tooltip
 } from "@chakra-ui/react";
 import {Chatbox} from "./chatbox";
@@ -15,7 +13,7 @@ import {CheckIcon} from "@chakra-ui/icons";
 
 interface ChatroomProps extends React.ComponentProps<typeof TabPanel> {
     chatroom: IChatroom;
-};
+}
 
 export const Chatroom = (props: ChatroomProps, {...rest}) =>{
 
@@ -59,12 +57,12 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                     messages && messages.reverse().map((message:Message) => {
                         const isSender = message.sender_id === userId;
                         const border = isSender ? 'borderBottomRightRadius' : 'borderBottomLeftRadius';
+                        const tooltipPosition = isSender ? 'left-end' : 'right-end';
                         const borderRadiusStyle = {[border]: '0'};
                         const time = new Date(message.sent_at).toLocaleTimeString()
                         const date = new Date(message.sent_at).toLocaleDateString()
                         const messageStatus = message.status;
                         const recipient = chatroomUsers.find((user) => user.user_id !== userId);
-                        console.log(latestMessage.id)
                         return (
                             <Flex key={message.id}
                                   alignItems={isSender ? 'flex-end' : 'flex-start'}
@@ -72,44 +70,41 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                                   gap={'2'}
 
                             >
-                            <Tooltip label={messageStatus + message.id + ' ' + latestMessage.id} >
+                            <Tooltip label={messageStatus} placement={tooltipPosition}>
                                     <Box bgColor={isSender ? 'blue.700' : 'green.700'}
                                          border={latestMessage.id === message.id ? '1px solid red' : 'none'}
                                          px={'4'} py={'2'}
                                          maxWidth={{base: '100% !important', md: '50% !important'}}
-
                                          rounded={'xl'} display={'flex'} flexDir={'column'} gap={'2'} {...borderRadiusStyle}>
                                         <Text fontSize={'md'}>{message.content}</Text>
                                         <Text fontSize={'xs'}>{time} {date}</Text>
                                     </Box>
                             </Tooltip>
-                                    <Flex display={'block'}>
+                                <Flex display={'block'} position={'relative'} bgColor={'red'} h={'100%'}>
+                                    {
+                                        isSender && messageStatus === 'sent' &&
+                                        <Tooltip label={'Message sent'} hasArrow placement={'bottom-end'} aria-label={'Message sent'} >
+                                            <Avatar position={'absolute'} bottom={'0'} as={CheckIcon} size={'2xs'} bgColor={'transparent'} color={'green.500'}  />
+                                        </Tooltip>
 
-                                        {
-                                            isSender && messageStatus === 'sent' &&
-                                            <Tooltip label={'Message sent'} hasArrow placement={'bottom-end'} aria-label={'Message sent'}>
-                                                <Avatar as={CheckIcon} size={'2xs'} bgColor={'transparent'} color={'green.500'} />
-                                            </Tooltip>
+                                    }
+                                    {
+                                        isSender && messageStatus === 'read' && message.id === latestMessage.id &&
+                                        <Tooltip  label={`${recipient?.account.person.first_name} ${recipient?.account.person.last_name}`} hasArrow placement={'bottom-end'} aria-label={'Message sent'}>
+                                            <Avatar position={'absolute'} bottom={'0'} size={'2xs'} src={recipient?.account.account_images?.avatar_url || ''} />
+                                        </Tooltip>
 
-                                        }
-                                        {
-                                            isSender && messageStatus === 'read' && message.id === latestMessage.id &&
-                                            <Tooltip label={`${recipient?.account.person.first_name} ${recipient?.account.person.last_name}`} hasArrow placement={'bottom-end'} aria-label={'Message sent'}>
-                                                <Avatar size={'2xs'} src={recipient?.account.account_images?.avatar_url || ''} />
-                                            </Tooltip>
+                                    }
 
-                                        }
-
-                                    </Flex>
+                                </Flex>
                             </Flex>
                         )
+
                     })
                 }
-
             </Flex>
                 <UserTyping isTyping={false} />
             <Chatbox chatroomId={chatroomId} />
-
 
         </TabPanel>
     )

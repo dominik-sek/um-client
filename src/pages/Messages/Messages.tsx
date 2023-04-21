@@ -22,7 +22,7 @@ import socket from "../../socket";
 import React from "react";
 
 export const Messages = () =>{
-    useSocket();
+    useSocket(); //not connecting for  some reason
     const {data: userList, refetch} = useQuery('fetchAllUsers',fetchAllUsers,{
         refetchOnWindowFocus: false,
         enabled:true
@@ -31,9 +31,8 @@ export const Messages = () =>{
     const [isLargerThanMedium] = useMediaQuery('(min-width: 768px)');
     const [showSearchbar, setShowSearchbar] = useState(false);
     const [chatrooms, setChatrooms] = useState(useChatroomStore((state) => state.chatrooms));
-    // const chatrooms = useChatroomStore((state) => state.chatrooms);
+    const [wereMessagesRefreshed, setWereMessagesRefreshed] = useState(false);
     useEffect(() => {
-
         const unsubscribe = useChatroomStore.subscribe((newState) => {
             setChatrooms(newState.chatrooms);
         });
@@ -41,6 +40,7 @@ export const Messages = () =>{
             unsubscribe();
         };
     }, []);
+
 
     const generateUserSuggestions = () =>{
         return userList?.filter((user: any) => user.id !== currentUser.id && !chatrooms.find((chatroom: any) => chatroom.recipient === user.id));
@@ -61,16 +61,21 @@ export const Messages = () =>{
         socket.emit('create-chatroom', chatroom);
         setShowSearchbar(false);
     }
+    socket.on('new-message', () => {
+        console.log('got new message, setting state to false')
+        setWereMessagesRefreshed(false);
+    });
+
     const handleMessagesUpdate = useMemo(()=>{
         return (chatroomId: number)=>{
+            if(wereMessagesRefreshed) return;
             const chatroom = chatrooms.find((chatroom: any) => chatroom.id === chatroomId);
+            console.log('refreshing messages inside Messages.tsx')
+            setWereMessagesRefreshed(true);
             socket.emit('seen-messages', chatroom);
         }
-    },[chatrooms])
+    },[chatrooms, wereMessagesRefreshed])
 
-    // const handleMessagesUpdate = (chatroomId: number) =>{
-    //
-    // }
     const shiftFocusToInput = (chatroomId: number) =>{
         console.log('shift focus to input', chatroomId);
     }

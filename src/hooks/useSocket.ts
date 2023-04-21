@@ -6,7 +6,6 @@ export const useSocket = () =>{
     const chatroomStore = useChatroomStore();
     useEffect(()=>{
         socket.connect();
-
         socket.on("connect",()=>{
             console.log("connected to socket")
         })
@@ -17,8 +16,9 @@ export const useSocket = () =>{
             console.log("sending message")
             chatroomStore.addMessage(message);
         })
+
         socket.on("create-chatroom", (chatroom)=>{
-            console.log('joining chatroom: ', chatroom.id);
+            console.log('joining chatroom after creating: ', chatroom.id);
             chatroomStore.addChatroom(chatroom);
         });
         socket.on("new-message",(chatroomId)=>{
@@ -27,7 +27,6 @@ export const useSocket = () =>{
         })
         socket.on("join-chatroom", (chatroom)=>{
             console.log('joining chatroom: ', chatroom.id);
-            //if chatroom is already in store, update it
             if(chatroomStore.chatrooms.find((c)=>c.id === chatroom.id)){
                 chatroomStore.updateMessageState(chatroom);
             }else{
@@ -36,12 +35,12 @@ export const useSocket = () =>{
         });
 
         socket.on("chatrooms", (chatrooms)=>{
-            console.log("populating chatrooms")
+            console.log("populating chatrooms...")
             chatroomStore.setChatrooms(chatrooms);
         });
 
         socket.on("seen-messages", (chatroom)=>{
-            console.log("updating message state")
+            console.log("updating message state to seen...")
             chatroomStore.updateMessageState(chatroom);
         });
 

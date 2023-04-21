@@ -15,7 +15,6 @@ export const MessageOverview = (props: MessageOverviewProps) => {
     return (
         <Tab position={'relative'} onClick={props.onClick} onLoad={props.onLoad} value={props.chatroom.id} p={'6'} gap={'2'} w={'100%'} alignItems={'center'} bgColor={'gray.800'} rounded={'md'} cursor={'pointer'} _hover={{bgColor:'gray.700'}}>
             {/*<Badge position={'absolute'} top={'0'} right={'0'} colorScheme={'red'}>{unreadCount}</Badge>*/}
-
             <Flex flexDir={'column'}>
             <Box>
                 <Avatar size={'sm'} src={chatroomUsers[0].account.account_images?.avatar_url || ''} />
