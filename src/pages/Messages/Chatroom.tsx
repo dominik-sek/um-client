@@ -13,6 +13,7 @@ import {CheckIcon} from "@chakra-ui/icons";
 
 interface ChatroomProps extends React.ComponentProps<typeof TabPanel> {
     chatroom: IChatroom;
+    isTyping: boolean;
 }
 
 export const Chatroom = (props: ChatroomProps, {...rest}) =>{
@@ -21,7 +22,7 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
     const chatroomUsers = props.chatroom.chatroom_user;
     const chatroomId = props.chatroom.id;
     const messages = props.chatroom.message;
-    const latestMessage = messages[messages.length - 1];
+    const latestMessage = messages.filter((message: Message) => message.sender_id === userId)[0]
 
     return(
         <TabPanel
@@ -54,7 +55,7 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                   position={'relative'}
             >
                 {
-                    messages && messages.reverse().map((message:Message) => {
+                    messages && messages.map((message:Message) => {
                         const isSender = message.sender_id === userId;
                         const border = isSender ? 'borderBottomRightRadius' : 'borderBottomLeftRadius';
                         const tooltipPosition = isSender ? 'left-end' : 'right-end';
@@ -63,6 +64,7 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                         const date = new Date(message.sent_at).toLocaleDateString()
                         const messageStatus = message.status;
                         const recipient = chatroomUsers.find((user) => user.user_id !== userId);
+
                         return (
                             <Flex key={message.id}
                                   alignItems={isSender ? 'flex-end' : 'flex-start'}
@@ -70,9 +72,8 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                                   gap={'2'}
 
                             >
-                            <Tooltip label={messageStatus} placement={tooltipPosition}>
+                            <Tooltip label={messageStatus + ' ' + message.id} placement={tooltipPosition}>
                                     <Box bgColor={isSender ? 'blue.700' : 'green.700'}
-                                         border={latestMessage.id === message.id ? '1px solid red' : 'none'}
                                          px={'4'} py={'2'}
                                          maxWidth={{base: '100% !important', md: '50% !important'}}
                                          rounded={'xl'} display={'flex'} flexDir={'column'} gap={'2'} {...borderRadiusStyle}>
@@ -80,7 +81,7 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                                         <Text fontSize={'xs'}>{time} {date}</Text>
                                     </Box>
                             </Tooltip>
-                                <Flex display={'block'} position={'relative'} bgColor={'red'} h={'100%'}>
+                                <Flex display={'block'} position={'relative'} h={'100%'}>
                                     {
                                         isSender && messageStatus === 'sent' &&
                                         <Tooltip label={'Message sent'} hasArrow placement={'bottom-end'} aria-label={'Message sent'} >
@@ -89,11 +90,13 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
 
                                     }
                                     {
-                                        isSender && messageStatus === 'read' && message.id === latestMessage.id &&
-                                        <Tooltip  label={`${recipient?.account.person.first_name} ${recipient?.account.person.last_name}`} hasArrow placement={'bottom-end'} aria-label={'Message sent'}>
+                                        isSender && ((messageStatus === 'read') && (message.id === latestMessage.id)) &&
+                                        <Tooltip label={`${recipient?.account.person.first_name} ${recipient?.account.person.last_name}`}
+                                                 hasArrow
+                                                 placement={'bottom-end'}
+                                                 aria-label={'Message sent'}>
                                             <Avatar position={'absolute'} bottom={'0'} size={'2xs'} src={recipient?.account.account_images?.avatar_url || ''} />
                                         </Tooltip>
-
                                     }
 
                                 </Flex>
@@ -103,7 +106,7 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                     })
                 }
             </Flex>
-                <UserTyping isTyping={false} />
+            <UserTyping isTyping={props.isTyping} />
             <Chatbox chatroomId={chatroomId} />
 
         </TabPanel>

@@ -16,7 +16,7 @@ export interface IUserStore {
 	clearUser: () => void;
 }
 
-export interface IChatroomStore{
+export interface IChatroomStore {
 	chatrooms: IChatroom[];
 	setChatrooms: (chatrooms: IChatroom[]) => void;
 	addChatroom: (chatroom: IChatroom) => void;
@@ -24,6 +24,13 @@ export interface IChatroomStore{
 	logout: () => void;
 	updateMessageState: (chatroom: IChatroom) => void;
 }
+export interface INotifStore{
+	unreadCount: {[key: number]: number};
+	totalUnreadCount: number;
+	updateUnreadCount: (chatroomId: number, count: number) => void;
+	updateTotalUnreadCount: (count: number) => void;
+}
+
 
 export interface Message {
 	sender_id: number;
@@ -40,6 +47,7 @@ export interface IChatroom {
 	chatroom_user: ChatroomUser[];
 	message: Message[];
 }
+
 export interface ChatroomUser {
     account: {
 		account_images:{
@@ -55,6 +63,7 @@ export interface ChatroomUser {
 	user_id: number;
 }
 
+
 const initialAuthState = {
 	auth: false,
 	role: '',
@@ -64,7 +73,18 @@ const initialUserState = {
 };
 const initialChatroomState = {
 	chatrooms:[],
+	unreadCount: {},
+	totalUnreadCount: 0,
 }
+// unreadMessages [
+//   { chatroom_id: 89, unread_count: 6 },
+//   { chatroom_id: 90, unread_count: 4 }
+// ]
+const initialNotifState = {
+	unreadCount: {},
+	totalUnreadCount: 0,
+}
+
 
 const authStore = (set: any): IAuthStore => ({
 	auth: false,
@@ -75,7 +95,6 @@ const authStore = (set: any): IAuthStore => ({
 		set(initialAuthState);
 	},
 });
-
 const userStore = (set: any, get: any): IUserStore => ({
 	user: {} as UserData,
 	setUser: (user) => set({ user: user }),
@@ -83,13 +102,10 @@ const userStore = (set: any, get: any): IUserStore => ({
 		set(initialUserState);
 	},
 });
-
-
 const chatroomStore = (set:any, get:any): IChatroomStore => ({
 	chatrooms: [],
 	addChatroom: (chatroom) => set({chatrooms: [chatroom,...get().chatrooms]}),
 	setChatrooms: (chatrooms) => set({chatrooms: chatrooms}),
-	//add message which is nested in chatroom
 	addMessage: (message) => {
 		const chatrooms = get().chatrooms;
 		const chatroom = chatrooms.find((chatroom)=> chatroom.id === message.chatroom_id);
@@ -110,6 +126,18 @@ const chatroomStore = (set:any, get:any): IChatroomStore => ({
 		set(initialChatroomState);
 	}
 });
+const notifStore = (set:any, get:any): INotifStore => ({
+	unreadCount: {},
+	totalUnreadCount: 0,
+	updateUnreadCount: (chatroomId, count) => {
+		const unreadCount = get().unreadCount;
+		unreadCount[chatroomId] = count;
+		set({unreadCount: unreadCount});
+	},
+	updateTotalUnreadCount: (count) => {
+		set({totalUnreadCount: count});
+	}
+})
 
 export const useUserStore = create<IUserStore>()(
 	persist(userStore, { name: 'user' }),
@@ -120,6 +148,6 @@ export const useAuthStore = create<IAuthStore>()(
 export const useChatroomStore = create<IChatroomStore>()(
 	persist(chatroomStore, { name: 'chatroom' }),
 );
-// export const useMessageStore = create<IMessageStore>()(
-// 	persist(messageStore, { name: 'message' }),
-// );
+export const useNotifStore = create<INotifStore>()(
+	persist(notifStore, { name: 'notif' }),
+);

@@ -22,7 +22,9 @@ import { ResetPassword } from './pages/ResetPassword';
 import Printouts from './pages/printouts/Printouts';
 import Messages from "./pages/Messages/Messages";
 
+
 function App() {
+
 	return (
 		<Flex>
 			{
@@ -42,6 +44,7 @@ function App() {
 						<Route path={'/logout'} element={<Logout />} />
 						<Route element={<NavigationLayout />}>
 							<Route path={'*'} element={<NotFound />} />
+
 							<Route element={<ProtectedRoute allowed={['*']} />}>
 								<Route path={'/'} element={<Home />} />
 								<Route

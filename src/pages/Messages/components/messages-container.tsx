@@ -1,5 +1,5 @@
 import {HTMLAttributes} from "react";
-import {Flex, TabList, TabPanels, Tabs} from "@chakra-ui/react";
+import {Tabs} from "@chakra-ui/react";
 import React from "react";
 
 type MessagesContainerProps = {}

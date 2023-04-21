@@ -25,7 +25,7 @@ export const MessageOverview = (props: MessageOverviewProps) => {
                 <Text fontSize={'xs'} color={'gray.400'} >
                     {latestMessageShort}
                 </Text>
-
+                {props.chatroom.unreadCount}
             </Flex>
         </Tab>
     )

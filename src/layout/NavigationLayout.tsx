@@ -1,6 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import { Flex } from '@chakra-ui/react';
 import SidebarWithNavbar from '../components/shared/sidebar-with-navbar';
+import useSocket from "../hooks/useSocket";
+import socket from "../socket";
 
 const NavigationLayout = () => {
 	return (

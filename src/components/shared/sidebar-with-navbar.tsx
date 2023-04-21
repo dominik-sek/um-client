@@ -31,7 +31,7 @@ import {
 } from '@chakra-ui/react';
 import { FiChevronDown, FiGlobe, FiMenu } from 'react-icons/fi';
 import { IconType } from 'react-icons';
-import {useChatroomStore, useMessageStore, useUserStore} from '../../../store';
+import {useNotifStore, useUserStore} from '../../../store';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { routes } from '../../constants/routes';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
@@ -254,16 +254,14 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 	const { colorMode, toggleColorMode } = useColorMode();
 	const [user, setUser] = useState(useUserStore.getState().user);
-	const chatroomStore = useChatroomStore();
-	const unreadCount = 1;
-
-
+	const unreadCount = 0;
 	useEffect(() => {
-		const unsubscribe = useUserStore.subscribe((newState) => {
+		const unsubUser = useUserStore.subscribe((newState) => {
 			setUser(newState.user);
 		});
+
 		return () => {
-			unsubscribe();
+			unsubUser();
 		};
 	}, []);
 

@@ -1,4 +1,4 @@
-import {Box, Flex, keyframes} from "@chakra-ui/react";
+import {Box, Flex, keyframes, Text} from "@chakra-ui/react";
 import {motion} from "framer-motion";
 
 const animationKeyframes = keyframes`
@@ -14,6 +14,7 @@ const animationKeyframes = keyframes`
 `
 const animation = `${animationKeyframes} 1s ease-in-out infinite`
 const COUNT = 3;
+const DOT_SIZE = 11;
 export const UserTyping = (props:{isTyping: boolean}) =>{
     return(
         <Flex
@@ -21,23 +22,28 @@ export const UserTyping = (props:{isTyping: boolean}) =>{
             alignItems={'center'}
             justifyContent={'center'}
             w={'100%'}
-            h={'10%'}
+            h={'auto'}
+            py={'2'}
+            gap={'2'}
         >
-        <Flex>
-            {
-                Array(COUNT).fill(0).map((_, index) => (
-                    <Box
-                        key={index}
-                        rounded={'full'}
-                        as={motion.div}
-                        height='10px'
-                        width='10px'
-                        bgColor={'gray.500'}
-                        animation={animation + ` ${index * 0.1}s`}
-                    />
-                ))
-            }
-        </Flex>
+
+            <Flex>
+                {
+                    Array(COUNT).fill(0).map((_, index) => (
+                        <Box
+                            key={index}
+                            rounded={'full'}
+                            as={motion.div}
+                            height={`${DOT_SIZE}px`}
+                            width={`${DOT_SIZE}px`}
+                            bgColor={'gray.500'}
+                            animation={animation + ` ${index * 0.1}s`}
+                        >
+
+                        </Box>
+                    ))
+                }
+            </Flex>
 
         </Flex>
     )

@@ -9,6 +9,7 @@ import './i18n';
 import LoadingScreen from './components/shared/loading-screen';
 import theme from '../theme';
 
+
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {

@@ -5,6 +5,7 @@ import { useQuery } from 'react-query';
 import { logoutUser } from '../api/logout-user';
 import { useEffect } from 'react';
 import LoadingScreen from '../components/shared/loading-screen';
+import socket from "../socket";
 
 const Logout = () => {
 	const navigate = useNavigate();
@@ -24,8 +25,9 @@ const Logout = () => {
 			userStore.clearUser();
 			chatroomStore.logout();
 			navigate('/login');
+			socket.disconnect();
 		});
-	}, [navigate, refetch, userAuth]);
+	}, [chatroomStore, navigate, refetch, userAuth, userStore]);
 
 	return (
 		<Flex>

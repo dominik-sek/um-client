@@ -88,8 +88,8 @@ export default function Login() {
 			refetchProfile().then((response) => {
 				userStore.setUser(response.data);
 				console.log('redirecting after successful login...');
-
 				setIsEverythingLoading((refetchAuthLoading && refetchLoading) && isLoading);
+
 				navigate('/', { replace: true });
 			});
 		},
@@ -133,10 +133,9 @@ export default function Login() {
 		}
 		setIsEverythingLoading(true);
 		LoginMutation({ username, password });
+
 	};
-	useEffect(()=>{
-		console.log();
-	},[isLoading, refetchLoading])
+
 	return (
 		<Flex
 			minH={'100vh'}

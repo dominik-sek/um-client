@@ -6,7 +6,7 @@ import {
     VStack,
     Text,
     Button,
-    Divider, InputRightElement, Badge
+    Divider, InputRightElement
 } from "@chakra-ui/react";
 import {MessageOverview} from "./components/message-overview";
 import {AddIcon, ArrowBackIcon} from "@chakra-ui/icons";
@@ -22,16 +22,23 @@ import socket from "../../socket";
 import React from "react";
 
 export const Messages = () =>{
-    useSocket(); //not connecting for  some reason
     const {data: userList, refetch} = useQuery('fetchAllUsers',fetchAllUsers,{
         refetchOnWindowFocus: false,
         enabled:true
     });
     const currentUser = useUserStore((state) => state.user);
-    const [isLargerThanMedium] = useMediaQuery('(min-width: 768px)');
+    const [isLargerThanMedium] = useMediaQuery('(min-width: 36em)');
     const [showSearchbar, setShowSearchbar] = useState(false);
     const [chatrooms, setChatrooms] = useState(useChatroomStore((state) => state.chatrooms));
     const [wereMessagesRefreshed, setWereMessagesRefreshed] = useState(false);
+    const [userTyping, setUserTyping] = useState({
+        chatroomId: -1,
+        senderId: -1,
+        isTyping: false
+    });
+    console.log('messages.tsx rendered')
+    useSocket();
+
     useEffect(() => {
         const unsubscribe = useChatroomStore.subscribe((newState) => {
             setChatrooms(newState.chatrooms);
@@ -41,58 +48,68 @@ export const Messages = () =>{
         };
     }, []);
 
+    useMemo(()=>{
+        socket.on("user-typing",({chatroomId, senderId, isTyping})=>{
+            console.log(`SOCKET: user ${senderId} is typing inside ${chatroomId}...? ${isTyping}`)
+            setUserTyping({chatroomId, senderId, isTyping})
+        })
+    },[])
 
-    const generateUserSuggestions = () =>{
-        return userList?.filter((user: any) => user.id !== currentUser.id && !chatrooms.find((chatroom: any) => chatroom.recipient === user.id));
-    }
-
-    const toggleSearchbar = () =>{
-        setShowSearchbar(!showSearchbar);
-    }
-    const handleCreateChatroom = (suggestion: string | {id: number, first_name: string, last_name: string}) => {
-        if (typeof suggestion === 'string') return;
-        const chatroom = {
-            created_by: currentUser.id,
-            recipient: suggestion.id,
-            created_at: new Date(),
-            lastActivity: new Date()
+    const generateUserSuggestions = useMemo(()=>{
+        return () =>{
+            return userList?.filter((user: any) => user.id !== currentUser.id && !chatrooms.find((chatroom: any) => chatroom.recipient === user.id));
         }
+    },[chatrooms, currentUser.id, userList])
+    const toggleSearchbar = useMemo(()=>{
+        return () =>{
+            setShowSearchbar(!showSearchbar);
+        }
+    },[showSearchbar])
 
-        socket.emit('create-chatroom', chatroom);
-        setShowSearchbar(false);
-    }
+    const handleCreateChatroom = useMemo(()=>{
+        return (suggestion: string | {id: number, first_name: string, last_name: string}) => {
+            if (typeof suggestion === 'string') return;
+            const chatroom = {
+                created_by: currentUser.id,
+                recipient: suggestion.id,
+                created_at: new Date(),
+                lastActivity: new Date()
+            }
+            socket.emit('create-chatroom', chatroom);
+            setShowSearchbar(false);
+        }
+    },[currentUser.id])
+
     socket.on('new-message', () => {
-        console.log('got new message, setting state to false')
+        console.log('MESSAGES.TSX/SOCKET: got new message, setting state to false')
         setWereMessagesRefreshed(false);
     });
 
-    const handleMessagesUpdate = useMemo(()=>{
-        return (chatroomId: number)=>{
-            if(wereMessagesRefreshed) return;
-            const chatroom = chatrooms.find((chatroom: any) => chatroom.id === chatroomId);
-            console.log('refreshing messages inside Messages.tsx')
-            setWereMessagesRefreshed(true);
-            socket.emit('seen-messages', chatroom);
-        }
-    },[chatrooms, wereMessagesRefreshed])
+    const handleMessagesUpdate = (chatroomId: number)=> {
+        if(wereMessagesRefreshed) return;
+        const chatroom = chatrooms.find((chatroom: any) => chatroom.id === chatroomId);
+        console.log('MESSAGES.TSX/SOCKET: refreshing messages inside Messages.tsx')
+        setWereMessagesRefreshed(true);
+        socket.emit('seen-messages', chatroom);
+    }
 
     const shiftFocusToInput = (chatroomId: number) =>{
         console.log('shift focus to input', chatroomId);
     }
-    return (
 
+    return (
         <Flex gap={'6'} h={'calc(100vh - 115px)'} >
             {/*tabs*/}
             <MessagesContainer>
 
-                <VStack h={'100%'} minW={'35%'} w={!isLargerThanMedium && '100%'}>
+                <VStack h={'100%'} minW={'30%'} w={!isLargerThanMedium && '100%'}>
                     {
                         chatrooms.map((chatroom) => {
                             return <MessageOverview key={chatroom.id}
                                                     chatroom={chatroom}
                                                     value={chatroom.id}
-                                                    onLoad={()=>{handleMessagesUpdate(chatroom.id)}}
-                                                    onClick={()=>{shiftFocusToInput(chatroom.id)}}/>
+                                                    onClick={()=>{handleMessagesUpdate(chatroom.id)}}
+                            />
                         })
                     }
                     {
@@ -133,7 +150,8 @@ export const Messages = () =>{
                     <TabPanels h={'100%'} >
                         {
                             chatrooms.map((chatroom) => {
-                                return <Chatroom onClick={()=>{handleMessagesUpdate(chatroom.id)}} key={chatroom.id} chatroom={chatroom} />
+                                const isUserTyping = userTyping.chatroomId === chatroom.id && userTyping.senderId !== currentUser.id && userTyping.isTyping
+                                return <Chatroom isTyping={isUserTyping} onClick={()=>{handleMessagesUpdate(chatroom.id)}} key={chatroom.id} chatroom={chatroom} />
                             })
                         }
 
@@ -144,4 +162,5 @@ export const Messages = () =>{
         </Flex>
     )
 }
-export default Messages
+
+export default Messages;
