@@ -2,18 +2,20 @@ import {
     Avatar, Box,
     Divider,
     Flex,
-    Heading,
+    Heading, IconButton,
     TabPanel,
-    Text, Tooltip
+    Text, Tooltip, useDisclosure
 } from "@chakra-ui/react";
 import {Chatbox} from "./chatbox";
 import {IChatroom, Message, useUserStore} from "../../../store";
 import {UserTyping} from "./components/user-typing";
-import {CheckIcon} from "@chakra-ui/icons";
+import {ArrowBackIcon, CheckIcon} from "@chakra-ui/icons";
 
 interface ChatroomProps extends React.ComponentProps<typeof TabPanel> {
     chatroom: IChatroom;
     isTyping: boolean;
+    onExitChatroom: () => void;
+    backButtonVisible: boolean;
 }
 
 export const Chatroom = (props: ChatroomProps, {...rest}) =>{
@@ -35,14 +37,25 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
             minW={'100%'}
             overflowY={'auto'}
             onClick={props.onClick}
+
             {...rest}
         >
+            <Flex p={'2'} alignItems={'center'} justifyContent={'space-between'} gap={'4'}>
+                <Flex gap={'2'} alignItems={'center'}>
+                    <Avatar size={'md'} src={chatroomUsers[0].account.account_images?.avatar_url || ''} />
+                    <Heading size={'md'}>
+                        {chatroomUsers[0].account.person.first_name} {chatroomUsers[0].account.person.last_name}
+                    </Heading>
+                </Flex>
+                {
+                    props.backButtonVisible &&
+                    (
+                        <Box>
+                            <IconButton aria-label={'back'} icon={<ArrowBackIcon/>} onClick={props.onExitChatroom} />
+                        </Box>
+                    )
+                }
 
-            <Flex width={'100%'} p={'2'} alignItems={'center'} gap={'4'}>
-                <Avatar size={'md'} src={chatroomUsers[0].account.account_images?.avatar_url || ''} />
-                <Heading size={'md'}>
-                    {chatroomUsers[0].account.person.first_name} {chatroomUsers[0].account.person.last_name}
-                </Heading>
             </Flex>
 
             <Divider />
@@ -75,7 +88,7 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                             <Tooltip label={messageStatus + ' ' + message.id} placement={tooltipPosition}>
                                     <Box bgColor={isSender ? 'blue.700' : 'green.700'}
                                          px={'4'} py={'2'}
-                                         maxWidth={{base: '100% !important', md: '50% !important'}}
+                                         maxWidth={{base: '50% !important', md: '50% !important'}}
                                          rounded={'xl'} display={'flex'} flexDir={'column'} gap={'2'} {...borderRadiusStyle}>
                                         <Text fontSize={'md'}>{message.content}</Text>
                                         <Text fontSize={'xs'}>{time} {date}</Text>

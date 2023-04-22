@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import {Flex, useColorModeValue} from '@chakra-ui/react';
 import { Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from './middleware/ProtectedRoute';
 import Login from './pages/Login';
@@ -24,9 +24,9 @@ import Messages from "./pages/Messages/Messages";
 
 
 function App() {
-
+	const backgroundColor = useColorModeValue('gray.100', 'gray.900')
 	return (
-		<Flex>
+		<Flex bgColor={backgroundColor}>
 			{
 				<Routes>
 					<Route

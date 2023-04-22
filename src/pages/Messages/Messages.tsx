@@ -6,7 +6,7 @@ import {
     VStack,
     Text,
     Button,
-    Divider, InputRightElement
+    Divider, InputRightElement, useDisclosure, Box
 } from "@chakra-ui/react";
 import {MessageOverview} from "./components/message-overview";
 import {AddIcon, ArrowBackIcon} from "@chakra-ui/icons";
@@ -20,6 +20,7 @@ import {fetchAllUsers} from "../../api/users";
 import {useChatroomStore, useNotifStore, useUserStore} from "../../../store";
 import socket from "../../socket";
 import React from "react";
+import {motion} from "framer-motion";
 
 export const Messages = () =>{
     const {data: userList, refetch} = useQuery('fetchAllUsers',fetchAllUsers,{
@@ -27,7 +28,7 @@ export const Messages = () =>{
         enabled:true
     });
     const currentUser = useUserStore((state) => state.user);
-    const [isLargerThanMedium] = useMediaQuery('(min-width: 36em)');
+    const [isLargerThanMedium] = useMediaQuery('(min-width: 768px)');
     const [showSearchbar, setShowSearchbar] = useState(false);
     const [chatrooms, setChatrooms] = useState(useChatroomStore((state) => state.chatrooms));
     const [wereMessagesRefreshed, setWereMessagesRefreshed] = useState(false);
@@ -36,6 +37,7 @@ export const Messages = () =>{
         senderId: -1,
         isTyping: false
     });
+    const [chatroomVisible, setChatroomVisible] = useState(false);
 
     useEffect(() => {
         const unsubscribe = useChatroomStore.subscribe((newState) => {
@@ -94,22 +96,27 @@ export const Messages = () =>{
         socket.emit('seen-messages', chatroom);
     }
 
-    const shiftFocusToInput = (chatroomId: number) =>{
-        console.log('shift focus to input', chatroomId);
-    }
+    const handleExitChatroom = () =>{
 
+        !isLargerThanMedium &&
+        setChatroomVisible(!chatroomVisible);
+    }
     return (
-        <Flex gap={'6'} h={'calc(100vh - 115px)'} >
+        <Flex gap={'6'} h={'calc(100vh - 115px)'} position={'relative'} >
             {/*tabs*/}
             <MessagesContainer>
 
-                <VStack h={'100%'} minW={'30%'} w={!isLargerThanMedium && '100%'}>
+                <VStack h={'100%'}
+                        minW={'30%'}
+                        w={!isLargerThanMedium ? '100%' : 'auto'}
+                        display={!isLargerThanMedium && chatroomVisible ? 'none' : 'flex'}
+                >
                     {
                         chatrooms.map((chatroom) => {
                             return <MessageOverview key={chatroom.id}
                                                     chatroom={chatroom}
                                                     value={chatroom.id}
-                                                    onClick={()=>{handleMessagesUpdate(chatroom.id)}}
+                                                    onClick={()=>{handleMessagesUpdate(chatroom.id); handleExitChatroom()}}
                             />
                         })
                     }
@@ -147,12 +154,25 @@ export const Messages = () =>{
 
                 </VStack>
                 <Divider orientation={'vertical'} display={isLargerThanMedium ? 'block' : 'none'} />
-                <VStack display={isLargerThanMedium ? 'block' : 'none'} w={'100%'} flex={'1'} h={'100%'}>
-                    <TabPanels h={'100%'} >
+                <VStack display={isLargerThanMedium ? 'block' : chatroomVisible ? 'block' : 'none'}
+                        maxW={'100%'}
+                        flex={'1'}
+                        minH={'100%'}
+
+                        id={'chatroom-container'}
+                >
+                    <TabPanels h={'100%'}>
                         {
                             chatrooms.map((chatroom) => {
                                 const isUserTyping = userTyping.chatroomId === chatroom.id && userTyping.senderId !== currentUser.id && userTyping.isTyping
-                                return <Chatroom isTyping={isUserTyping} onClick={()=>{handleMessagesUpdate(chatroom.id)}} key={chatroom.id} chatroom={chatroom} />
+                                return(
+                                        <Chatroom isTyping={isUserTyping}
+                                                  key={chatroom.id}
+                                                  onExitChatroom={handleExitChatroom}
+                                                  onClick={()=>{handleMessagesUpdate(chatroom.id)}}
+                                                  backButtonVisible={!isLargerThanMedium}
+                                                  chatroom={chatroom} />
+                                )
                             })
                         }
 

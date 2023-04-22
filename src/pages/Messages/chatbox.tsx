@@ -43,7 +43,7 @@ export const Chatbox = (props: ChatboxProps) =>{
 
     
     return(
-        <HStack w={'100%'}>
+        <HStack w={'100%'} >
             <form onSubmit={handleSubmit(onSubmit)} style={{width:'100%'}}>
                 <InputGroup>
                     <Input
