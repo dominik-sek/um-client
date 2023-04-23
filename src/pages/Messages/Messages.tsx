@@ -6,7 +6,7 @@ import {
     VStack,
     Text,
     Button,
-    Divider, InputRightElement, useDisclosure, Box
+    Divider, InputRightElement, useDisclosure, Box, HStack, Container
 } from "@chakra-ui/react";
 import {MessageOverview} from "./components/message-overview";
 import {AddIcon, ArrowBackIcon} from "@chakra-ui/icons";
@@ -28,7 +28,7 @@ export const Messages = () =>{
         enabled:true
     });
     const currentUser = useUserStore((state) => state.user);
-    const [isLargerThanMedium] = useMediaQuery('(min-width: 768px)');
+    const [isLargerThanMedium] = useMediaQuery('(min-width: 48em)');
     const [showSearchbar, setShowSearchbar] = useState(false);
     const [chatrooms, setChatrooms] = useState(useChatroomStore((state) => state.chatrooms));
     const [wereMessagesRefreshed, setWereMessagesRefreshed] = useState(false);
@@ -97,88 +97,95 @@ export const Messages = () =>{
     }
 
     const handleExitChatroom = () =>{
-
         !isLargerThanMedium &&
         setChatroomVisible(!chatroomVisible);
     }
     return (
-        <Flex gap={'6'} h={'calc(100vh - 115px)'} position={'relative'} >
+        <Flex gap={'6'}
+              h={'calc(100vh - 115px)'}
+              w={'100%'}
+              alignItems={'center'}
+        >
             {/*tabs*/}
-            <MessagesContainer>
 
-                <VStack h={'100%'}
-                        minW={'30%'}
-                        w={!isLargerThanMedium ? '100%' : 'auto'}
-                        display={!isLargerThanMedium && chatroomVisible ? 'none' : 'flex'}
-                >
-                    {
-                        chatrooms.map((chatroom) => {
-                            return <MessageOverview key={chatroom.id}
-                                                    chatroom={chatroom}
-                                                    value={chatroom.id}
-                                                    onClick={()=>{handleMessagesUpdate(chatroom.id); handleExitChatroom()}}
-                            />
-                        })
-                    }
-                    {
-                        chatrooms.length === 0 &&
-                        <Text fontSize={'xl'} color={'gray.500'}>No messages yet</Text>
-                    }
-                    {showSearchbar ? (
-                        <Flex w={'100%'} h={'100%'}>
-                            <AutocompleteSearchbar
-                                suggestions={generateUserSuggestions()}
-                                onSuggestionSelected={(suggestion)=>handleCreateChatroom(suggestion)}
-                                // onBlur={toggleSearchbar}
-                                w={'100%'}
-                                searchPlaceholder={'Search for users'}
-                            >
-                                <InputRightElement>
-                                    <IconButton
-                                        aria-label={'cancel search'}
-                                        icon={<ArrowBackIcon />}
-                                        onClick={toggleSearchbar}
-                                    />
-                                </InputRightElement>
-                            </AutocompleteSearchbar>
-                        </Flex>
-                    ) : (
-                        <Button
-                            onClick={toggleSearchbar}
-                            w={'100%'}
-                            leftIcon={<AddIcon />}
-                        >
-                            New message
-                        </Button>
-                    )}
-
-                </VStack>
-                <Divider orientation={'vertical'} display={isLargerThanMedium ? 'block' : 'none'} />
-                <VStack display={isLargerThanMedium ? 'block' : chatroomVisible ? 'block' : 'none'}
-                        maxW={'100%'}
-                        flex={'1'}
-                        minH={'100%'}
-
-                        id={'chatroom-container'}
-                >
-                    <TabPanels h={'100%'}>
+            <Box maxW={'100%'} h={'100%'} w={'100%'}>
+                <MessagesContainer>
+                    <VStack h={'100%'}
+                            minW={!isLargerThanMedium ? '100%' : '30%'}
+                            id={'chatrooms'}
+                            display={!isLargerThanMedium && chatroomVisible ? 'none' : 'flex'}
+                    >
                         {
                             chatrooms.map((chatroom) => {
-                                const isUserTyping = userTyping.chatroomId === chatroom.id && userTyping.senderId !== currentUser.id && userTyping.isTyping
-                                return(
+                                return <MessageOverview key={chatroom.id}
+                                                        chatroom={chatroom}
+                                                        value={chatroom.id}
+                                                        onClick={()=>{handleMessagesUpdate(chatroom.id); handleExitChatroom()}}
+                                />
+                            })
+                        }
+                        {
+                            chatrooms.length === 0 &&
+                            <Text fontSize={'xl'} color={'gray.500'}>No messages yet</Text>
+                        }
+                        {showSearchbar ? (
+                            <Flex w={'100%'} h={'100%'}>
+                                <AutocompleteSearchbar
+                                    suggestions={generateUserSuggestions()}
+                                    onSuggestionSelected={(suggestion)=>handleCreateChatroom(suggestion)}
+                                    // onBlur={toggleSearchbar}
+                                    w={'100%'}
+                                    searchPlaceholder={'Search for users'}
+                                >
+                                    <InputRightElement>
+                                        <IconButton
+                                            aria-label={'cancel search'}
+                                            icon={<ArrowBackIcon />}
+                                            onClick={toggleSearchbar}
+                                        />
+                                    </InputRightElement>
+                                </AutocompleteSearchbar>
+                            </Flex>
+                        ) : (
+                            <Button
+                                onClick={toggleSearchbar}
+                                w={'100%'}
+                                leftIcon={<AddIcon />}
+                            >
+                                New message
+                            </Button>
+                        )}
+
+                    </VStack>
+                    <Divider orientation={'vertical'} display={isLargerThanMedium ? 'block' : 'none'} />
+
+                    <VStack
+                        h={'100%'}
+                        w={!isLargerThanMedium ? '100%' : '70%'}
+                        display={!isLargerThanMedium && !chatroomVisible ? 'none' : 'flex'}
+                        id={'chatroom'}
+                    >
+                        <TabPanels h={'100%'}>
+                            {
+                                chatrooms.map((chatroom) => {
+                                    const isUserTyping = userTyping.chatroomId === chatroom.id && userTyping.senderId !== currentUser.id && userTyping.isTyping
+                                    return(
+
                                         <Chatroom isTyping={isUserTyping}
                                                   key={chatroom.id}
                                                   onExitChatroom={handleExitChatroom}
                                                   onClick={()=>{handleMessagesUpdate(chatroom.id)}}
                                                   backButtonVisible={!isLargerThanMedium}
                                                   chatroom={chatroom} />
-                                )
-                            })
-                        }
 
-                    </TabPanels>
-                </VStack>
-            </MessagesContainer>
+                                    )
+                                })
+                            }
+
+                        </TabPanels>
+                    </VStack>
+                </MessagesContainer>
+            </Box>
 
         </Flex>
     )

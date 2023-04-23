@@ -7,16 +7,16 @@ type MessagesContainerProps = {}
 & React.ComponentProps<typeof Tabs>
 
 
-export const MessagesContainer = (props: MessagesContainerProps) =>{
+export const MessagesContainer = (props: MessagesContainerProps, {...rest}) =>{
     return(
         <Tabs
             display={'flex'}
-            w={'100%'}
+            maxW={'100%'}
             h={'100%'}
-            flex={'1'}
             gap={'6'}
-            variant={'enclosed'}
+            variant={'soft-rounded'}
             onChange={props.onChange}
+            {...rest}
         >
             {props.children}
         </Tabs>

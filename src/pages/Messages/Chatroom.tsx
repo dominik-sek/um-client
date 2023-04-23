@@ -27,20 +27,21 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
     const latestMessage = messages.filter((message: Message) => message.sender_id === userId)[0]
 
     return(
-        <TabPanel
-            display={'flex'}
+        <Box
+            as={TabPanel}
+            display={'inline-flex'}
             flexDir={'column'}
             rounded={'md'}
             borderColor={'slate'}
             borderWidth={'1px'}
             h={'100%'}
-            minW={'100%'}
+            w={'100%'}
             overflowY={'auto'}
             onClick={props.onClick}
 
             {...rest}
         >
-            <Flex p={'2'} alignItems={'center'} justifyContent={'space-between'} gap={'4'}>
+            <Flex p={'2'} alignItems={'center'} justifyContent={'space-between'}  gap={'4'}>
                 <Flex gap={'2'} alignItems={'center'}>
                     <Avatar size={'md'} src={chatroomUsers[0].account.account_images?.avatar_url || ''} />
                     <Heading size={'md'}>
@@ -83,14 +84,13 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                                   alignItems={isSender ? 'flex-end' : 'flex-start'}
                                   justifyContent={isSender ? 'flex-end' : 'flex-start'}
                                   gap={'2'}
-
                             >
-                            <Tooltip label={messageStatus + ' ' + message.id} placement={tooltipPosition}>
+                            <Tooltip label={messageStatus} placement={tooltipPosition}>
                                     <Box bgColor={isSender ? 'blue.700' : 'green.700'}
                                          px={'4'} py={'2'}
-                                         maxWidth={{base: '50% !important', md: '50% !important'}}
+                                         w={{base: '30% !important', md: '35% !important'}}
                                          rounded={'xl'} display={'flex'} flexDir={'column'} gap={'2'} {...borderRadiusStyle}>
-                                        <Text fontSize={'md'}>{message.content}</Text>
+                                        <Text fontSize={'md'} wordBreak={'break-word'}>{message.content}</Text>
                                         <Text fontSize={'xs'}>{time} {date}</Text>
                                     </Box>
                             </Tooltip>
@@ -100,11 +100,10 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                                         <Tooltip label={'Message sent'} hasArrow placement={'bottom-end'} aria-label={'Message sent'} >
                                             <Avatar position={'absolute'} bottom={'0'} as={CheckIcon} size={'2xs'} bgColor={'transparent'} color={'green.500'}  />
                                         </Tooltip>
-
                                     }
                                     {
                                         isSender && ((messageStatus === 'read') && (message.id === latestMessage.id)) &&
-                                        <Tooltip label={`${recipient?.account.person.first_name} ${recipient?.account.person.last_name}`}
+                                        <Tooltip label={`Read by ${recipient?.account.person.first_name} ${recipient?.account.person.last_name}`}
                                                  hasArrow
                                                  placement={'bottom-end'}
                                                  aria-label={'Message sent'}>
@@ -122,6 +121,6 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
             <UserTyping isTyping={props.isTyping} />
             <Chatbox chatroomId={chatroomId} />
 
-        </TabPanel>
+        </Box>
     )
 }

@@ -8,7 +8,7 @@ import {
 	Avatar, Badge,
 	Box,
 	BoxProps,
-	CloseButton,
+	CloseButton, Container,
 	Divider,
 	Drawer,
 	DrawerContent,
@@ -63,9 +63,9 @@ export default function SidebarWithNavbar({
 				</DrawerContent>
 			</Drawer>
 			<MobileNav onOpen={onOpen} />
-			<Box p="4" pt={'24'}>
-				{children}
-			</Box>
+			<Container p="4" pt={'24'} id={'container'} maxW={'container.xl'} margin={'0px auto'} >
+					{children}
+			</Container>
 		</Box>
 	);
 }
@@ -377,10 +377,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 						aria-label="Language menu"
 						icon={<FiGlobe />}
 					/>
-					<MenuList>
+					<MenuList p={'0'}>
 						<MenuItem
 							onClick={() => changeLanguage('en')}
 							display={'flex'}
+
 							gap={2}>
 							<GB width={'36'} /> English
 						</MenuItem>
@@ -440,11 +441,15 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 							borderColor={useColorModeValue(
 								'white',
 								'gray.700',
-							)}>
+							)}
+							p={'0'}
+						>
 							<Link as={RouterLink} to={'/profile'}>
 								<MenuItem>{t('profileSettings')}</MenuItem>
 							</Link>
 							<MenuDivider
+								p={'0'}
+								m={'0'}
 								borderColor={useColorModeValue(
 									'gray.200',
 									'gray.600',
