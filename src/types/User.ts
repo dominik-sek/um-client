@@ -35,5 +35,6 @@ export type UserData = person & {
 		};
 	};
 	course: course[];
+	id: number;
 	[key: string]: any; // Index signature to allow access to any property via a string key
 };

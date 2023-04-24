@@ -3,9 +3,14 @@ import { Box, List, useColorModeValue } from '@chakra-ui/react';
 import SearchBar from './search-bar';
 import { motion } from 'framer-motion';
 
+type User = {
+	id: number;
+	first_name: string;
+	last_name: string;
+};
 type AutocompleteSearchbarProps = {
-	suggestions: string[];
-	onSuggestionSelected: (suggestion: string) => void;
+	suggestions: (string | User)[];
+	onSuggestionSelected: (suggestion: string | User) => void;
 } & React.ComponentProps<typeof SearchBar>;
 type AutocompleteSearchbarPropsOmit = Omit<
 	AutocompleteSearchbarProps,
@@ -18,20 +23,26 @@ const AutocompleteSearchbar = ({
 	searchPlaceholder,
 	...rest
 }: AutocompleteSearchbarPropsOmit) => {
-	const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>(
+	const [filteredSuggestions, setFilteredSuggestions] = useState<(string | User)[]>(
 		[],
 	);
 	const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
-	const [selectedSuggestion, setSelectedSuggestion] = useState<string>();
+	const [selectedSuggestion, setSelectedSuggestion] = useState<string | User>();
 	const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
 	const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setFilteredSuggestions(suggestions);
 		setShowSuggestions(true);
 		const value = event.target.value;
-		const filtered = suggestions.filter((suggestion) =>
-			suggestion.toLowerCase().includes(value.toLowerCase()),
-		);
+		const filtered = suggestions.filter((suggestion) => {
+			if (typeof suggestion === 'string') {
+				return suggestion.toLowerCase().includes(value.toLowerCase());
+			} else {
+				return suggestion.first_name.toLowerCase().includes(value.toLowerCase()) ||
+					suggestion.last_name.toLowerCase().includes(value.toLowerCase());
+			}
+		});
+
 		setFilteredSuggestions(filtered);
 		setHighlightedIndex(-1);
 	};
@@ -84,10 +95,11 @@ const AutocompleteSearchbar = ({
 			inputRef={ref}
 			value={selectedSuggestion}
 			position={'relative'}
-			{...rest}
 			searchPlaceholder={searchPlaceholder}
 			onBlur={handleLostFocus}
-			onChange={(e) => handleOnChange(e)}>
+			onChange={(e) => handleOnChange(e)}
+			{...rest}
+		>
 			<Box
 				position={'absolute'}
 				top={'100%'}
@@ -95,43 +107,44 @@ const AutocompleteSearchbar = ({
 				left={0}
 				right={0}
 				display={showSuggestions ? 'flex' : 'none'}
-				zIndex={99}>
-				<List width={'100%'} h={'100%'} zIndex={99}>
-					{filteredSuggestions.map(
-						(suggestion: string, index: number) => {
-							const hasBottomBorder =
-								index === filteredSuggestions.length - 1;
+				zIndex={99}
+			>
+				<List width={'100%'}  zIndex={99}>
+					{filteredSuggestions.slice(-5).map(
+						(suggestion: string | { id: number; first_name: string; last_name: string }, index: number) => {
+							const hasBottomBorder = index === filteredSuggestions.slice(-5).length - 1;
+							const suggestionText = typeof suggestion === 'string' ? suggestion : `${suggestion.first_name} ${suggestion.last_name}`;
 							return (
 								<Box
 									borderX={'1px solid'}
-									borderBottomRadius={
-										hasBottomBorder ? '9px' : ''
-									}
-									borderBottom={
-										hasBottomBorder ? '1px solid' : ''
-									}
+									borderBottomRadius={hasBottomBorder ? '9px' : ''}
+									borderBottom={hasBottomBorder ? '1px solid' : ''}
 									borderColor={'inherit'}
 									w={'100%'}
 									pl={10}
 									pt={2}
-									bg={
-										highlightedIndex === index
-											? hoverColor
-											: suggestionBg
-									}
+									bg={highlightedIndex === index ? hoverColor : suggestionBg}
 									h={'100%'}
-									key={suggestion}
+									key={suggestionText}
 									cursor={'pointer'}
 									_hover={{ hoverColor }}
 									onClick={() => {
-										onSuggestionSelected(suggestion);
-										ref.current.value = suggestion;
+										if (typeof suggestion === 'string') {
+											onSuggestionSelected(suggestion);
+										} else {
+											onSuggestionSelected({
+												id: suggestion.id,
+												first_name: suggestion.first_name,
+												last_name: suggestion.last_name,
+											});
+										}
+										ref.current.value = suggestionText;
+										setSelectedSuggestion(suggestionText);
 										setShowSuggestions(false);
-									}}>
-									<motion.div
-										whileInView={{ opacity: 1 }}
-										initial={{ opacity: 0 }}>
-										{suggestion}
+									}}
+								>
+									<motion.div whileInView={{ opacity: 1 }} initial={{ opacity: 0 }}>
+										{suggestionText}
 									</motion.div>
 								</Box>
 							);
@@ -139,6 +152,7 @@ const AutocompleteSearchbar = ({
 					)}
 				</List>
 			</Box>
+			{rest.children}
 		</SearchBar>
 	);
 };

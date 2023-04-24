@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, {Profiler, Suspense} from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
@@ -8,6 +8,7 @@ import './index.css';
 import './i18n';
 import LoadingScreen from './components/shared/loading-screen';
 import theme from '../theme';
+
 
 const queryClient = new QueryClient({
 	defaultOptions: {

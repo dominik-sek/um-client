@@ -58,27 +58,6 @@ const fetchAllGradesByTeacher = async () => {
 
 	return response.json();
 };
-const fetchAllGradesByStudentAndCourse = async (
-	gradebookId: number,
-	courseId: number,
-) => {
-	const response = await fetch(
-		`${import.meta.env.VITE_API_URL}/api/v1/grades/student/${gradebookId}/course/${courseId}`,
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			credentials: 'include',
-		},
-	);
-
-	if (response.status === 500) {
-		throw new Error('Internal Server Error', { cause: 'SERVER_ERROR' });
-	}
-
-	return response.json();
-};
 const deleteGrade = async (gradeId: number) => {
 	const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/grades/student/${gradeId}`, {
 		method: 'DELETE',
@@ -140,7 +119,6 @@ export {
 	fetchAllGrades,
 	fetchAllGradesByCourse,
 	fetchAllGradesByStudent,
-	fetchAllGradesByStudentAndCourse,
 	fetchAllGradesByTeacher,
 	deleteGrade,
 	addGrade,

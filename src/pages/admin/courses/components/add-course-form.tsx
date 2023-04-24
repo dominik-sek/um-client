@@ -108,6 +108,7 @@ export const AddCourseForm = (props: {
 						{...register('type', {
 							onChange: (e) => handleFormValuesChange(e, 'type'),
 						})}>
+
 						<option value="laboratory">{t('courseLab')}</option>
 						<option value="lecture">{t('courseLecture')}</option>
 						<option value="exercise">{t('courseExercise')}</option>

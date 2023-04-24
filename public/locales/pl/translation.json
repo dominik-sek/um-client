@@ -8,7 +8,8 @@
 		"forgot-password": "Zapomniałeś hasła?",
 		"contact-admin": "Skontaktuj się z administratorem",
 		"validate-error": "Niepoprawne dane logowania",
-		"server-error": "Wystąpił nieoczekiwany błąd, spróbuj ponownie później"
+		"server-error": "Wystąpił nieoczekiwany błąd, spróbuj ponownie później",
+		"select-account": "Wybierz konto"
 	},
 	"routes": {
 		"home": "Strona główna",
@@ -209,8 +210,22 @@
 	"facultyRequired": "Wydział jest wymagany",
 	"courseTypeRequired": "Typ przedmiotu jest wymagany",
 	"ectsCredits": "Liczba punktów ECTS jest wymagana (1-20)",
-	"semesterRequired": "Semestr jest wymagany (1-12)",
+	"semesterRequired": "Semestr jest wymagany (1-12)*",
 	"departmentRequired": "Kierunek jest wymagany",
 	"invalidCSV": "Nieprawidłowy plik CSV",
-	"printoutDeleted": "Pomyślnie usunięto wydruk"
+	"printoutDeleted": "Pomyślnie usunięto wydruk",
+	"addCourseNotice": "Domyślnie studenci dopisani są do 1 semestru. Po dodaniu przedmiotu wszyscy studenci z danego semstru zostaną dopisani do przedmiotu.",
+	"messenger": {
+		"newMessage": "Nowa wiadomość",
+		"read":"Przeczytana",
+		"sent":"Wysłana",
+		"unread":"Nieprzeczytana",
+		"readBy": "Przeczytana przez ",
+		"messageSent": "Wiadomość wysłana",
+		"nothingHere": "Nic tu nie ma",
+		"noChatrooms": "Nie masz żadnych czatów",
+		"searchUser": "Wyszukaj użytkownika",
+		"chatboxPlaceholder": "Napisz wiadomość..."
+	}
+
 }

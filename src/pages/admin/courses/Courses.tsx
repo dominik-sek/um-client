@@ -72,7 +72,7 @@ const Courses = () => {
 			);
 			setFilteredData(results);
 		}
-	}, [searchTerm]);
+	}, [data, searchTerm]);
 
 	const { mutate } = useMutation(deleteCourse, {
 		onSuccess: () => {

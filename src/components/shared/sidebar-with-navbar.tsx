@@ -5,10 +5,10 @@ import {
 	AccordionIcon,
 	AccordionItem,
 	AccordionPanel,
-	Avatar,
+	Avatar, Badge,
 	Box,
 	BoxProps,
-	CloseButton,
+	CloseButton, Container,
 	Divider,
 	Drawer,
 	DrawerContent,
@@ -31,7 +31,7 @@ import {
 } from '@chakra-ui/react';
 import { FiChevronDown, FiGlobe, FiMenu } from 'react-icons/fi';
 import { IconType } from 'react-icons';
-import { useUserStore } from '../../../store';
+import {useNotifStore, useUserStore} from '../../../store';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { routes } from '../../constants/routes';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
@@ -41,7 +41,6 @@ import { GB, PL } from 'country-flag-icons/react/3x2';
 import { useTranslation } from 'react-i18next';
 import AutocompleteSearchbar from './search/autocomplete-searchbar';
 import { UserRole } from '../../enums/user-role';
-
 export default function SidebarWithNavbar({
 	children,
 }: {
@@ -50,7 +49,7 @@ export default function SidebarWithNavbar({
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	return (
-		<Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+		<Box minH={'100vh'} bg={useColorModeValue('gray.100', 'gray.900')} >
 			<Drawer
 				autoFocus={false}
 				isOpen={isOpen}
@@ -64,9 +63,9 @@ export default function SidebarWithNavbar({
 				</DrawerContent>
 			</Drawer>
 			<MobileNav onOpen={onOpen} />
-			<Box p="4" pt="24">
-				{children}
-			</Box>
+			<Container p="4" pt={'24'} id={'container'} maxW={'container.xl'} margin={'0px auto'} >
+					{children}
+			</Container>
 		</Box>
 	);
 }
@@ -255,13 +254,19 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 	const { colorMode, toggleColorMode } = useColorMode();
 	const [user, setUser] = useState(useUserStore.getState().user);
-
+	const [totalUnreadCount, setTotalUnreadCount] = useState(useNotifStore.getState().totalUnreadCount);
+	// const totalUnreadCount = 0;
 	useEffect(() => {
-		const unsubscribe = useUserStore.subscribe((newState) => {
+		const unsubUser = useUserStore.subscribe((newState) => {
 			setUser(newState.user);
 		});
+		const unsubNotif = useNotifStore.subscribe((newState) => {
+			setTotalUnreadCount(newState.totalUnreadCount);
+		});
+
 		return () => {
-			unsubscribe();
+			unsubUser();
+			unsubNotif();
 		};
 	}, []);
 
@@ -269,59 +274,40 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 	const navigate = useNavigate();
 
 	const generateRouteSuggestions = () => {
-		const routeNames: string[] = [];
-		routes.map((route) => {
+		return routes.reduce<string[]>((routeNames, route) => {
 			if (route.subRoutes) {
-				route.subRoutes.map((subRoute) => {
-					if (
-						subRoute.permission.includes('*' as UserRole) ||
-						subRoute.permission.includes(user.role as UserRole)
-					) {
-						routeNames.push(t(subRoute.key));
-					}
-				});
+				return routeNames.concat(
+					route.subRoutes.filter(
+						(subRoute) =>
+							subRoute.permission.includes('*' as UserRole) ||
+							subRoute.permission.includes(user.role as UserRole)
+					).map((subRoute) => t(subRoute.key))
+				);
 			}
 			if (
-				(route.permission.includes('*' as UserRole) ||
-					route.permission.includes(user.role as UserRole)) &&
-				!route.subRoutes
+				route.permission.includes('*' as UserRole) ||
+				route.permission.includes(user.role as UserRole)
 			) {
 				routeNames.push(t(route.key));
 			}
-		});
-		return routeNames;
+			return routeNames;
+		}, []);
 	};
 
+
 	const handleSuggestionSelect = (suggestion: string) => {
-		const route = routes.find((route) => {
-			if (route.subRoutes) {
-				return route.subRoutes.find(
-					(subRoute) => t(subRoute.key) === suggestion,
-				);
-			} else {
-				return t(route.key) === suggestion;
-			}
-		});
+		const route = routes.find((route) =>
+			route.subRoutes
+				? route.subRoutes.some((subRoute) => t(subRoute.key) === suggestion)
+				: t(route.key) === suggestion
+		);
+
 		if (route) {
-			if (route.subRoutes) {
-				const subRoute = route.subRoutes.find(
-					(subRoute) => t(subRoute.key) === suggestion,
-				);
-				if (subRoute) {
-					if (subRoute.permission.includes('*' as UserRole)) {
-						navigate(subRoute.path);
-					}
-					if (subRoute.permission.includes(user.role as UserRole)) {
-						navigate(`/${user.role}${subRoute.path}`);
-					}
-				}
-			} else {
-				if (route.permission.includes('*' as UserRole)) {
-					navigate(route.path);
-				}
-				if (route.permission.includes(user.role as UserRole)) {
-					navigate(`/${user.role}${route.path}`);
-				}
+			const subRoute = route.subRoutes?.find((subRoute) => t(subRoute.key) === suggestion);
+			const hasWildcardPermission = subRoute?.permission.includes('*' as UserRole) || route.permission.includes('*' as UserRole);
+			const hasUserRolePermission = subRoute?.permission.includes(user.role as UserRole) || route.permission.includes(user.role as UserRole);
+			if (hasWildcardPermission || hasUserRolePermission) {
+				navigate(subRoute ? `/${user.role}${subRoute.path}` : route.path);
 			}
 		}
 	};
@@ -331,10 +317,13 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 			px={{ base: 4, md: 4 }}
 			pl="4"
 			alignItems="center"
-			pos="fixed"
-			width={'100%'}
+			position={'fixed'}
+			top={'0'}
+			left={'0'}
+			w={'100%'}
 			height={20}
 			zIndex={10}
+			id={'navbar'}
 			bg={useColorModeValue('white', 'gray.900')}
 			borderBottomWidth="1px"
 			gap={'4'}
@@ -358,12 +347,29 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 					searchPlaceholder={t('searchApp') as string}
 				/>
 			</Flex>
-
 			<HStack spacing={{ base: '2', md: '4' }}>
-				<IconButton
-					aria-label={'Open Messages'}
-					icon={<BiMessageAlt />}
-				/>
+				<Menu>
+					<Flex position={'relative'}>
+						<MenuButton
+							as={IconButton}
+							aria-label={'Open Messages'}
+							icon={<BiMessageAlt />}
+							onClick={() => navigate('/messages')}
+						/>
+						{
+							totalUnreadCount > 0 && (
+								<Badge
+									colorScheme="red"
+									bgColor={'red.500'}
+									position="absolute"
+									top="-10%"
+									right="-20%">
+									{totalUnreadCount}
+								</Badge>
+							)
+						}
+					</Flex>
+				</Menu>
 
 				<Menu>
 					<MenuButton
@@ -371,10 +377,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 						aria-label="Language menu"
 						icon={<FiGlobe />}
 					/>
-					<MenuList>
+					<MenuList p={'0'}>
 						<MenuItem
 							onClick={() => changeLanguage('en')}
 							display={'flex'}
+
 							gap={2}>
 							<GB width={'36'} /> English
 						</MenuItem>
@@ -434,11 +441,15 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 							borderColor={useColorModeValue(
 								'white',
 								'gray.700',
-							)}>
+							)}
+							p={'0'}
+						>
 							<Link as={RouterLink} to={'/profile'}>
 								<MenuItem>{t('profileSettings')}</MenuItem>
 							</Link>
 							<MenuDivider
+								p={'0'}
+								m={'0'}
 								borderColor={useColorModeValue(
 									'gray.200',
 									'gray.600',

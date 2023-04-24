@@ -239,61 +239,14 @@ const StudentPanel = () => {
 								{data
 									?.slice(-3)
 									.map(
-										(grade: {
-											grade_Id:
-												| React.Key
-												| null
-												| undefined;
-											course: {
-												name:
-													| string
-													| number
-													| boolean
-													| React.ReactElement<
-															any,
-															| string
-															| React.JSXElementConstructor<any>
-													  >
-													| React.ReactFragment
-													| React.ReactPortal
-													| Iterable<React.ReactNode>
-													| null
-													| undefined;
-												type:
-													| string
-													| number
-													| boolean
-													| React.ReactElement<
-															any,
-															| string
-															| React.JSXElementConstructor<any>
-													  >
-													| React.ReactFragment
-													| React.ReactPortal
-													| Iterable<React.ReactNode>
-													| null
-													| undefined;
-											};
-											grade:
-												| string
-												| number
-												| boolean
-												| React.ReactElement<
-														any,
-														| string
-														| React.JSXElementConstructor<any>
-												  >
-												| React.ReactFragment
-												| null
-												| undefined;
-										}) => {
+										(grade: { grade_Id: React.Key | null | undefined; course: { name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; type: any; }; grade: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; }) => {
 											return (
 												<Tr key={grade?.grade_Id}>
 													<Td>
 														{grade?.course?.name}
 													</Td>
 													<Td>
-														{grade?.course?.type}
+														{t(grade?.course?.type) as string}
 													</Td>
 													<Td>
 														<Text
