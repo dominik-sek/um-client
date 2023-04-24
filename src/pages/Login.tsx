@@ -199,13 +199,13 @@ export default function Login() {
 						</MenuButton>
 						<MenuList >
 							<MenuItem onClick={() => selectSampleAccount('admin')}>
-								{t('login-screen.admin')}
+								{t('admin')}
 							</MenuItem>
 							<MenuItem onClick={() => selectSampleAccount('teacher')}>
-								{t('login-screen.teacher')}
+								{t('teacher')}
 							</MenuItem>
 							<MenuItem onClick={() => selectSampleAccount('student')}>
-								{t('login-screen.student')}
+								{t('student')}
 							</MenuItem>
 						</MenuList>
 

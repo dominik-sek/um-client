@@ -7,6 +7,7 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
+	Text,
 	useToast,
 } from '@chakra-ui/react';
 import { AddCourseForm } from './add-course-form';
@@ -58,7 +59,10 @@ export const AddCourseModal = (props: {
 			size={{ base: 'md', md: '2xl', lg: '4xl' }}>
 			<ModalOverlay />
 			<ModalContent position={'relative'}>
-				<ModalHeader>{t('addCourse')}</ModalHeader>
+				<ModalHeader display={'flex'} flexDir={'column'}>
+					{t('addCourse')}
+					<Text fontSize={'sm'}>{t('addCourseNotice')}*</Text>
+				</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>
 					<AddCourseForm

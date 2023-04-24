@@ -10,6 +10,7 @@ import {Chatbox} from "./chatbox";
 import {IChatroom, Message, useUserStore} from "../../../store";
 import {UserTyping} from "./components/user-typing";
 import {ArrowBackIcon, CheckIcon, DeleteIcon} from "@chakra-ui/icons";
+import {useTranslation} from "react-i18next";
 
 interface ChatroomProps extends React.ComponentProps<typeof TabPanel> {
     chatroom: IChatroom;
@@ -20,7 +21,7 @@ interface ChatroomProps extends React.ComponentProps<typeof TabPanel> {
 }
 
 export const Chatroom = (props: ChatroomProps, {...rest}) =>{
-
+    const {t} = useTranslation();
     const userId = useUserStore((state) => state.user.id);
     const chatroomUsers = props.chatroom.chatroom_user;
     const chatroomId = props.chatroom.id;
@@ -98,7 +99,7 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                                   justifyContent={isSender ? 'flex-end' : 'flex-start'}
                                   gap={'2'}
                             >
-                            <Tooltip label={messageStatus} placement={tooltipPosition}>
+                            <Tooltip label={t(`messenger.${messageStatus}`)} placement={tooltipPosition}>
                                     <Box color={'gray.200'}
                                         bgColor={isSender ? messageBubbleColor["sender"] : messageBubbleColor["recipient"]}
                                          px={'4'} py={'2'}
@@ -111,16 +112,16 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                                 <Flex display={'block'} position={'relative'} h={'100%'}>
                                     {
                                         isSender && messageStatus === 'sent' &&
-                                        <Tooltip label={'Message sent'} hasArrow placement={'bottom-end'} aria-label={'Message sent'} >
+                                        <Tooltip label={t('messenger.messageSent')} hasArrow placement={'bottom-end'} aria-label={'Message sent'} >
                                             <Avatar position={'absolute'} bottom={'0'} as={CheckIcon} size={'2xs'} bgColor={'transparent'} color={'green.500'}  />
                                         </Tooltip>
                                     }
                                     {
                                         isSender && ((messageStatus === 'read') && (message.id === latestMessage.id)) &&
-                                        <Tooltip label={`Read by ${recipient?.account?.person.first_name} ${recipient?.account?.person.last_name}`}
+                                        <Tooltip label={`${t('messenger.readBy')} ${recipient?.account?.person.first_name} ${recipient?.account?.person.last_name}`}
                                                  hasArrow
                                                  placement={'bottom-end'}
-                                                 aria-label={'Message sent'}>
+                                                 aria-label={'Message read'}>
                                             <Avatar position={'absolute'} bottom={'0'} size={'2xs'} src={recipient?.account?.account_images?.avatar_url || ''} />
                                         </Tooltip>
                                     }

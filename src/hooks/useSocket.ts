@@ -13,6 +13,7 @@ export const useSocket = () =>{
         })
         socket.on("connect_error", (err:any)=>{
             console.log(`SOCKET: connect_error due to ${err.message}`);
+            //show toast
         });
 
         socket.on("send-message", (message:Message)=>{

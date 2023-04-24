@@ -8,7 +8,8 @@
 		"forgot-password": "Forgot password?",
 		"contact-admin": "Contact your administrator",
 		"validate-error": "Please enter a valid username and password",
-		"server-error": "Unexpected error occurred. Please try again later"
+		"server-error": "Unexpected error occurred. Please try again later",
+		"select-account": "Select account"
 	},
 	"routes": {
 		"home": "Home",
@@ -209,5 +210,18 @@
 	"semesterRequired": "Semester is required (1-12)",
 	"departmentRequired": "Department is required",
 	"invalidCSV": "Invalid CSV file",
-	"printoutDeleted": "Printout deleted successfully"
+	"printoutDeleted": "Printout deleted successfully",
+	"addCourseNotice": "By default, students are enrolled in all courses in a given semester, all students are enrolled in the first semester.",
+	"messenger": {
+		"newMessage": "New Message",
+		"read":"Read",
+		"sent":"Sent",
+		"unread":"Unread",
+		"readBy": "Message read by ",
+		"messageSent": "Message sent",
+		"nothingHere": "There is nothing here",
+		"noChatrooms": "No chatrooms available",
+		"searchUser": "Search user",
+		"chatboxPlaceholder": "Type your message here"
+	}
 }

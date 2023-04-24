@@ -21,12 +21,14 @@ import {useChatroomStore, useNotifStore, useUserStore} from "../../../store";
 import socket from "../../socket";
 import React from "react";
 import {motion} from "framer-motion";
+import {useTranslation} from "react-i18next";
 
 export const Messages = () =>{
     const {data: userList, refetch} = useQuery('fetchAllUsers',fetchAllUsers,{
         refetchOnWindowFocus: false,
         enabled:true
     });
+    const { t } = useTranslation();
     const currentUser = useUserStore((state) => state.user);
     const [isLargerThanMedium] = useMediaQuery('(min-width: 48em)');
     const [showSearchbar, setShowSearchbar] = useState(false);
@@ -39,6 +41,7 @@ export const Messages = () =>{
     });
     const [chatroomVisible, setChatroomVisible] = useState(false);
     const dividerColor = useColorModeValue('gray.400', 'gray.700');
+
     useEffect(() => {
         const unsubscribe = useChatroomStore.subscribe((newState) => {
             setChatrooms(newState.chatrooms);
@@ -131,16 +134,15 @@ export const Messages = () =>{
                         }
                         {
                             chatrooms.length === 0 &&
-                            <Text fontSize={'xl'} color={'gray.500'}>No chatrooms available</Text>
+                            <Text fontSize={'xl'} color={'gray.500'}>{t('messenger.noChatrooms')}</Text>
                         }
                         {showSearchbar ? (
                             <Flex w={'100%'} h={'100%'}>
                                 <AutocompleteSearchbar
                                     suggestions={generateUserSuggestions()}
                                     onSuggestionSelected={(suggestion)=>handleCreateChatroom(suggestion)}
-                                    // onBlur={toggleSearchbar}
                                     w={'100%'}
-                                    searchPlaceholder={'Search for users'}
+                                    searchPlaceholder={t('messenger.searchUser') as string}
                                 >
                                     <InputRightElement>
                                         <IconButton
@@ -159,7 +161,7 @@ export const Messages = () =>{
                                 w={'100%'}
                                 leftIcon={<AddIcon />}
                             >
-                                New message
+                                {t('messenger.newMessage')}
                             </Button>
                         )}
 
@@ -178,7 +180,7 @@ export const Messages = () =>{
                                 (
                                     <TabPanel as={Flex} justify={'center'}>
                                         <Text fontSize={'xl'} color={'gray.500'}>
-                                            There's nothing here
+                                            {t('messenger.nothingHere')}
                                         </Text>
                                     </TabPanel>
                                 )

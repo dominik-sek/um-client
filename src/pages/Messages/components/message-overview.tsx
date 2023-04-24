@@ -1,4 +1,4 @@
-import {Avatar, Badge, Box, Flex, Tab, Text, useColorModeValue} from "@chakra-ui/react";
+import {Avatar, Box, Flex, Tab, Text, useColorModeValue} from "@chakra-ui/react";
 import {IChatroom} from "../../../../store";
 import React from "react";
 

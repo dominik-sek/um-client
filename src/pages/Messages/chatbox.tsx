@@ -5,6 +5,7 @@ import {useForm} from "react-hook-form";
 import {Message, useUserStore} from "../../../store";
 import {useEffect, useMemo, useState} from "react";
 import debounce from "lodash.debounce";
+import {useTranslation} from "react-i18next";
 
 interface ChatboxProps {
     chatroomId: number
@@ -41,6 +42,7 @@ export const Chatbox = (props: ChatboxProps) =>{
 
 
     const dividerColor = useColorModeValue('gray.400', 'gray.700');
+    const {t} = useTranslation();
 
     return(
         <HStack w={'100%'}  >
@@ -49,9 +51,9 @@ export const Chatbox = (props: ChatboxProps) =>{
                 >
                     <Input
                         borderColor={dividerColor}
-                        placeholder={'Type your message'}
+                        placeholder={t('messenger.chatboxPlaceholder') as string}
                         {...register("message", { required: true, onChange:(e)=>onTyping(e) })}    />
-                    <InputRightElement >
+                    <InputRightElement>
                         <IconButton colorScheme={'blue'} type={'submit'} aria-label={'send message'} icon={<FiSend/>} />
                     </InputRightElement>
                 </InputGroup>

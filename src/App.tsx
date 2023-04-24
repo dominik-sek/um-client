@@ -89,7 +89,7 @@ function App() {
 									element={<Courses />}
 								/>
 								<Route
-									path={'/admin/printouts/manage/'}
+									path={'/admin/printouts/'}
 									element={<Printouts />}
 								/>
 							</Route>
