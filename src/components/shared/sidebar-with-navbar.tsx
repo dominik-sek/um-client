@@ -39,7 +39,7 @@ import { BiMessageAlt } from 'react-icons/all';
 import { changeLanguage } from 'i18next';
 import { GB, PL } from 'country-flag-icons/react/3x2';
 import { useTranslation } from 'react-i18next';
-import AutocompleteSearchbar from './search/autocomplete-searchbar';
+import AutocompleteSearchbar, {User} from './search/autocomplete-searchbar';
 import { UserRole } from '../../enums/user-role';
 export default function SidebarWithNavbar({
 	children,
@@ -295,7 +295,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 	};
 
 
-	const handleSuggestionSelect = (suggestion: string) => {
+	const handleSuggestionSelect = (suggestion: string | User) => {
 		const route = routes.find((route) =>
 			route.subRoutes
 				? route.subRoutes.some((subRoute) => t(subRoute.key) === suggestion)

@@ -2,9 +2,9 @@ import {
     Avatar, Box,
     Divider,
     Flex,
-    Heading, Icon, IconButton,
+    Heading, IconButton,
     TabPanel,
-    Text, Tooltip, useColorModeValue, useDisclosure
+    Text, Tooltip, useColorModeValue
 } from "@chakra-ui/react";
 import {Chatbox} from "./chatbox";
 import {IChatroom, Message, useUserStore} from "../../../store";

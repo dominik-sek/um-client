@@ -3,7 +3,7 @@ import { Box, List, useColorModeValue } from '@chakra-ui/react';
 import SearchBar from './search-bar';
 import { motion } from 'framer-motion';
 
-type User = {
+export type User = {
 	id: number;
 	first_name: string;
 	last_name: string;

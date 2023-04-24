@@ -9,10 +9,11 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 import debounce from 'lodash.debounce';
+import {User} from "./autocomplete-searchbar";
 
 interface SearchBarProps extends BoxProps {
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-	value?: string;
+	value?: string | User;
 	inputRef?: React.RefObject<HTMLInputElement>;
 	onKeyDownInput?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 	searchPlaceholder?: string;

@@ -38,6 +38,7 @@ export interface INotifStore{
 
 
 export interface Message {
+	id: number;
 	sender_id: number;
 	chatroom_id: number;
 	content: string;
@@ -116,12 +117,12 @@ const chatroomStore = (set:any, get:any): IChatroomStore => ({
 	setChatrooms: (chatrooms) => set({chatrooms: chatrooms}),
 	deleteChatroom: (chatroomId) => {
 		const chatrooms = get().chatrooms;
-		const updatedChatrooms = chatrooms.filter((chatroom) => chatroom.id !== chatroomId);
+		const updatedChatrooms = chatrooms.filter((chatroom: { id: number; }) => chatroom.id !== chatroomId);
 		set({ chatrooms: updatedChatrooms });
 	},
 	addMessage: (message) => {
 		const chatrooms = get().chatrooms;
-		const updatedChatrooms = chatrooms.map((chatroom) => {
+		const updatedChatrooms = chatrooms.map((chatroom: { id: number; message: any; }) => {
 			if (chatroom.id === message.chatroom_id) {
 				return {
 					...chatroom,
@@ -135,7 +136,7 @@ const chatroomStore = (set:any, get:any): IChatroomStore => ({
 	},
 	updateMessageState: (chatroomToUpdate) => {
 		const chatrooms = get().chatrooms;
-		const updatedChatrooms = chatrooms.map((chatroom) => {
+		const updatedChatrooms = chatrooms.map((chatroom: { id: number; }) => {
 			if (chatroom.id === chatroomToUpdate.id) {
 				return {
 					...chatroom,
