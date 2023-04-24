@@ -2,20 +2,21 @@ import {
     Avatar, Box,
     Divider,
     Flex,
-    Heading, IconButton,
+    Heading, Icon, IconButton,
     TabPanel,
-    Text, Tooltip, useDisclosure
+    Text, Tooltip, useColorModeValue, useDisclosure
 } from "@chakra-ui/react";
 import {Chatbox} from "./chatbox";
 import {IChatroom, Message, useUserStore} from "../../../store";
 import {UserTyping} from "./components/user-typing";
-import {ArrowBackIcon, CheckIcon} from "@chakra-ui/icons";
+import {ArrowBackIcon, CheckIcon, DeleteIcon} from "@chakra-ui/icons";
 
 interface ChatroomProps extends React.ComponentProps<typeof TabPanel> {
     chatroom: IChatroom;
     isTyping: boolean;
     onExitChatroom: () => void;
     backButtonVisible: boolean;
+    onDeleteChatroom: () => void;
 }
 
 export const Chatroom = (props: ChatroomProps, {...rest}) =>{
@@ -25,6 +26,14 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
     const chatroomId = props.chatroom.id;
     const messages = props.chatroom.message;
     const latestMessage = messages.filter((message: Message) => message.sender_id === userId)[0]
+    const bgColor = useColorModeValue('gray.200', 'gray.800');
+    const dividerColor = useColorModeValue('gray.400', 'gray.700');
+
+    const messageBubbleColor = {
+        sender: useColorModeValue('blue.500', 'blue.600'),
+        recipient: useColorModeValue('green.500', 'green.600')
+    }
+
 
     return(
         <Box
@@ -32,34 +41,38 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
             display={'inline-flex'}
             flexDir={'column'}
             rounded={'md'}
-            borderColor={'slate'}
             borderWidth={'1px'}
             h={'100%'}
             w={'100%'}
             overflowY={'auto'}
             onClick={props.onClick}
-
+            bgColor={bgColor}
+            borderColor={dividerColor}
             {...rest}
         >
             <Flex p={'2'} alignItems={'center'} justifyContent={'space-between'}  gap={'4'}>
                 <Flex gap={'2'} alignItems={'center'}>
-                    <Avatar size={'md'} src={chatroomUsers[0].account.account_images?.avatar_url || ''} />
+                    <Avatar size={'md'} src={chatroomUsers[0]?.account?.account_images?.avatar_url || ''} />
                     <Heading size={'md'}>
-                        {chatroomUsers[0].account.person.first_name} {chatroomUsers[0].account.person.last_name}
+                        {chatroomUsers[0]?.account.person.first_name} {chatroomUsers[0]?.account.person.last_name}
                     </Heading>
                 </Flex>
-                {
-                    props.backButtonVisible &&
-                    (
-                        <Box>
-                            <IconButton aria-label={'back'} icon={<ArrowBackIcon/>} onClick={props.onExitChatroom} />
-                        </Box>
-                    )
-                }
+                <Flex gap={'2'}>
+                    {
+                        props.backButtonVisible &&
+                        (
+                            <Box>
+                                <IconButton aria-label={'back'} icon={<ArrowBackIcon/>} onClick={props.onExitChatroom} />
+                            </Box>
+                        )
+                    }
+                    <IconButton aria-label={'delete chatroom'} icon={<DeleteIcon />} colorScheme={'red'} onClick={props.onDeleteChatroom} />
+
+                </Flex>
 
             </Flex>
 
-            <Divider />
+            <Divider borderColor={dividerColor} />
 
             <Flex flex={'1'}
                   flexDir={'column-reverse'}
@@ -86,7 +99,8 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                                   gap={'2'}
                             >
                             <Tooltip label={messageStatus} placement={tooltipPosition}>
-                                    <Box bgColor={isSender ? 'blue.700' : 'green.700'}
+                                    <Box color={'gray.200'}
+                                        bgColor={isSender ? messageBubbleColor["sender"] : messageBubbleColor["recipient"]}
                                          px={'4'} py={'2'}
                                          w={{base: '30% !important', md: '35% !important'}}
                                          rounded={'xl'} display={'flex'} flexDir={'column'} gap={'2'} {...borderRadiusStyle}>
@@ -103,11 +117,11 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                                     }
                                     {
                                         isSender && ((messageStatus === 'read') && (message.id === latestMessage.id)) &&
-                                        <Tooltip label={`Read by ${recipient?.account.person.first_name} ${recipient?.account.person.last_name}`}
+                                        <Tooltip label={`Read by ${recipient?.account?.person.first_name} ${recipient?.account?.person.last_name}`}
                                                  hasArrow
                                                  placement={'bottom-end'}
                                                  aria-label={'Message sent'}>
-                                            <Avatar position={'absolute'} bottom={'0'} size={'2xs'} src={recipient?.account.account_images?.avatar_url || ''} />
+                                            <Avatar position={'absolute'} bottom={'0'} size={'2xs'} src={recipient?.account?.account_images?.avatar_url || ''} />
                                         </Tooltip>
                                     }
 
@@ -119,6 +133,7 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                 }
             </Flex>
             <UserTyping isTyping={props.isTyping} />
+
             <Chatbox chatroomId={chatroomId} />
 
         </Box>

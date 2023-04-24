@@ -1,4 +1,4 @@
-import {HStack, IconButton, Input, InputGroup, InputRightElement} from "@chakra-ui/react";
+import {HStack, IconButton, Input, InputGroup, InputRightElement, useColorModeValue} from "@chakra-ui/react";
 import socket from "../../socket";
 import {FiSend} from "react-icons/all";
 import {useForm} from "react-hook-form";
@@ -40,17 +40,19 @@ export const Chatbox = (props: ChatboxProps) =>{
     },[onTyping, props.chatroomId, reset, userStore.user.id])
 
 
+    const dividerColor = useColorModeValue('gray.400', 'gray.700');
 
-    
     return(
-        <HStack w={'100%'} >
+        <HStack w={'100%'}  >
             <form onSubmit={handleSubmit(onSubmit)} style={{width:'100%'}}>
-                <InputGroup>
+                <InputGroup
+                >
                     <Input
+                        borderColor={dividerColor}
                         placeholder={'Type your message'}
                         {...register("message", { required: true, onChange:(e)=>onTyping(e) })}    />
                     <InputRightElement >
-                        <IconButton type={'submit'} aria-label={'send message'} icon={<FiSend/>} />
+                        <IconButton colorScheme={'blue'} type={'submit'} aria-label={'send message'} icon={<FiSend/>} />
                     </InputRightElement>
                 </InputGroup>
             </form>

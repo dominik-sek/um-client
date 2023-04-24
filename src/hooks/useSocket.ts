@@ -31,31 +31,41 @@ export const useSocket = () =>{
             console.log('SOCKET: joining chatroom: ', chatroom.id);
             if(chatroomStore.chatrooms.find((c)=>c.id === chatroom.id)){
                 chatroomStore.updateMessageState(chatroom);
+                //update unread count
+
             }else{
                 chatroomStore.addChatroom(chatroom);
             }
         });
-
         socket.on("chatrooms", (chatrooms)=>{
             console.log("SOCKET: populating chatrooms...")
             chatroomStore.setChatrooms(chatrooms);
         });
-
         socket.on("seen-messages", (chatroom)=>{
             console.log("SOCKET: updating message state to seen...")
             chatroomStore.updateMessageState(chatroom);
             
         });
         socket.on("unread-messages",(unreadMessages)=>{
-            const totalUnreadCount = unreadMessages.reduce((acc: never, curr: { unread_count: number; })=> acc + curr.unread_count, 0);
-            console.log(unreadMessages);
+            //todo: totalunreadcount is bugged
+            const totalUnreadCount = unreadMessages.filter((unreadMessage: { unread_count: number; })=>unreadMessage.unread_count > 0).length;
             notifStore.updateTotalUnreadCount(totalUnreadCount);
-            console.log("SOCKET: updating unread messages...", totalUnreadCount);
+
+            if(totalUnreadCount > 0){
+                document.title = `UM (${totalUnreadCount})`;
+            }else{
+                document.title = `UM`;
+            }
+            console.log("SOCKET: updating unread messages...", totalUnreadCount, unreadMessages);
             unreadMessages.forEach((unreadMessage: { chatroom_id: number; unread_count: number; })=>{
                 if(unreadMessage.unread_count > 0){
                     notifStore.updateUnreadCount(unreadMessage.chatroom_id, unreadMessage.unread_count);
                 }
             });
+        })
+        socket.on("delete-chatroom",(chatroomId)=>{
+            console.log("SOCKET: deleting chatroom...")
+            chatroomStore.deleteChatroom(chatroomId);
         })
 
         return ()=>{
@@ -68,7 +78,7 @@ export const useSocket = () =>{
             socket.off("seen-messages")
             socket.off("new-message")
             socket.off("unread-messages")
-            // socket.off("user-typing")
+            socket.off("delete-chatroom")
         }
     },[chatroomStore, notifStore])
 

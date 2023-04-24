@@ -6,7 +6,7 @@ import {
     VStack,
     Text,
     Button,
-    Divider, InputRightElement, useDisclosure, Box, HStack, Container
+    Divider, InputRightElement, useDisclosure, Box, HStack, Container, useColorModeValue, TabPanel
 } from "@chakra-ui/react";
 import {MessageOverview} from "./components/message-overview";
 import {AddIcon, ArrowBackIcon} from "@chakra-ui/icons";
@@ -38,7 +38,7 @@ export const Messages = () =>{
         isTyping: false
     });
     const [chatroomVisible, setChatroomVisible] = useState(false);
-
+    const dividerColor = useColorModeValue('gray.400', 'gray.700');
     useEffect(() => {
         const unsubscribe = useChatroomStore.subscribe((newState) => {
             setChatrooms(newState.chatrooms);
@@ -100,11 +100,16 @@ export const Messages = () =>{
         !isLargerThanMedium &&
         setChatroomVisible(!chatroomVisible);
     }
+    const handleDeleteChatroom = (chatroomId: number) =>{
+        setChatroomVisible(!chatroomVisible);
+        socket.emit('delete-chatroom', chatroomId);
+    }
     return (
         <Flex gap={'6'}
               h={'calc(100vh - 115px)'}
               w={'100%'}
               alignItems={'center'}
+              overflow={'hidden'}
         >
             {/*tabs*/}
 
@@ -126,7 +131,7 @@ export const Messages = () =>{
                         }
                         {
                             chatrooms.length === 0 &&
-                            <Text fontSize={'xl'} color={'gray.500'}>No messages yet</Text>
+                            <Text fontSize={'xl'} color={'gray.500'}>No chatrooms available</Text>
                         }
                         {showSearchbar ? (
                             <Flex w={'100%'} h={'100%'}>
@@ -140,7 +145,8 @@ export const Messages = () =>{
                                     <InputRightElement>
                                         <IconButton
                                             aria-label={'cancel search'}
-                                            icon={<ArrowBackIcon />}
+                                            colorScheme={'blue'}
+                                            icon={<ArrowBackIcon  />}
                                             onClick={toggleSearchbar}
                                         />
                                     </InputRightElement>
@@ -149,6 +155,7 @@ export const Messages = () =>{
                         ) : (
                             <Button
                                 onClick={toggleSearchbar}
+                                colorScheme={'blue'}
                                 w={'100%'}
                                 leftIcon={<AddIcon />}
                             >
@@ -157,7 +164,8 @@ export const Messages = () =>{
                         )}
 
                     </VStack>
-                    <Divider orientation={'vertical'} display={isLargerThanMedium ? 'block' : 'none'} />
+
+                    <Divider borderColor={dividerColor} orientation={'vertical'} display={isLargerThanMedium ? 'block' : 'none'} />
 
                     <VStack
                         h={'100%'}
@@ -166,6 +174,15 @@ export const Messages = () =>{
                         id={'chatroom'}
                     >
                         <TabPanels h={'100%'}>
+                            {chatrooms.length === 0 &&
+                                (
+                                    <TabPanel as={Flex} justify={'center'}>
+                                        <Text fontSize={'xl'} color={'gray.500'}>
+                                            There's nothing here
+                                        </Text>
+                                    </TabPanel>
+                                )
+                            }
                             {
                                 chatrooms.map((chatroom) => {
                                     const isUserTyping = userTyping.chatroomId === chatroom.id && userTyping.senderId !== currentUser.id && userTyping.isTyping
@@ -174,6 +191,7 @@ export const Messages = () =>{
                                         <Chatroom isTyping={isUserTyping}
                                                   key={chatroom.id}
                                                   onExitChatroom={handleExitChatroom}
+                                                  onDeleteChatroom={()=>handleDeleteChatroom(chatroom.id)}
                                                   onClick={()=>{handleMessagesUpdate(chatroom.id)}}
                                                   backButtonVisible={!isLargerThanMedium}
                                                   chatroom={chatroom} />

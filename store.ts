@@ -21,6 +21,7 @@ export interface IChatroomStore {
 	setChatrooms: (chatrooms: IChatroom[]) => void;
 	addChatroom: (chatroom: IChatroom) => void;
 	addMessage: (message: Message) => void;
+	deleteChatroom: (chatroomId: number) => void;
 	logout: () => void;
 	updateMessageState: (chatroom: IChatroom) => void;
 }
@@ -32,6 +33,7 @@ export interface INotifStore{
 	totalUnreadCount: number;
 	updateUnreadCount: (chatroomId: number, count: number) => void;
 	updateTotalUnreadCount: (count: number) => void;
+	logout: () => void;
 }
 
 
@@ -84,7 +86,10 @@ const initialChatroomState = {
 //   { chatroom_id: 90, unread_count: 4 }
 // ]
 const initialNotifState = {
-	unreadCount: {},
+	unreadCount: {
+		chatroomId: 0,
+		count: 0,
+	},
 	totalUnreadCount: 0,
 }
 
@@ -109,6 +114,11 @@ const chatroomStore = (set:any, get:any): IChatroomStore => ({
 	chatrooms: [],
 	addChatroom: (chatroom) => set({chatrooms: [chatroom,...get().chatrooms]}),
 	setChatrooms: (chatrooms) => set({chatrooms: chatrooms}),
+	deleteChatroom: (chatroomId) => {
+		const chatrooms = get().chatrooms;
+		const updatedChatrooms = chatrooms.filter((chatroom) => chatroom.id !== chatroomId);
+		set({ chatrooms: updatedChatrooms });
+	},
 	addMessage: (message) => {
 		const chatrooms = get().chatrooms;
 		const updatedChatrooms = chatrooms.map((chatroom) => {
@@ -136,6 +146,7 @@ const chatroomStore = (set:any, get:any): IChatroomStore => ({
 		});
 		set({ chatrooms: updatedChatrooms });
 	},
+
 	logout: ()=>{
 		set(initialChatroomState);
 	}
@@ -152,6 +163,9 @@ const notifStore = (set:any, get:any): INotifStore => ({
 	},
 	updateTotalUnreadCount: (count) => {
 		set({totalUnreadCount: count});
+	},
+	logout: ()=>{
+		set(initialNotifState);
 	}
 })
 
