@@ -30,6 +30,8 @@ export const Messages = () =>{
     });
     const { t } = useTranslation();
     const currentUser = useUserStore((state) => state.user);
+    const notifStore = useNotifStore((state) => state);
+    console.log(notifStore.unreadCount);
     const [isLargerThanMedium] = useMediaQuery('(min-width: 48em)');
     const [showSearchbar, setShowSearchbar] = useState(false);
     const [chatrooms, setChatrooms] = useState(useChatroomStore((state) => state.chatrooms));
@@ -127,7 +129,7 @@ export const Messages = () =>{
                                 <AutocompleteSearchbar
                                     suggestions={generateUserSuggestions()}
                                     onSuggestionSelected={(suggestion)=>handleCreateChatroom(suggestion)}
-                                    onBlur={()=>toggleSearchbar()}
+                                    // onBlur={()=>toggleSearchbar()}
                                     zIndex={90}
                                     w={'100%'}
                                     autoFocus={true}

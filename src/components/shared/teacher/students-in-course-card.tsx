@@ -15,12 +15,10 @@ import {
 	useColorModeValue,
 	Wrap,
 } from '@chakra-ui/react';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { fetchStudentsCourses } from '../../../api/courses';
 import { useTranslation } from 'react-i18next';
-import LoadingScreen from '../loading-screen';
 import {
 	AiOutlineArrowDown,
 	BiCommentDots,
@@ -98,7 +96,7 @@ export const StudentsInCourseCard = () => {
 									expand.isExpanded &&
 									expand.courseId === course.id
 										? course?.course_students
-										: course?.course_students.slice(
+										: course?.course_students?.slice(
 												0,
 												MAX_VISIBLE);
 
@@ -136,7 +134,7 @@ export const StudentsInCourseCard = () => {
 												</Tr>
 											</Thead>
 											<Tbody>
-												{courseStudents.map(
+												{courseStudents && courseStudents.map(
 													(student) => {
 														return (
 															<Tr
