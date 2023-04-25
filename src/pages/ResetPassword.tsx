@@ -46,7 +46,6 @@ export const ResetPassword = () => {
 
 	const { mutate: resetPasswordMutation } = useMutation(resetPassword, {
 		onSuccess: (data) => {
-			console.log(data);
 			toast({
 				title: t('success'),
 				description: t('resetPasswordSuccess'),
@@ -57,7 +56,6 @@ export const ResetPassword = () => {
 			});
 		},
 		onError: (error) => {
-			console.log(error);
 			toast({
 				title: t('error'),
 				description: t('resetPasswordError'),

@@ -96,7 +96,7 @@ const AutocompleteSearchbar = ({
 			value={selectedSuggestion}
 			position={'relative'}
 			searchPlaceholder={searchPlaceholder}
-			onBlur={handleLostFocus}
+			onBlur={()=>{handleLostFocus(); }}
 			onChange={(e) => handleOnChange(e)}
 			{...rest}
 		>

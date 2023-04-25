@@ -20,6 +20,8 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import { AddFacultyModal } from './components/add-faculty-modal';
 import { useTranslation } from 'react-i18next';
 import { faculty, person } from '@prisma/client';
+import {fullPermissions} from "../../../functions/fullPermissions";
+import {useUserStore} from "../../../../store";
 
 type facultyCoalesced = faculty & { person: person };
 const Faculties = () => {
@@ -34,6 +36,7 @@ const Faculties = () => {
 	const [searchTerm, setSearchTerm] = React.useState('');
 	const [filteredData, setFilteredData] = React.useState([]);
 	const toast = useToast();
+	const user = useUserStore(state => state.user);
 	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchTerm(e.target.value);
 	};
@@ -73,7 +76,7 @@ const Faculties = () => {
 			duration: 2000,
 			position: 'top-right',
 		});
-		// deleteOneFaculty(id);
+		fullPermissions(user) && deleteOneFaculty(id);
 	};
 	const { t } = useTranslation();
 	return (

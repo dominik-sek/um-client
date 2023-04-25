@@ -21,7 +21,6 @@ import React from 'react';
 
 export const PrintoutTable = (props: { userRole: string }) => {
 	const isAuthorized = props.userRole && props.userRole === 'admin';
-	// const canDelete todo: add person who uploaded it and give permission to edit/delete
 	const toast = useToast();
 	const { data, isLoading, isError, refetch } = useQuery(
 		'getAllPrintouts',

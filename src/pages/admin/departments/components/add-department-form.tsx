@@ -54,7 +54,6 @@ export const AddDepartmentForm = (props: {
 	const { t } = useTranslation();
 
 	useEffect(() => {
-		console.log(errors);
 		props.setIsFormValid(isValid);
 	}, [isValid, props]);
 

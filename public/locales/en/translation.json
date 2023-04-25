@@ -9,7 +9,7 @@
 		"contact-admin": "Contact your administrator",
 		"validate-error": "Please enter a valid username and password",
 		"server-error": "Unexpected error occurred. Please try again later",
-		"select-account": "Select account"
+		"select-account": "Select a default account"
 	},
 	"routes": {
 		"home": "Home",
@@ -220,7 +220,8 @@
 		"readBy": "Message read by ",
 		"messageSent": "Message sent",
 		"nothingHere": "There is nothing here",
-		"noChatrooms": "No chatrooms available",
+		"noChatrooms": "No chatrooms available, try messaging: ",
+		"noChatroomsContinue": "which are the default accounts.",
 		"searchUser": "Search user",
 		"chatboxPlaceholder": "Type your message here"
 	}

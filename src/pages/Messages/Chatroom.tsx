@@ -103,7 +103,7 @@ export const Chatroom = (props: ChatroomProps, {...rest}) =>{
                                     <Box color={'gray.200'}
                                         bgColor={isSender ? messageBubbleColor["sender"] : messageBubbleColor["recipient"]}
                                          px={'4'} py={'2'}
-                                         w={{base: '30% !important', md: '35% !important'}}
+                                         w={{base: '50% !important', md: '35% !important'}}
                                          rounded={'xl'} display={'flex'} flexDir={'column'} gap={'2'} {...borderRadiusStyle}>
                                         <Text fontSize={'md'} wordBreak={'break-word'}>{message.content}</Text>
                                         <Text fontSize={'xs'}>{time} {date}</Text>

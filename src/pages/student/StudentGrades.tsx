@@ -46,7 +46,7 @@ const StudentGrades = () => {
 		() => generatePdfByGradebook(gradebook.gradebook_id),
 		{
 			onSuccess: () => {
-				console.log('success');
+
 			},
 			onError: () => {
 				console.log('error');

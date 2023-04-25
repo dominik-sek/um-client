@@ -17,6 +17,7 @@ interface SearchBarProps extends BoxProps {
 	inputRef?: React.RefObject<HTMLInputElement>;
 	onKeyDownInput?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 	searchPlaceholder?: string;
+	autoFocus?: boolean;
 }
 
 const SearchBar = ({
@@ -25,6 +26,7 @@ const SearchBar = ({
 	inputRef,
 	onKeyDownInput,
 	searchPlaceholder,
+	autoFocus,
 	...rest
 }: SearchBarProps) => {
 	const { t } = useTranslation();
@@ -39,6 +41,7 @@ const SearchBar = ({
 				<Input
 					bg={useColorModeValue('gray.200', 'gray.700')}
 					type="search"
+					autoFocus={autoFocus}
 					ref={inputRef}
 					placeholder={searchPlaceholder || (t('search') as string)}
 					onChange={debouncedOnChange}

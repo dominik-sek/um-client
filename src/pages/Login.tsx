@@ -28,7 +28,7 @@ import {ChevronDownIcon, MoonIcon, SunIcon, ViewIcon, ViewOffIcon} from '@chakra
 import { loginUser } from '../api/login-user';
 import { useMutation, useQuery } from 'react-query';
 import { checkAuth } from '../api/check-auth';
-import { useNavigate } from 'react-router-dom';
+import {Form, useNavigate} from 'react-router-dom';
 import { useAuthStore, useUserStore } from '../../store';
 import { fetchUserProfile } from '../api/users';
 import { useTranslation } from 'react-i18next';
@@ -88,13 +88,12 @@ export default function Login() {
 			userStore.setUser(data);
 			refetchProfile().then((response) => {
 				userStore.setUser(response.data);
-				console.log('redirecting after successful login...');
 				setIsEverythingLoading((refetchAuthLoading && refetchLoading) && isLoading);
-
 				navigate('/', { replace: true });
 			});
 		},
 		onError: (error) => {
+			setIsEverythingLoading((refetchAuthLoading && refetchLoading) && isLoading);
 			setFormError(true);
 		},
 	});
@@ -147,7 +146,7 @@ export default function Login() {
 				h={!isLargerThanMobile ? '100%' : ''}
 				w={!isLargerThanMobile ? '100%' : ''}
 				alignItems={'center'}
-				py={'4'}
+				py={'6'}
 				px={'2'}
 				rounded={'lg'}
 				boxShadow={'lg'}
@@ -199,19 +198,20 @@ export default function Login() {
 						</MenuButton>
 						<MenuList >
 							<MenuItem onClick={() => selectSampleAccount('admin')}>
-								{t('admin')}
+								{t('admin')} - Abbot Oneal
 							</MenuItem>
 							<MenuItem onClick={() => selectSampleAccount('teacher')}>
-								{t('teacher')}
+								{t('teacher')} - Lyle Gregory
 							</MenuItem>
 							<MenuItem onClick={() => selectSampleAccount('student')}>
-								{t('student')}
+								{t('student')} - Adrian Haley
 							</MenuItem>
 						</MenuList>
 
 
 					</Menu>
-
+				<form >
+					<Stack spacing={4}>
 					<FormControl isInvalid={formError}>
 						<FormErrorMessage>
 							{t('login-screen.validate-error')}
@@ -283,6 +283,8 @@ export default function Login() {
 							}
 							isLoading={isEverythingLoading}
 							size="lg"
+							type={'submit'}
+							width={'100%'}
 							bg={'blue.400'}
 							color={'white'}
 							_hover={{
@@ -291,8 +293,8 @@ export default function Login() {
 							onClick={handleLogin}>
 							{t('login-screen.sign-in-btn')}
 						</Button>
-
-
+					</Stack>
+					</form>
 				</Stack>
 			</Stack>
 			</Flex>

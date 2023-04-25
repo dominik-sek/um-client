@@ -147,7 +147,6 @@ const Profile = () => {
 				changeUserAvatar(data.secure_url).then(() => {
 					fetchUserProfile().then((updatedUser) => {
 						useUserStore.setState({ user: updatedUser });
-						console.log(updatedUser);
 						setAvatarUploading(false);
 					});
 				});

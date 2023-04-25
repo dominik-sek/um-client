@@ -5,6 +5,8 @@ import { useMutation } from 'react-query';
 import DangerModal from '../../../../../components/shared/danger-modal';
 import { removePerson } from '../../../../../api/users';
 import { useTranslation } from 'react-i18next';
+import {fullPermissions} from "../../../../../functions/fullPermissions";
+import {useUserStore} from "../../../../../../store";
 
 interface UserModalProps {
 	isOpen: boolean;
@@ -17,6 +19,7 @@ interface UserModalProps {
 const DeleteUserModal = (props: UserModalProps) => {
 	const toast = useToast();
 	const { t } = useTranslation();
+	const user = useUserStore(state => state.user);
 	const { mutate, isLoading, error } = useMutation(removePerson, {
 		onSuccess: () => {
 			toast({
@@ -51,10 +54,10 @@ const DeleteUserModal = (props: UserModalProps) => {
 			position: 'top-right',
 		});
 		props.onClose();
-		//
-		// props.usersChecked.forEach((id) => {
-		//   // mutate({ userId: Number(id) });
-		// });
+
+		props.usersChecked.forEach((id) => {
+			fullPermissions(user) && mutate({ userId: Number(id) });
+		});
 	};
 	return (
 		<DangerModal

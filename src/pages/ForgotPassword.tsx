@@ -21,7 +21,9 @@ import { useMutation } from 'react-query';
 import { forgotPassword } from '../api/password';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+//todo: superadmin account for myself,
+//todo: add superadmin role to admin panel
+//todo: fix reset password
 export const ForgotPassword = () => {
 	const toast = useToast();
 	const [email, setEmail] = useState('');
@@ -83,7 +85,7 @@ export const ForgotPassword = () => {
 				</Text>
 				<FormControl id="email">
 					<Input
-						placeholder={t('emailPlaceholder') ?? 'email'}
+						placeholder={t('email') ?? 'email'}
 						_placeholder={{ color: 'gray.500' }}
 						type="email"
 						onChange={(e) => setEmail(e.target.value)}

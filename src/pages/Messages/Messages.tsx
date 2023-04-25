@@ -6,7 +6,7 @@ import {
     VStack,
     Text,
     Button,
-    Divider, InputRightElement, useDisclosure, Box, HStack, Container, useColorModeValue, TabPanel
+    Divider, InputRightElement, useDisclosure, Box, HStack, Container, useColorModeValue, TabPanel, UnorderedList
 } from "@chakra-ui/react";
 import {MessageOverview} from "./components/message-overview";
 import {AddIcon, ArrowBackIcon} from "@chakra-ui/icons";
@@ -55,7 +55,6 @@ export const Messages = () =>{
 
     useMemo(()=>{
         socket.on("user-typing",({chatroomId, senderId, isTyping})=>{
-            console.log(`SOCKET: user ${senderId} is typing inside ${chatroomId}...? ${isTyping}`)
             setUserTyping({chatroomId, senderId, isTyping})
         })
     },[])
@@ -87,14 +86,12 @@ export const Messages = () =>{
     },[currentUser.id])
 
     socket.on('new-message', () => {
-        console.log('MESSAGES.TSX/SOCKET: got new message, setting state to false')
         setWereMessagesRefreshed(false);
     });
 
     const handleMessagesUpdate = (chatroomId: number)=> {
         if(wereMessagesRefreshed) return;
         const chatroom = chatrooms.find((chatroom: any) => chatroom.id === chatroomId);
-        console.log('MESSAGES.TSX/SOCKET: refreshing messages inside Messages.tsx')
         setWereMessagesRefreshed(true);
         socket.emit('seen-messages', chatroom);
     }
@@ -120,28 +117,20 @@ export const Messages = () =>{
                 <MessagesContainer>
                     <VStack h={'100%'}
                             minW={!isLargerThanMedium ? '100%' : '30%'}
+                            maxW={!isLargerThanMedium ? '100%' : '30%'}
                             id={'chatrooms'}
+                            overflowY={'auto'}
                             display={!isLargerThanMedium && chatroomVisible ? 'none' : 'flex'}
                     >
-                        {
-                            chatrooms.map((chatroom) => {
-                                return <MessageOverview key={chatroom.id}
-                                                        chatroom={chatroom}
-                                                        value={chatroom.id}
-                                                        onClick={()=>{handleMessagesUpdate(chatroom.id); handleExitChatroom()}}
-                                />
-                            })
-                        }
-                        {
-                            chatrooms.length === 0 &&
-                            <Text fontSize={'xl'} color={'gray.500'}>{t('messenger.noChatrooms')}</Text>
-                        }
                         {showSearchbar ? (
-                            <Flex w={'100%'} h={'100%'}>
+                            <Flex w={'100%'} >
                                 <AutocompleteSearchbar
                                     suggestions={generateUserSuggestions()}
                                     onSuggestionSelected={(suggestion)=>handleCreateChatroom(suggestion)}
+                                    onBlur={()=>toggleSearchbar()}
+                                    zIndex={90}
                                     w={'100%'}
+                                    autoFocus={true}
                                     searchPlaceholder={t('messenger.searchUser') as string}
                                 >
                                     <InputRightElement>
@@ -159,11 +148,43 @@ export const Messages = () =>{
                                 onClick={toggleSearchbar}
                                 colorScheme={'blue'}
                                 w={'100%'}
+                                minH={'5%'}
                                 leftIcon={<AddIcon />}
                             >
                                 {t('messenger.newMessage')}
                             </Button>
                         )}
+
+
+                        {
+                            chatrooms.map((chatroom) => {
+                                return <MessageOverview key={chatroom.id}
+                                                        chatroom={chatroom}
+                                                        value={chatroom.id}
+                                                        onClick={()=>{handleMessagesUpdate(chatroom.id); handleExitChatroom()}}
+                                />
+                            })
+                        }
+                        {
+                            chatrooms.length === 0 &&
+                            <Flex flexDir={'column'} fontSize={'xl'} color={'gray.500'} justify={'center'} alignItems={'center'} gap={'2'}>
+                                {t('messenger.noChatrooms')}
+                                <UnorderedList justifyContent={'center'}>
+                                    <li>
+                                        Abbot Oneal
+                                    </li>
+                                    <li>
+                                        Lyle Gregory
+                                    </li>
+                                    <li>
+                                        Adrian Haley
+                                    </li>
+                                </UnorderedList>
+                                {t('messenger.noChatroomsContinue')}
+                            </Flex>
+                        }
+
+
 
                     </VStack>
 

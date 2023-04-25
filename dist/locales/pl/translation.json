@@ -9,7 +9,7 @@
 		"contact-admin": "Skontaktuj się z administratorem",
 		"validate-error": "Niepoprawne dane logowania",
 		"server-error": "Wystąpił nieoczekiwany błąd, spróbuj ponownie później",
-		"select-account": "Wybierz konto"
+		"select-account": "Wybierz domyślne konto"
 	},
 	"routes": {
 		"home": "Strona główna",
@@ -223,7 +223,8 @@
 		"readBy": "Przeczytana przez ",
 		"messageSent": "Wiadomość wysłana",
 		"nothingHere": "Nic tu nie ma",
-		"noChatrooms": "Nie masz żadnych czatów",
+		"noChatrooms": "Nie masz jeszcze żadnych czatów, spróbuj wysłać wiadomość do: ",
+		"noChatroomsContinue": "którzy są domyślnymi użytkownikami",
 		"searchUser": "Wyszukaj użytkownika",
 		"chatboxPlaceholder": "Napisz wiadomość..."
 	}

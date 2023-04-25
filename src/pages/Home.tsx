@@ -10,6 +10,7 @@ const Home = () => {
 
 	useEffect(() => {
 		if (role && user) {
+
 			navigate(`/${role}`);
 		}
 	}, [navigate, role, user]);

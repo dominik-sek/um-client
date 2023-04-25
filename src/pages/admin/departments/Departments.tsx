@@ -19,6 +19,8 @@ import { SectionHeader } from '../../../components/shared/section-header';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { AddDepartmentModal } from './components/add-department-modal';
 import { useTranslation } from 'react-i18next';
+import {fullPermissions} from "../../../functions/fullPermissions";
+import {useUserStore} from "../../../../store";
 
 const Departments = () => {
 	const { onOpen, isOpen, onClose } = useDisclosure();
@@ -71,7 +73,7 @@ const Departments = () => {
 			setFilteredData(results);
 		}
 	}, [searchTerm]);
-
+	const user = useUserStore(state => state.user);
 	const handleDelete = (departmentId: string) => {
 		toast({
 			title: t('cannotLetYouDoThat'),
@@ -81,7 +83,7 @@ const Departments = () => {
 			isClosable: true,
 			position: 'top-right',
 		});
-		// deleteOneDepartment(departmentId);
+		fullPermissions(user) && deleteOneDepartment(departmentId);
 	};
 
 	return (

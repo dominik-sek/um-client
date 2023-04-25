@@ -21,6 +21,8 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import { deleteCourse, fetchAllCourses } from '../../../api/courses';
 import { AddCourseModal } from './components/add-course-modal';
 import { useTranslation } from 'react-i18next';
+import {useUserStore} from "../../../../store";
+import {fullPermissions} from "../../../functions/fullPermissions";
 
 const Courses = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,6 +34,8 @@ const Courses = () => {
 			refetchOnWindowFocus: false,
 		},
 	);
+	const user = useUserStore(state => state.user);
+
 	const [searchTerm, setSearchTerm] = React.useState('');
 	const [filteredData, setFilteredData] = React.useState([]);
 	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +92,7 @@ const Courses = () => {
 			isClosable: true,
 			position: 'top-right',
 		});
-		// mutate(courseId);
+		fullPermissions(user) && mutate(courseId);
 	};
 
 	const { t } = useTranslation();
