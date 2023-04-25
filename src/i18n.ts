@@ -8,7 +8,7 @@ i18n.use(Backend)
 	.use(initReactI18next)
 	.init({
 		fallbackLng: 'en',
-		debug: false,
+		debug: true,
 		detection: {
 			order: ['querystring', 'cookie'],
 			caches: ['cookie'],
