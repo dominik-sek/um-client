@@ -1,6 +1,8 @@
+<h1 align="center">University Management</h1><a name = "readme-top"></a>
+<div align="center">
+  <a href="https://um.dominiksek.com">Live preview</a>
+</div>
 
-<h2 align="center">[University Management](https://um.dominiksek.com) <a name = "readme-top"></a> </h2>
-<a name = "readme-top"></a>
 <div align="center">
 
   [![Status](https://img.shields.io/badge/status-active-success.svg)](um.dominiksek.com) 
@@ -8,7 +10,7 @@
   [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/gothic459/um-client)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
 </div>
 
-[University Management](https://um.dominiksek.com)
+
 ## 📝 Table of Contents
 - [About](#about)
 - [Screenshots](#screenshots)
