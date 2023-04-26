@@ -1,6 +1,6 @@
 
-<h1 align="center">University Management<a name = "readme-top></a></h3>
-<a name = "readme-top></a>
+<h1 align="center">University Management<a name = "readme-top"></a></h3>
+<a name = "readme-top"></a>
 <div align="center">
 
   [![Status](https://img.shields.io/badge/status-active-success.svg)](um.dominiksek.com) 
@@ -12,13 +12,22 @@
 ## 📝 Table of Contents
 - [About](#about)
 - [Screenshots](#screenshots)
-- [Getting Started](#gettig_started)
+- [Getting Started](#getting_started)
 - [Built Using](#built_using)
 - [Authors](#authors)
 - [Contact](#contact)
 
 ## 🧐 About <a name = "about"></a>
 
+University Management is a full-stack content management system developed for a higher education school. The system uses sessions and cookies to enable login for users of different roles, providing them with role-specific actions such as checking grades, grading students, and managing course enrollments.
+
+### Features
+- User authentication and authorization using sessions and cookies
+- Role-based access control for students, teachers, and admins
+- Cloudinary CDN integration for storing user-generated content
+- SendInBlue integration for password changes using email addresses
+- Multilingual support using i18n
+- Real-time chat functionality using socket.io
 
 ## 💻 Screenshots<a name = "screenshots"></a>
 ### Student Panel
@@ -49,18 +58,12 @@ In order to run this project locally, you're gonna need:
 
 ### Installing and running
 
-clone the repo with:
-```
-git clone https://github.com/gothic459/um-client/ your_folder_name
-```
-after cloning the repo, install all the dependencies using
-```
-yarn
-```
-or
-```
-npm install
-```
+1. Clone the repository
+2. Install the dependencies using `npm install` or `yarn`
+3. Set up the database
+4. Start the server using `yarn dev`
+5. Open the application in your browser at http://localhost:5173
+
 ---
 you will also need to create a file in the root folder called `.env` which will contain all the enviormental variables used in the project:
 ```
@@ -70,13 +73,8 @@ VITE_CLOUDINARY_CLOUD_NAME=
 VITE_API_URL=
 ```
 ---
-In order to be able to upload files to the app, you're gonna need  to create a cloudinary account, following the steps in it's documentation, and filling the .env file.
+In order to be able to upload files to the app, you're gonna need to create a cloudinary account, following the steps in it's documentation, and filling the .env file.
 
-If you want to run it locally on your machine, use:
-```
-yarn dev --host
-```
-which will serve the app at `http://localhost:5173`
 If you want to build the project, use:
 ```
 yarn build
@@ -88,7 +86,7 @@ which will output static files into the `./dist` folder.
 ## ⛏️ Built Using <a name = "built_using"></a>
 
 - React.js
-Vite
+- Vite
 - TypeScript
 - ChakraUI
 - Zustand
