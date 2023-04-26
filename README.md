@@ -26,6 +26,20 @@
 
 
 ## 💻 Screenshots<a name = "screenshots"></a>
+### Student Panel
+![Student Panel][student-panel]
+### Teacher Panel
+![Teacher Panel][teacher-panel]
+### Managing Users
+![Users Panel][users-panel]
+### Managing Grades
+![Grades Panel][grades-panel]
+### Adding Grades
+![Add Grade][add-grade]
+### Sending Messages
+![Messages][messages]
+### Live Chat
+![Live Chat][live-chat]
 
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
@@ -79,7 +93,7 @@ which will output static files into the `./dist` folder.
 ## ⛏️ Built Using <a name = "built_using"></a>
 
 - React.js
--  Vite
+Vite
 - TypeScript
 - ChakraUI
 - Zustand
@@ -102,4 +116,11 @@ Project Links:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-[product-screenshot]: images/screenshot.png
+[add-grade]: images/add-grade.png
+[grades-panel]: images/grades-panel.png
+[messages]: images/messages.png
+[teacher-panel]: images/teacher-panel.png
+[users-panel]: images/users-panel.png
+[student-panel]: images/student-panel.png
+[live-chat]: images/message.gif
+
