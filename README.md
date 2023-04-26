@@ -28,6 +28,7 @@ University Management is a full-stack content management system developed for a 
 - SendInBlue integration for password changes using email addresses
 - Multilingual support using i18n
 - Real-time chat functionality using socket.io
+and many more.
 
 ## 💻 Screenshots<a name = "screenshots"></a>
 ### Student Panel
