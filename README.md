@@ -1,6 +1,6 @@
 
-<h1 align="center">University Management</h3>
-<a name="readme-top></a>
+<h1 align="center">University Management<a name = "readme-top></a></h3>
+<a name = "readme-top></a>
 <div align="center">
 
   [![Status](https://img.shields.io/badge/status-active-success.svg)](um.dominiksek.com) 
