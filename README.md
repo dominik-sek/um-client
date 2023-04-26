@@ -1,5 +1,5 @@
 
-<h1 align="center">University Management<a name = "readme-top"></a></h3>
+<h2 align="center">[University Management](https://um.dominiksek.com) <a name = "readme-top"></a> </h2>
 <a name = "readme-top"></a>
 <div align="center">
 
@@ -8,7 +8,7 @@
   [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/gothic459/um-client)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
 </div>
 
-
+[University Management](https://um.dominiksek.com)
 ## 📝 Table of Contents
 - [About](#about)
 - [Screenshots](#screenshots)
