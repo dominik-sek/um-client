@@ -21,10 +21,13 @@ import { fetchStudentsCourses } from '../../../api/courses';
 import { useTranslation } from 'react-i18next';
 import {
 	AiOutlineArrowDown,
-	BiCommentDots,
-	BsArrowsExpand,
-	BsThreeDots,
-} from 'react-icons/all';
+
+} from 'react-icons/ai';
+import {	BsArrowsExpand,
+	BsThreeDots
+} from 'react-icons/bs';
+import {BiCommentDots} from 'react-icons/bi';
+	
 
 export const StudentsInCourseCard = () => {
 	const { data, isLoading, isError, error } = useQuery(

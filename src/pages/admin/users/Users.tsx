@@ -22,7 +22,7 @@ import SearchBar from '../../../components/shared/search/search-bar';
 import DeleteUserModal from './components/delete-user-modal/delete-user-modal';
 import EditUserModal from './components/edit-user-modal/edit-user.modal';
 import { AddMultipleModal } from './components/add-multiple-modal/add-multiple-modal';
-import { FaUpload } from 'react-icons/all';
+import { FaUpload } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { UserData } from '../../../types/User';
 const LazyUserCard = React.lazy(

@@ -1,6 +1,6 @@
 import {HStack, IconButton, Input, InputGroup, InputRightElement, useColorModeValue} from "@chakra-ui/react";
 import socket from "../../socket";
-import {FiSend} from "react-icons/all";
+import {FiSend} from "react-icons/fi";
 import {useForm} from "react-hook-form";
 import {Message, useUserStore} from "../../../store";
 import {useEffect, useMemo, useState} from "react";

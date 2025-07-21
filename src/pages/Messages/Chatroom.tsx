@@ -4,6 +4,7 @@ import {
     Flex,
     Heading, IconButton,
     TabPanel,
+    TabPanelProps,
     Text, Tooltip, useColorModeValue
 } from "@chakra-ui/react";
 import {Chatbox} from "./chatbox";
@@ -12,7 +13,7 @@ import {UserTyping} from "./components/user-typing";
 import {ArrowBackIcon, CheckIcon, DeleteIcon} from "@chakra-ui/icons";
 import {useTranslation} from "react-i18next";
 
-interface ChatroomProps extends React.ComponentProps<typeof TabPanel> {
+interface ChatroomProps extends TabPanelProps {
     chatroom: IChatroom;
     isTyping: boolean;
     onExitChatroom: () => void;

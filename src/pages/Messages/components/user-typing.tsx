@@ -1,4 +1,6 @@
-import {Box, Flex, keyframes, Text} from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
+
 import {motion} from "framer-motion";
 
 const animationKeyframes = keyframes`

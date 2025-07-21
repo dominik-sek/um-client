@@ -35,7 +35,7 @@ import {useNotifStore, useUserStore} from '../../../store';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { routes } from '../../constants/routes';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { BiMessageAlt } from 'react-icons/all';
+import { BiMessageAlt } from 'react-icons/bi';
 import { changeLanguage } from 'i18next';
 import { GB, PL } from 'country-flag-icons/react/3x2';
 import { useTranslation } from 'react-i18next';

@@ -9,12 +9,10 @@ import {
 	useColorModeValue,
 	Wrap,
 } from '@chakra-ui/react';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserRole } from '../../enums/user-role';
 import { UserData } from '../../types/User';
-import { useInView } from 'framer-motion';
-import { use } from 'i18next';
 
 interface UserCardProps {
 	user: UserData;

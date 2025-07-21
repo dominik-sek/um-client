@@ -9,8 +9,11 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@chakra-ui/icon": "^3.2.0",
 		"@chakra-ui/icons": "^2.0.15",
 		"@chakra-ui/react": "^2.4.6",
+		"@chakra-ui/react-context": "^2.1.0",
+		"@chakra-ui/shared-utils": "^2.0.5",
 		"@choc-ui/chakra-autocomplete": "^5.1.4",
 		"@emotion/react": "^11.10.5",
 		"@emotion/styled": "^11.10.5",
@@ -23,7 +26,7 @@
 		"@types/lodash.debounce": "^4.0.7",
 		"@types/lodash.throttle": "^4.1.7",
 		"@types/react-calendar": "^3.9.0",
-		"chakra-ui-steps": "^2.0.1",
+		"chakra-ui-steps": "^2.2.0",
 		"country-flag-icons": "^1.5.5",
 		"date-fns": "^2.29.3",
 		"eslint-plugin-react-hooks": "^4.6.0",
@@ -42,7 +45,7 @@
 		"react-drag-drop-files": "^2.3.8",
 		"react-hook-form": "^7.42.1",
 		"react-i18next": "^12.1.4",
-		"react-icons": "^4.7.1",
+		"react-icons": "^4.12.0",
 		"react-query": "^3.39.2",
 		"react-router-dom": "^6.6.1",
 		"socket.io-client": "^4.6.1",
@@ -57,11 +60,12 @@
 		"@types/react-dom": "^18.0.9",
 		"@typescript-eslint/eslint-plugin": "^5.48.1",
 		"@typescript-eslint/parser": "^5.48.1",
-		"@vitejs/plugin-react": "^3.0.0",
+		"@vitejs/plugin-react": "^4.7.0",
 		"eslint": "^8.32.0",
 		"eslint-plugin-react": "^7.32.0",
+		"patch-package": "^8.0.0",
 		"prettier": "2.8.7",
 		"typescript": "^4.9.3",
-		"vite": "^4.0.0"
+		"vite": "^7.0.5"
 	}
 }

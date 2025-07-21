@@ -1,0 +1,13 @@
+diff --git a/node_modules/chakra-ui-steps/dist/chakra-ui-steps.mjs b/node_modules/chakra-ui-steps/dist/chakra-ui-steps.mjs
+index 0844114..e3c9832 100644
+--- a/node_modules/chakra-ui-steps/dist/chakra-ui-steps.mjs
++++ b/node_modules/chakra-ui-steps/dist/chakra-ui-steps.mjs
+@@ -5,7 +5,7 @@ import D from "react";
+ import { dataAttr as x } from "@chakra-ui/utils";
+ import { mode as M, anatomy as le } from "@chakra-ui/theme-tools";
+ import { motion as Z, AnimatePresence as de } from "framer-motion";
+-import { createIcon as pe } from "@chakra-ui/icon";
++import { createIcon as pe } from "@chakra-ui/icons";
+ import { createContext as he } from "@chakra-ui/react-context";
+ import { cx as ue } from "@chakra-ui/shared-utils";
+ import { createMultiStyleConfigHelpers as me } from "@chakra-ui/styled-system";

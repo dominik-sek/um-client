@@ -28,7 +28,7 @@ import {
 } from '../../api/grades';
 import { useMutation, useQuery } from 'react-query';
 import { GradeColors } from '../../constants/grade-colors';
-import { FiDownload, FiRefreshCcw } from 'react-icons/all';
+import { FiDownload, FiRefreshCcw } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 
 const StudentGrades = () => {

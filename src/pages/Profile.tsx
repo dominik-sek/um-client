@@ -33,7 +33,7 @@ import { useUserStore } from '../../store';
 import { EditIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useMutation, useQuery } from 'react-query';
-import { FiDelete, FiSave } from 'react-icons/all';
+import { FiDelete, FiSave } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { changeUserAvatar } from '../api/users';
 import { fetchUserProfile } from '../api/users';

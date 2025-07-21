@@ -6,21 +6,18 @@ import {
     VStack,
     Text,
     Button,
-    Divider, InputRightElement, useDisclosure, Box, HStack, Container, useColorModeValue, TabPanel, UnorderedList
+    Divider, InputRightElement, Box, useColorModeValue, TabPanel, UnorderedList
 } from "@chakra-ui/react";
 import {MessageOverview} from "./components/message-overview";
 import {AddIcon, ArrowBackIcon} from "@chakra-ui/icons";
 import {MessagesContainer} from "./components/messages-container";
-import {useEffect, useLayoutEffect, useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Chatroom} from "./Chatroom";
-import useSocket from "../../hooks/useSocket";
 import AutocompleteSearchbar from "../../components/shared/search/autocomplete-searchbar";
 import {useQuery} from "react-query";
 import {fetchAllUsers} from "../../api/users";
 import {useChatroomStore, useNotifStore, useUserStore} from "../../../store";
 import socket from "../../socket";
-import React from "react";
-import {motion} from "framer-motion";
 import {useTranslation} from "react-i18next";
 
 export const Messages = () =>{

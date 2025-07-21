@@ -18,7 +18,6 @@ import {
 import { Link } from 'react-router-dom';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { grade } from '@prisma/client';
-import React from 'react';
 import { useQuery } from 'react-query';
 import { fetchAllGradesByTeacher } from '../../../api/grades';
 import { useAuthStore } from '../../../../store';

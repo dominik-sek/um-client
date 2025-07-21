@@ -1,17 +1,17 @@
 import { UserRole } from '../enums/user-role';
 import { FiHome } from 'react-icons/fi';
 import { IconType } from 'react-icons';
+
+import { BiBriefcase } from 'react-icons/bi';
 import {
-	AiFillProfile,
-	AiOutlineBook,
-	BiBriefcase,
 	BsClock,
-	BsPeopleFill,
-	FaBuilding,
-	FaPrint,
-	HiBuildingLibrary,
-	MdBuild,
-} from 'react-icons/all';
+	BsPeopleFill
+} from 'react-icons/bs';
+import { FaPrint, FaBuilding } from 'react-icons/fa';
+
+import { AiFillProfile, AiOutlineBook } from 'react-icons/ai';
+import { HiOfficeBuilding } from 'react-icons/hi';
+import { MdBuild } from 'react-icons/md';
 
 export interface Route {
 	path: string;
@@ -65,7 +65,7 @@ export const routes: Route[] = [
 		path: '/faculties',
 		name: 'Faculties',
 		permission: [UserRole.ADMIN],
-		icon: HiBuildingLibrary,
+		icon: HiOfficeBuilding,
 		key: 'routes.faculties',
 		subRoutes: [
 			{
@@ -166,13 +166,13 @@ export const routes: Route[] = [
 		icon: FaPrint,
 		key: 'routes.printouts',
 		subRoutes: [
-		 	{
-		 		path: '/printouts',
-		 		name: 'Manage printouts',
-		 		permission: [UserRole.ADMIN, UserRole.TEACHER, UserRole.STUDENT],
-		 		icon: FaPrint,
-		 		key: 'routes.manage-printouts',
-		 	},
-		 ],
+			{
+				path: '/printouts',
+				name: 'Manage printouts',
+				permission: [UserRole.ADMIN, UserRole.TEACHER, UserRole.STUDENT],
+				icon: FaPrint,
+				key: 'routes.manage-printouts',
+			},
+		],
 	},
 ];
